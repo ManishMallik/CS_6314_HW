@@ -1,3 +1,7 @@
+body{
+    margin: 0;
+}
+
 header {
     background-color: #000;
     color: white;
@@ -10,7 +14,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #FFF;
+    background-color: #ff9ed6;
 }
   
 li {
@@ -26,6 +30,28 @@ li a {
 }
   
 li a:hover:not(.active) {
-    background-color: #000;
+    background-color: #333;
     color: #FFF;
+}
+
+.container {
+    display: row;
+    clear: none;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: #0000FF;
+    float: left;
+    padding-bottom: 1150px;
+    padding-left: 5%;
+    vertical-align: top;
+}
+
+.main-content {
+    width: 65%;
+    float: left;
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: None
 }

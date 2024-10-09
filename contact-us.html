@@ -1,0 +1,57 @@
+<!-- Validate user inputs in the contact-us page as following ( You are supposed to
+use regular expression for validation in this part)
+• The user must enter first name, last name, phone number, gender ( as a radio
+box), email address, and comment.
+• The first name and last name should be alphabetic only
+• The first letter of first name and last name should be capital
+• The first name and the last name can not be the same
+• Phone number must be formatted as ( ddd) ddd- dddd
+• Email address must contain @ and .
+• Gender must be selected
+• The comment must be at least 10 characters  -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="mystyle.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/JavaScript" src="scripts.js"></script>
+        <title>Traveling</title>
+    </head>
+    <body>
+        <header>
+            <h1>Contact Us</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="stays.html">Stays</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="cars.html">Cars</a></li>
+                <li><a href="cruises.html">Cruises</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="sidebar">
+                <h2>Popular Destinations</h2>
+                <p>Dallas, TX</p>
+            </div>
+            <div class="main-content">
+                <form action="contact-us.php" method="post">
+                    <label for="fname">First Name:</label><br>
+                    <input type="text" id="fname" name="fname" required><br>
+                    <label for="lname">Last Name:</label><br>
+                    <input type="text" id="lname" name="lname" required><br>
+                    <label for="phone">Phone Number:</label><br>
+                    <input type="text" id="phone" name="phone" required><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>Footer</p>
+        </footer>
+    </body>
+</html>

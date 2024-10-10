@@ -1,3 +1,7 @@
+function contactSubmit(){
+    
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Apply this only to the cars.html page
     if (window.location.pathname.includes('cars.html')) {

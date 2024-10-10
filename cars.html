@@ -3,38 +3,40 @@ car, the check in date, and check out date . When the user clicks a submit butto
 Please note that you are supposed to use DOM methods to develop this page.  -->
 
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="mystyle.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/JavaScript" src="scripts.js"></script>
-        <title>Traveling</title>
-    </head>
-    <body>
-        <header>
-            <h1>Cars</h1>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="stays.html">Stays</a></li>
-                <li><a href="flights.html">Flights</a></li>
-                <li><a href="cars.html">Cars</a></li>
-                <li><a href="cruises.html">Cruises</a></li>
-                <li><a href="contact-us.html">Contact Us</a></li>
-            </ul>
-        </nav>
-        <div class="container">
-            <div class="sidebar">
-                <h2>Popular Destinations</h2>
-                <p>Dallas, TX</p>
-            </div>
-            <div class="main-content">
-                
-            </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>Traveling</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">Cars</h1>
+    </header>
+    <nav>
+        <ul id="nav-list"></ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-content">
+            <form id="carForm" action="cars.php" method="post">
+                <label for="city">City:</label><br>
+                <input type="text" id="city" name="city" required><br>
+                <label for="type">Type of Car:</label><br>
+                <input type="text" id="type" name="type" required><br>
+                <label for="checkIn">Check In Date:</label><br>
+                <input type="date" id="checkIn" name="checkIn" required><br>
+                <label for="checkOut">Check Out Date:</label><br>
+                <input type="date" id="checkOut" name="checkOut" required><br>
+                <input type="submit" value="Submit">
+            </form>
         </div>
-        <footer>
-            <p>Footer</p>
-        </footer>
-    </body>
+    </div>
+    <footer>
+        <p id="footer-text"></p>
+    </footer>
+</body>
 </html>

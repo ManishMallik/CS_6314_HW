@@ -10,8 +10,9 @@ function contactSubmit(){
     var phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
 
     // email address must contain @ and . They cannot be starting or ending characters. use regex for this
-    var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-    
+    // var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@utdallas.edu$/;
+
     // check if first name is empty
     if(fname == ""){
         alertMessage += "First name is required.\n";
@@ -55,6 +56,10 @@ function contactSubmit(){
     // check if email is empty
     if(email == ""){
         alertMessage += "Email is required.\n";
+    }
+    // check if email is in the correct format
+    else if(!emailRegex.test(email)){
+        alertMessage += "Email must be in correct format.\n";
     }
 
     console.log("Contact form submitted");

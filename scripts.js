@@ -93,4 +93,61 @@ document.addEventListener('DOMContentLoaded', () => {
         const footerText = document.getElementById('footer-text');
         footerText.textContent = "© 2024 Traveling Inc. All rights reserved.";
     }
+
+    if (window.location.pathname.includes('flights.html')) {
+        // Dynamically create navigation links
+        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+        const navList = document.getElementById('nav-list');
+
+        pages.forEach(page => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+            a.textContent = page;
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+
+        // Add popular destinations dynamically
+        const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
+        const sidebar = document.getElementById('sidebar');
+        const sidebarHeader = document.createElement('h2');
+        sidebarHeader.textContent = "Popular Destinations";
+        sidebar.appendChild(sidebarHeader);
+
+        destinations.forEach(destination => {
+            const p = document.createElement('p');
+            p.textContent = destination;
+            sidebar.appendChild(p);
+        });
+
+        function typeoftrip() {
+            let dropdown = document.getElementById('dropdown');
+            // get the index of the selected option
+            let selectedIndex = dropdown.selectedIndex;
+            // get a selected option and text value using the text property
+            let selectedValue = dropdown.options[selectedIndex].text;
+
+            var origin = getElementById("origin");
+            var destination = getElementById("destination");
+            var departure = getElementById("departure");
+            var arrival = getElementById("arrival");
+
+            if (selectedValue == "One Way") {
+                origin.style.display = "block";
+                destination.style.display = "block";
+                departure.style.display = "block";    
+            };
+            if (selectedValue == "Round Trip") {
+                origin.style.display = "block";
+                destination.style.display = "block";
+                departure.style.display = "block";  
+                arrival.style.display = "block";
+            };
+        }
+
+        // Add footer text dynamically
+        const footerText = document.getElementById('footer-text');
+        footerText.textContent = "© 2024 Traveling Inc. All rights reserved.";
+    }
 });

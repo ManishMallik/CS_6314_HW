@@ -1,0 +1,52 @@
+<!-- . . In the flight webpage, the user should be able to choose the type of trip. 
+If the user chooses one way trip, the user should be able to enter the origin, destination, and departure date. 
+If the user chooses a round trip, the user should be able to enter the origin, destination, departure date for departing flight and arriving flight. 
+In the flight webpage, there should be a passenger icon. 
+    If the user clicks on the passenger icon, a form should be displayed.
+        In this form, the user also should be able to enter the number of passengers for each category (adults, children, or infants). 
+        When the user clicks search button, after validating the user inputs, you should display all the above information entered by the user. 
+If any user input is not valid, you should inform the user.   -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>Traveling</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">Flights</h1>
+    </header>
+    <nav>
+        <ul id="nav-list"></ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-content">
+            <form id="flightForm" action="flights.php" method="post">
+                <label for="type">Type of trip</label>
+                <select id="tripdropdown" onchange="typeoftrip()">
+                    <option>One Way</option>
+                    <option>Round Trip</option>
+                </select>
+                <label for="origin" style="display: none;">Origin:</label><br>
+                <input type="text" id="origin" name="city" style="display: none;" required ><br>
+                <label for="destination" style="display: none;">Destination:</label><br>
+                <input type="text" id="destination" name="type" style="display: none;" required><br>
+                <label for="departure" style="display: none;">Departure:</label><br>
+                <input type="date" id="departure" name="checkIn" style="display: none;" required><br>
+                <label for="arriving" style="display: none;">Departure for Arriving Flight:</label><br>
+                <input type="date" id="arriving" name="checkOut" style="display: none;" required><br>
+                <input type="submit" value="Submit" style="display: none;">
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p id="footer-text"></p>
+    </footer>
+</body>
+</html>

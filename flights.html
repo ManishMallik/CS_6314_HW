@@ -29,19 +29,46 @@ If any user input is not valid, you should inform the user.   -->
         <div class="main-content">
             <form id="flightForm" action="flights.php" method="post">
                 <label for="type">Type of trip</label>
-                <select id="tripdropdown" onchange="typeoftrip()">
-                    <option>One Way</option>
-                    <option>Round Trip</option>
+                <select id="tripdropdown">
+                    <option value="one-way">One Way</option>
+                    <option value="round-trip">Round Trip</option>
                 </select>
-                <label for="origin" style="display: none;">Origin:</label><br>
-                <input type="text" id="origin" name="city" style="display: none;" required ><br>
-                <label for="destination" style="display: none;">Destination:</label><br>
-                <input type="text" id="destination" name="type" style="display: none;" required><br>
-                <label for="departure" style="display: none;">Departure:</label><br>
-                <input type="date" id="departure" name="checkIn" style="display: none;" required><br>
-                <label for="arriving" style="display: none;">Departure for Arriving Flight:</label><br>
-                <input type="date" id="arriving" name="checkOut" style="display: none;" required><br>
-                <input type="submit" value="Submit" style="display: none;">
+
+                <button type="button" onclick="confirmTripType()">Confirm Trip Type</button>
+
+                <label id="origin-label" for="origin" style="display: none;">Origin:</label><br>
+                <input type="text" id="origin" name="origin" style="display: none;" required><br>
+
+                <label id="destination-label"  for="destination" style="display: none;">Destination:</label><br>
+                <input type="text" id="destination" name="destination" style="display: none;" required><br>
+
+                <label id="departure-label" for="departure" style="display: none;">Departure Date:</label><br>
+                <input type="date" id="departure" name="departure" style="display: none;" required><br>
+
+                <label id="arriving-label" for="arriving" style="display: none;">Return Date (for Round Trip):</label><br>
+                <input type="date" id="arriving" name="arriving" style="display: none;"><br>
+
+                <!-- Passenger Icon -->
+                <div id="passenger-icon" style="cursor: pointer;">
+                    <img src="passenger-icon.png" alt="Passenger Icon" width="30" height="30" onclick="showPassengerForm()">
+                    <label>Passengers</label>
+                </div>
+
+                <!-- Passenger Form -->
+                <div id="passengerForm" style="display: none;">
+                    <label for="adults">Adults:</label>
+                    <input type="number" id="adults" name="adults" min="1" value="1" required><br>
+
+                    <label for="children">Children:</label>
+                    <input type="number" id="children" name="children" min="0" value="0"><br>
+
+                    <label for="infants">Infants:</label>
+                    <input type="number" id="infants" name="infants" min="0" value="0"><br>
+                </div>
+
+                <input type="submit" value="Search" id="searchButton" style="display: none;" onclick="validateAndSubmit(event)">
+
+                <div id="tripDetails" style="margin-top: 20px;"></div>
             </form>
         </div>
     </div>

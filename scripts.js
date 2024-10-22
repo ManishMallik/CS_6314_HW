@@ -60,6 +60,102 @@ function contactSubmit(){
     console.log("Contact form submitted");
 }
 
+// Show and hide form fields based on the trip type
+function confirmTripType() {
+    let dropdown = document.getElementById("tripdropdown"); 
+    let selectedValue = dropdown.value; 
+
+    var originLabel = document.getElementById("origin-label");
+    var origin = document.getElementById("origin");
+    var destinationLabel = document.getElementById("destination-label");
+    var destination = document.getElementById("destination");
+    var departureLabel = document.getElementById("departure-label");
+    var departure = document.getElementById("departure");
+    var arrivalLabel = document.getElementById("arriving-label");
+    var arrival = document.getElementById("arriving");
+    var searchButton = document.getElementById("searchButton");
+
+    // Reset all fields initially
+    originLabel.style.display = "none";
+    origin.style.display = "none";
+    destinationLabel.style.display = "none";
+    destination.style.display = "none";
+    departureLabel.style.display = "none";
+    departure.style.display = "none";
+    arrivalLabel.style.display = "none";
+    arrival.style.display = "none";
+    searchButton.style.display = "none";
+
+    // Show form fields based on selected option
+    if (selectedValue === "one-way") {
+        originLabel.style.display = "block";
+        origin.style.display = "block";
+        destinationLabel.style.display = "block"
+        destination.style.display = "block";
+        departureLabel.style.display = "block";
+        departure.style.display = "block";
+        searchButton.style.display = "block"; 
+    } else if (selectedValue === "round-trip") {
+        originLabel.style.display = "block";
+        origin.style.display = "block";
+        destinationLabel.style.display = "block"
+        destination.style.display = "block";
+        departureLabel.style.display = "block";
+        departure.style.display = "block";
+        arrivalLabel.style.display = "block";
+        arrival.style.display = "block"; // Show arrival date for round trip
+        searchButton.style.display = "block";
+    }
+}
+
+// Show the passenger form when the icon is clicked
+function showPassengerForm() {
+    var passengerForm = document.getElementById("passengerForm");
+    passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
+}
+
+// Validate user inputs and display entered information
+function validateAndSubmit(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Retrieve form values
+    let origin = document.getElementById('origin').value;
+    let destination = document.getElementById('destination').value;
+    let departure = document.getElementById('departure').value;
+    let arrival = document.getElementById('arriving').value;
+    let adults = document.getElementById('adults').value;
+    let children = document.getElementById('children').value;
+    let infants = document.getElementById('infants').value;
+
+    // Validation checks
+    if (!origin || !destination || !departure || adults < 1) {
+        alert("Please fill in all required fields with valid values.");
+        return;
+    }
+
+    if (document.getElementById('tripdropdown').value === "round-trip" && !arrival) {
+        alert("Please provide the return date for a round trip.");
+        return;
+    }
+
+    // Display entered information
+    let tripDetails = `
+        <h3>Trip Details</h3>
+        <ul>
+            <li><strong>Origin: </strong> ${origin}</li><br>
+            <li><strong>Destination: </strong> ${destination}</li><br>
+            <li><strong>Departure Date: </strong> ${departure}</li><br>
+            ${arrival ? `<li><strong>Return Date:</strong> ${arrival}</li>` : ""}<br>
+            <li><strong>Adults:</strong> ${adults}</li><br>
+            <li><strong>Children:</strong> ${children}</li><br>
+            <li><strong>Infants:</strong> ${infants}</li><br>
+        </ul>
+    `;
+
+    // Display the trip details in the designated div
+    document.getElementById('tripDetails').innerHTML = tripDetails;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Apply this only to the cars.html page
     if (window.location.pathname.includes('cars.html')) {
@@ -120,31 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
             p.textContent = destination;
             sidebar.appendChild(p);
         });
-
-        function typeoftrip() {
-            let dropdown = document.getElementById('dropdown');
-            // get the index of the selected option
-            let selectedIndex = dropdown.selectedIndex;
-            // get a selected option and text value using the text property
-            let selectedValue = dropdown.options[selectedIndex].text;
-
-            var origin = getElementById("origin");
-            var destination = getElementById("destination");
-            var departure = getElementById("departure");
-            var arrival = getElementById("arrival");
-
-            if (selectedValue == "One Way") {
-                origin.style.display = "block";
-                destination.style.display = "block";
-                departure.style.display = "block";    
-            };
-            if (selectedValue == "Round Trip") {
-                origin.style.display = "block";
-                destination.style.display = "block";
-                departure.style.display = "block";  
-                arrival.style.display = "block";
-            };
-        }
 
         // Add footer text dynamically
         const footerText = document.getElementById('footer-text');

@@ -114,6 +114,25 @@ function showPassengerForm() {
     passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
 }
 
+// Function to validate if the city ends with ", TX" or ", CA"
+function isValidState(location) {
+    const stateRegex = /,\s?(TX|CA)$/i;  // Matches ", TX" or ", CA" at the end of the string
+    return stateRegex.test(location);
+}
+
+// Function to validate if a date is between Sep 1, 2024, and Dec 1, 2024
+function isValidDate(departure) {
+    const date = new Date(departure);
+    const startDate = new Date("2024-09-01");
+    const endDate = new Date("2024-12-01");
+
+    return date >= startDate && date <= endDate;
+}
+
+// Function to validate if the city is in Texas or California
+function isValidCity(city) {
+    return validCities.includes(city);
+}
 // Validate user inputs and display entered information
 function validateAndSubmit(event) {
     event.preventDefault(); // Prevent form submission
@@ -130,6 +149,24 @@ function validateAndSubmit(event) {
     // Validation checks
     if (!origin || !destination || !departure || adults < 1) {
         alert("Please fill in all required fields with valid values.");
+        return;
+    }
+
+    // Departure date validation (between Sep 1, 2024, and Dec 1, 2024)
+    if (!isValidDate(departure)) {
+        alert("Departure date must be between Sep 1, 2024, and Dec 1, 2024.");
+        return;
+    }
+
+    // Origin and destination validation (must be a city in Texas or California)
+    if (!isValidCity(origin) || !isValidCity(destination)) {
+        alert("Origin and Destination must be cities in Texas or California.");
+        return;
+    }
+
+    // Passenger count validation (no more than 4 per category)
+    if (adults > 4 || children > 4 || infants > 4) {
+        alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
         return;
     }
 

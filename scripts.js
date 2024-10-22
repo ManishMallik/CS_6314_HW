@@ -116,7 +116,7 @@ function showPassengerForm() {
 
 // Function to validate if the city ends with ", TX" or ", CA"
 function isValidState(location) {
-    const stateRegex = /,\s?(TX|CA)$/i;  // Matches ", TX" or ", CA" at the end of the string
+    const stateRegex = /,\s?(TX|CA)$/;  // Matches ", TX" or ", CA" at the end of the string
     return stateRegex.test(location);
 }
 
@@ -128,6 +128,14 @@ function isValidDate(departure) {
 
     return date >= startDate && date <= endDate;
 }
+
+function isValidArrival(departure, arrival) {
+    const dep = new Date(departure);
+    const arr = new Date(arrival);
+
+    return arr > dep;
+}
+
 
 // Function to validate if the city is in Texas or California
 function isValidCity(city) {
@@ -159,7 +167,7 @@ function validateAndSubmit(event) {
     }
 
     // Origin and destination validation (must be a city in Texas or California)
-    if (!isValidCity(origin) || !isValidCity(destination)) {
+    if (!isValidState(origin) || !isValidState(destination)) {
         alert("Origin and Destination must be cities in Texas or California.");
         return;
     }
@@ -170,8 +178,8 @@ function validateAndSubmit(event) {
         return;
     }
 
-    if (document.getElementById('tripdropdown').value === "round-trip" && !arrival) {
-        alert("Please provide the return date for a round trip.");
+    if (document.getElementById('tripdropdown').value === "round-trip" && (!arrival || !isValidArrival(departure, arrival))) {
+        alert("Please provide a valid return date for a round trip.");
         return;
     }
 

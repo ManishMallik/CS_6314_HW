@@ -201,6 +201,88 @@ function validateAndSubmit(event) {
     document.getElementById('tripDetails').innerHTML = tripDetails;
 }
 
+// Helper function to check if the city is in Texas or California
+function isValidStayState(city) {
+    const lowerCity = city.toLowerCase();
+    return lowerCity.endsWith('tx') || lowerCity.endsWith('ca');
+}
+
+// Helper function to check if the date is between Sep 1, 2024, and Dec 1, 2024
+function isValidStayDate(date) {
+    const checkInLimit = new Date("2024-09-01");
+    const checkOutLimit = new Date("2024-12-01");
+    const inputDate = new Date(date);
+    return inputDate >= checkInLimit && inputDate <= checkOutLimit;
+}
+
+// Calculate the number of rooms based on the number of guests
+function calculateRooms(adults, children) {
+    const totalGuests = adults + children;
+    return Math.ceil(totalGuests / 2);  // Two guests per room, infants do not count
+}
+
+// Validate user inputs and display entered information
+function validateAndSubmitStay(event) {
+    event.preventDefault();
+
+    let city = document.getElementById('city').value;
+    let checkIn = document.getElementById('checkIn').value;
+    let checkOut = document.getElementById('checkOut').value;
+    let adults = parseInt(document.getElementById('adults').value);
+    let children = parseInt(document.getElementById('children').value);
+    let infants = parseInt(document.getElementById('infants').value);
+
+    // Validation
+    if (!city || !checkIn || !checkOut || adults < 1) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    // Check if city is in Texas or California
+    if (!isValidStayState(city)) {
+        alert("The city must be in Texas (TX) or California (CA).");
+        return;
+    }
+
+    // Validate check-in and check-out dates
+    if (!isValidStayDate(checkIn) || !isValidStayDate(checkOut)) {
+        alert("Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.");
+        return;
+    }
+
+    // Check if check-out date is after check-in date
+    if (new Date(checkOut) < new Date(checkIn)) {
+        alert("Check-out date must be after the check-in date.");
+        return;
+    }
+
+    // Validate number of guests
+    if (adults > 10 || children > 10 || infants > 5) {
+        alert("Number of adults and children cannot exceed 10 each. Infants cannot exceed 5.");
+        return;
+    }
+
+    // Calculate the number of rooms needed
+    let roomsNeeded = calculateRooms(adults, children);
+
+    // Display stay details
+    let stayDetails = `
+        <h3>Stay Details</h3>
+        <ul>
+            <li><strong>City:</strong> ${city}</li>
+            <li><strong>Check-In Date:</strong> ${checkIn}</li>
+            <li><strong>Check-Out Date:</strong> ${checkOut}</li>
+            <li><strong>Adults:</strong> ${adults}</li>
+            <li><strong>Children:</strong> ${children}</li>
+            <li><strong>Infants:</strong> ${infants}</li>
+            <li><strong>Rooms Needed:</strong> ${roomsNeeded}</li>
+        </ul>
+    `;
+
+    document.getElementById('stayDetails').innerHTML = stayDetails;
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Apply this only to the cars.html page
     if (window.location.pathname.includes('cars.html')) {
@@ -236,6 +318,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.location.pathname.includes('flights.html')) {
+        // Dynamically create navigation links
+        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+        const navList = document.getElementById('nav-list');
+
+        pages.forEach(page => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+            a.textContent = page;
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+
+        // Add popular destinations dynamically
+        const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
+        const sidebar = document.getElementById('sidebar');
+        const sidebarHeader = document.createElement('h2');
+        sidebarHeader.textContent = "Popular Destinations";
+        sidebar.appendChild(sidebarHeader);
+
+        destinations.forEach(destination => {
+            const p = document.createElement('p');
+            p.textContent = destination;
+            sidebar.appendChild(p);
+        });
+
+        // Add footer text dynamically
+        const footerText = document.getElementById('footer-text');
+        footerText.textContent = "© 2024 Traveling Inc. All rights reserved.";
+    }
+
+    if (window.location.pathname.includes('stays.html')) {
         // Dynamically create navigation links
         const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
         const navList = document.getElementById('nav-list');

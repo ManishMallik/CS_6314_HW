@@ -1,0 +1,67 @@
+<!-- . . In the stays webpage, the user should be able to enter the name of city, the check in date, check out date, number of guesses for each category (adults, children, or infants). 
+ When the user clicks a search button, after validating the user inputs, you should display all the information entered by the user. 
+ You should also display the number of rooms the user needs. 
+ If any user input is not valid, you should inform the user.
+Validate user inputs for this page as following . ( You should not use regular expression for validation in this part)
+• The user must enter check in date, and check out date anytime between Sep 1,
+2024 to Dec 1st 2024.
+• The city must be a city in Texas or California
+• Number of guesses can not be more than 2 for each room. However infants
+can stay with adults even if the number of guesses exceeds 2   -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>Traveling</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">Stays</h1>
+    </header>
+    <nav>
+        <ul id="nav-list"></ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-content">
+            <form id="stayForm">
+        <!-- City Input -->
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" placeholder="Enter city (e.g., Dallas, TX)" required>
+
+        <!-- Check-In Date Input -->
+        <label for="checkIn">Check-In Date:</label>
+        <input type="date" id="checkIn" name="checkIn" required>
+
+        <!-- Check-Out Date Input -->
+        <label for="checkOut">Check-Out Date:</label>
+        <input type="date" id="checkOut" name="checkOut" required>
+
+        <!-- Guests Input -->
+        <label for="adults">Adults:</label>
+        <input type="number" id="adults" name="adults" min="1" max="10" value="1" required>
+
+        <label for="children">Children:</label>
+        <input type="number" id="children" name="children" min="0" max="10" value="0">
+
+        <label for="infants">Infants:</label>
+        <input type="number" id="infants" name="infants" min="0" max="5" value="0">
+
+        <!-- Search Button -->
+        <button type="submit" id="searchButton">Search</button>
+
+        <!-- Display Room and Guest Information -->
+        <div id="stayDetails" style="margin-top: 20px;"></div>
+            </form>
+        </div>   
+    </div>
+    <footer>
+        <p id="footer-text"></p>
+    </footer>    
+</body>
+</html>

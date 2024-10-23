@@ -269,12 +269,12 @@ function validateAndSubmitStay(event) {
     let stayDetails = `
         <h3>Stay Details</h3>
         <ul>
-            <li><strong>City:</strong> ${city}</li>
-            <li><strong>Check-In Date:</strong> ${checkIn}</li>
-            <li><strong>Check-Out Date:</strong> ${checkOut}</li>
-            <li><strong>Adults:</strong> ${adults}</li>
-            <li><strong>Children:</strong> ${children}</li>
-            <li><strong>Infants:</strong> ${infants}</li>
+            <li><strong>City:</strong> ${city}</li><br>
+            <li><strong>Check-In Date:</strong> ${checkIn}</li><br>
+            <li><strong>Check-Out Date:</strong> ${checkOut}</li><br>
+            <li><strong>Adults:</strong> ${adults}</li><br>
+            <li><strong>Children:</strong> ${children}</li><br>
+            <li><strong>Infants:</strong> ${infants}</li><br>
             <li><strong>Rooms Needed:</strong> ${roomsNeeded}</li>
         </ul>
     `;
@@ -350,6 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.location.pathname.includes('stays.html')) {
+        const form = document.getElementById('stayForm');
+        form.addEventListener('submit', validateAndSubmitStay);
         // Dynamically create navigation links
         const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
         const navList = document.getElementById('nav-list');

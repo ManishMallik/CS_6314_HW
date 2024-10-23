@@ -10,15 +10,100 @@ function changeFontSize() {
     }
 }
 
+// function changeBackgroundColor() {
+//     // //Change background color back and forth
+//     var body = document.getElementsByTagName('body')[0];
+//     var bodyColor = body.style.backgroundColor;
+//     if (bodyColor == "yellow") {
+//         body.style.backgroundColor = "white";
+//     }
+//     else {
+//         body.style.backgroundColor = "yellow";
+//     }
+
+//     // Get color of header
+//     var header = document.getElementsByTagName('header')[0];
+//     var headerColor = header.style.backgroundColor;
+//     if (headerColor == "black") {
+//         header.style.color = "black";
+//         header.style.backgroundColor = "white";
+//     }
+//     else {
+//         header.style.color = "white";
+//         header.style.backgroundColor = "black";
+//     }
+
+//     // Get backgroundcolor of navbar ul
+//     var navList = document.getElementsByTagName('ul')[0];
+//     var navListColor = navList.style.backgroundColor;
+//     if (navListColor == "pink") {
+//         navList.style.backgroundColor = "purple";
+//     }
+//     else {
+//         navList.style.backgroundColor = "pink";
+//     }
+
+//     // Get backgroundcolor of sidebar
+//     var sidebar = document.getElementsByClassName('sidebar')[0];
+//     console.log(sidebar);
+//     var sidebarColor = sidebar.style.backgroundColor;
+
+//     if (sidebarColor == "blue") {
+//         sidebar.style.backgroundColor = "red";
+//     }
+//     else {
+//         sidebar.style.backgroundColor = "blue";
+//     }
+
+// }
+
 function changeBackgroundColor() {
-    //Change background color back and forth
     var body = document.getElementsByTagName('body')[0];
-    var currentColor = body.style.backgroundColor;
-    if (currentColor == "yellow") {
+    var header = document.getElementsByTagName('header')[0];
+    var navList = document.getElementsByTagName('ul')[0];
+    var sidebar = document.getElementsByClassName('sidebar')[0];
+
+    // Get computed background color for body
+    var bodyColor = window.getComputedStyle(body).backgroundColor;
+    if (bodyColor == "rgb(255, 255, 0)") { // Yellow
         body.style.backgroundColor = "white";
-    }
-    else {
+    } else {
         body.style.backgroundColor = "yellow";
+    }
+
+    // Get computed background color for header
+    var headerColor = window.getComputedStyle(header).backgroundColor;
+    if (headerColor == "rgb(0, 0, 0)") { // Black
+        header.style.color = "black";
+        header.style.backgroundColor = "white";
+    } else {
+        header.style.color = "white";
+        header.style.backgroundColor = "black";
+    }
+
+    // Get computed background color for navbar ul
+    var navListColor = window.getComputedStyle(navList).backgroundColor;
+    if (navListColor == "rgb(255, 158, 214)") { // Pink
+        navList.style.backgroundColor = "rgb(0, 255, 0)";
+    } else {
+        navList.style.backgroundColor = "rgb(255, 158, 214)";
+    }
+
+    // Get computed background color for sidebar
+    var sidebarColor = window.getComputedStyle(sidebar).backgroundColor;
+    if (sidebarColor == "rgb(0, 0, 255)") { // Blue
+        sidebar.style.backgroundColor = "red";
+    } else {
+        sidebar.style.backgroundColor = "blue";
+    }
+
+    // Get computed background color for footer
+    var footer = document.getElementsByTagName('footer')[0];
+    var footerColor = window.getComputedStyle(footer).backgroundColor;
+    if (footerColor == "rgb(0, 255, 0)") { // Green
+        footer.style.backgroundColor = "cyan";
+    } else {
+        footer.style.backgroundColor = "rgb(0, 255, 0)";
     }
 }
 
@@ -228,11 +313,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-$(document).ready(function(){
-    console.log($('#nav-list'));  // Check if the element exists
-    console.log($('#sidebar'));   // Check if the element exists
-});
-
 //Method that uses jQuery to load and build the cruise.html page
 $(document).ready(function(){
 
@@ -267,6 +347,7 @@ $(document).ready(function(){
 
         const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
         const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
+        const actions = ["Font Size", "Background Color"];
 
         console.log("Nav list:", pages);
         console.log("Sidebar destinations:", destinations);
@@ -283,12 +364,19 @@ $(document).ready(function(){
             $('#nav-list').append(li);
         });
 
-        const sidebarHeader = $('<h2></h2>').text("Popular Destinations");
+        const sidebarHeader = $('<h2></h2>').text("Change font size and/or background color of the webpage");
         $('#sidebar').append(sidebarHeader);
 
-        destinations.forEach(destination => {
-            const p = $('<p></p>').text(destination);
-            $('#sidebar').append(p);
+        actions.forEach(action => {
+            const button = $('<button></button>').text(action);
+            if (action == "Font Size") {
+                button.click(changeFontSize);
+            }
+            else if (action == "Background Color") {
+                button.click(changeBackgroundColor);
+            }
+            $('#sidebar').append(button);
+            $('#sidebar').append('<br>');
         });
 
         // Dynamically generate the cruise booking form
@@ -336,6 +424,8 @@ $(document).ready(function(){
             // • Departing between can be anytime between Sep 1, 2024 to Dec 1st 2024.
             // • Number of guesses can not be more than 2 for each room. However infants
             // can stay with adults even if the number of guesses exceeds 2 
+            event.preventDefault();
+
             const destination = $('#destination').val();
             const departBetween = $('#departBetween').val();
             const minDuration = $('#minDuration').val();
@@ -396,9 +486,13 @@ $(document).ready(function(){
             // }
 
             if(alertMessage != ""){
-                alert("Your input has some errors:\n" + alertMessage);
+                // alert("Your input has some errors:\n" + alertMessage);
+                $('#output').html("Your input has some errors:<br>" + alertMessage);
+                $('#output').css('color', 'red');
             } else {
-                alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
+                // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
+                $('#output').html("Thank you for your submission! Here is your information:<br>" + "Destination: " + destination + "<br>Departure Date: " + departBetween + "<br>Duration: " + minDuration + " - " + maxDuration + " days<br>Guests: " + guests + "<br>Infants: " + infants);
+                $('#output').css('color', 'green');
             }
         });
     }

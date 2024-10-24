@@ -278,18 +278,22 @@ function showPassengerForm() {
 
 // Function to validate if the city ends with ", TX" or ", CA"
 function isValidState(location) {
-    const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
     const stateRegex = /,\s?(TX|CA)$/;  // Matches ", TX" or ", CA" at the end of the string
-    return stateRegex.test(location) && cityRegex.test(location);
+    return stateRegex.test(location);
 }
 
 // Function to validate if a date is between Sep 1, 2024, and Dec 1, 2024
 function isValidDate(departure) {
-    const date = new Date(departure);
-    const startDate = new Date("2024-09-01");
-    const endDate = new Date("2024-12-01");
+    // const date = new Date(departure);
+    // const startDate = new Date("2024-09-01");
+    // const endDate = new Date("2024-12-01");
 
-    return date >= startDate && date <= endDate;
+    // return date >= startDate && date <= endDate;
+
+    // Regex pattern to match dates between Sep 1, 2024 and Dec 1, 2024
+    const dateRegex = /^(2024)-(09-(0[1-9]|[1-2][0-9]|30)|10-(0[1-9]|[1-2][0-9]|3[0-1])|11-(0[1-9]|[1-2][0-9]|30)|12-01)$/;
+
+    return dateRegex.test(departure);
 }
 
 function isValidArrival(departure, arrival) {
@@ -300,10 +304,23 @@ function isValidArrival(departure, arrival) {
 }
 
 
-// Function to validate if the city is in Texas or California
+// Function to validate if city is in valid format
 function isValidCity(city) {
-    return validCities.includes(city);
+    const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
+    return cityRegex.test(city);
 }
+
+function isValidPassengerCount(adults, children, infants) {
+    const adultregex = /^[1-4]$/;
+    const passengerRegex = /^[0-4]$/;
+
+    // Check if adults, children, or infants exceed the allowed range (0-4)
+    if (!adultregex.test(adults) || !passengerRegex.test(children) || !passengerRegex.test(infants)) {
+        return false;
+    }
+    return true;
+}
+
 // Validate user inputs and display entered information
 function validateAndSubmit(event) {
     event.preventDefault(); // Prevent form submission
@@ -333,16 +350,35 @@ function validateAndSubmit(event) {
         // return;
     }
 
+    if (arrival) {
+        if (!isValidDate(arrival)) {
+            // alert("Return date must be between Sep 1, 2024, and Dec 1, 2024.");
+            errors += "Return date must be between Sep 1, 2024, and Dec 1, 2024.<br>";
+            // return;
+        }
+    }
+
+    if (!isValidCity(origin) || !isValidCity(destination)) {
+        // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
+        errors += "Make sure you enter the cities in the proper format.<br>";
+        // return;
+    }
+
     // Origin and destination validation (must be a city in Texas or California)
     if (!isValidState(origin) || !isValidState(destination)) {
         // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        errors += "Make sure you enter the cities properly. Also, origin and destination must be cities in Texas or California.<br>";
+        errors += "Origin and destination must be cities in Texas or California.<br>";
         // return;
     }
 
     // Passenger count validation (no more than 4 per category)
-    if (adults > 4 || children > 4 || infants > 4) {
-        // alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
+    // if (adults > 4 || children > 4 || infants > 4) {
+    //     // alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
+    //     errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
+    //     // return;
+    // }
+
+    if (!isValidPassengerCount(adults, children, infants)){
         errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
         // return;
     }

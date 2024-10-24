@@ -317,32 +317,45 @@ function validateAndSubmit(event) {
     let children = document.getElementById('children').value;
     let infants = document.getElementById('infants').value;
 
+    var errors = "";
+
     // Validation checks
     if (!origin || !destination || !departure || adults < 1) {
-        alert("Please fill in all required fields with valid values.");
-        return;
+        // alert("Please fill in all required fields with valid values.");
+        errors += "Please fill in all required fields with valid values.<br>";
+        // return;
     }
 
     // Departure date validation (between Sep 1, 2024, and Dec 1, 2024)
     if (!isValidDate(departure)) {
-        alert("Departure date must be between Sep 1, 2024, and Dec 1, 2024.");
-        return;
+        // alert("Departure date must be between Sep 1, 2024, and Dec 1, 2024.");
+        errors += "Departure date must be between Sep 1, 2024, and Dec 1, 2024.<br>";
+        // return;
     }
 
     // Origin and destination validation (must be a city in Texas or California)
     if (!isValidState(origin) || !isValidState(destination)) {
-        alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        return;
+        // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
+        errors += "Make sure you enter the cities properly. Also, origin and destination must be cities in Texas or California.<br>";
+        // return;
     }
 
     // Passenger count validation (no more than 4 per category)
     if (adults > 4 || children > 4 || infants > 4) {
-        alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
-        return;
+        // alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
+        errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
+        // return;
     }
 
     if (document.getElementById('tripdropdown').value === "round-trip" && (!arrival || !isValidArrival(departure, arrival))) {
-        alert("Please provide a valid return date for a round trip.");
+        // alert("Please provide a valid return date for a round trip.");
+        errors += "Please provide a valid return date for a round trip.<br>";
+        // return;
+    }
+
+    if (errors != "") {
+        document.getElementById('tripDetails').innerHTML = "Your input has some errors:<br>" + errors;
+        document.getElementById('tripDetails').style.color = "red";
         return;
     }
 
@@ -360,6 +373,7 @@ function validateAndSubmit(event) {
 
     // Display the trip details in the designated div
     document.getElementById('tripDetails').innerHTML = tripDetails;
+    document.getElementById('tripDetails').style.color = "green";
 }
 
 // Helper function to check if the city is in Texas or California
@@ -883,7 +897,7 @@ $(document).ready(function(){
                 $('#output').css('color', 'red');
             } else {
                 // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
-                $('#output').html("<h3>Thank you for your submission! Here is your information:</h3><br>" + 
+                $('#output').html("<h3>Thank you for your submission! Here is your information:</h3>" + 
                     "<strong>Destination:</strong> " + destination + 
                     "<br><strong>Departure Date:</strong> " + departBetween + 
                     "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 

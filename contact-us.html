@@ -34,25 +34,34 @@ box), email address, and comment.
         </nav>
         <div class="container">
             <div class="sidebar">
-                <h2>Popular Destinations</h2>
-                <p>Dallas, TX</p>
+                <h2>Change font size and/or background color of the webpage</h2>
+                <button onclick="changeFontSize()">Change Font Size</button>
+                <button onclick="changeBackgroundColor()">Change Background Color</button>
             </div>
             <div class="main-content">
-                <form action="contact-us.php" method="post">
+                <!-- <form id="contact-us-form"> -->
                     <label for="fname">First Name:</label><br>
                     <input type="text" id="fname" name="fname" required><br>
                     <label for="lname">Last Name:</label><br>
                     <input type="text" id="lname" name="lname" required><br>
                     <label for="phone">Phone Number:</label><br>
-                    <input type="text" id="phone" name="phone" required><br>
+                    <input type="text" id="phone" name="phone" placeholder="(xxx) xxx-xxxx" required><br>
                     <label for="email">Email:</label><br>
                     <input type="email" id="email" name="email" required><br>
-                </form>
+                    <label for="gender">Gender:</label><br>
+                    <input type="radio" name="gender" value="Male" checked>
+                    <label>Male</label>
+                    <input type="radio" name="gender" value="Female">
+                    <label>Female</label><br>
+                    <label for="comment">Comment:</label><br>
+                    <textarea id="comment" name="comment" required></textarea><br>
+                    <!-- <input type="submit" value="Submit" onclick="contactSubmit()"> -->
+                <!-- </form> -->
                 <button type="submit" value="Submit" onclick="contactSubmit()">Submit</button>
+                <p id="contact-output"></p>
             </div>
         </div>
         <footer>
-            <p>Footer</p>
         </footer>
     </body>
 </html>

@@ -278,8 +278,9 @@ function showPassengerForm() {
 
 // Function to validate if the city ends with ", TX" or ", CA"
 function isValidState(location) {
+    const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
     const stateRegex = /,\s?(TX|CA)$/;  // Matches ", TX" or ", CA" at the end of the string
-    return stateRegex.test(location);
+    return stateRegex.test(location) && cityRegex.test(location);
 }
 
 // Function to validate if a date is between Sep 1, 2024, and Dec 1, 2024
@@ -330,7 +331,7 @@ function validateAndSubmit(event) {
 
     // Origin and destination validation (must be a city in Texas or California)
     if (!isValidState(origin) || !isValidState(destination)) {
-        alert("Origin and Destination must be cities in Texas or California.");
+        alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
         return;
     }
 
@@ -348,15 +349,13 @@ function validateAndSubmit(event) {
     // Display entered information
     let tripDetails = `
         <h3>Trip Details</h3>
-        <ul>
-            <li><strong>Origin: </strong> ${origin}</li><br>
-            <li><strong>Destination: </strong> ${destination}</li><br>
-            <li><strong>Departure Date: </strong> ${departure}</li><br>
-            ${arrival ? `<li><strong>Return Date:</strong> ${arrival}</li>` : ""}<br>
-            <li><strong>Adults:</strong> ${adults}</li><br>
-            <li><strong>Children:</strong> ${children}</li><br>
-            <li><strong>Infants:</strong> ${infants}</li><br>
-        </ul>
+        <strong>Origin: </strong> ${origin}<br>
+            <strong>Destination: </strong> ${destination}<br>
+            <strong>Departure Date: </strong> ${departure}<br>
+            ${arrival ? `<strong>Return Date:</strong> ${arrival}` : ""}<br>
+            <strong>Adults:</strong> ${adults}<br>
+            <strong>Children:</strong> ${children}<br>
+            <strong>Infants:</strong> ${infants}<br>
     `;
 
     // Display the trip details in the designated div

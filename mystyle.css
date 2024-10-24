@@ -35,18 +35,21 @@ li a:hover:not(.active) {
 }
 
 .container {
-    display: row;
+    display: flex;
+    flex-direction: row;
     clear: none;
+    height: calc(100vh - 100px);
 }
 
 .sidebar {
     width: 20%;
     background-color: #0000FF;
     float: left;
-    padding-bottom: 550px;
-    padding-left: 5%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
     vertical-align: top;
     color: white;
+    box-sizing: border-box;
 }
 
 .main-content {
@@ -54,7 +57,8 @@ li a:hover:not(.active) {
     float: left;
     padding-left: 5%;
     padding-right: 5%;
-    background-color: None
+    background-color: None;
+    box-sizing: border-box;
 }
 
 footer {

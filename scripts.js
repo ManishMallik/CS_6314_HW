@@ -128,6 +128,7 @@ function contactSubmit(){
     const lname = document.getElementById("lname").value;
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
+    const gender = document.querySelector('input[name=gender]:checked').value;
     const comment = document.getElementById("comment").value;
 
     var alertMessage = "";
@@ -189,6 +190,13 @@ function contactSubmit(){
         alertMessage += "Email must be in correct format.<br>";
     }
 
+    if(gender == undefined){
+        alertMessage += "Gender is required.<br>";
+    }
+    else {
+        console.log(gender);
+    }
+
     // check if comments are empty
     if(comment == ""){
         alertMessage += "Comment is required.<br>";
@@ -203,7 +211,13 @@ function contactSubmit(){
         document.getElementById("contact-output").style.color = "red";
     } else {
         // alert("Thank you for your submission! Here is your information:\n" + "First Name: " + fname + "\nLast Name: " + lname + "\nPhone: " + phone + "\nEmail: " + email);
-        document.getElementById("contact-output").innerHTML = "Thank you for your submission! Here is your information:<br>" + "First Name: " + fname + "<br>Last Name: " + lname + "<br>Phone: " + phone + "<br>Email: " + email;
+        document.getElementById("contact-output").innerHTML = "Thank you for your submission! Here is your information:<br>" + 
+        "<strong>First Name:</strong> " + fname + 
+        "<br><strong>Last Name:</strong> " + lname + 
+        "<br><strong>Phone:</strong> " + phone + 
+        "<br><strong>Email:</strong> " + email + 
+        "<br><strong>Gender:</strong> " + gender + 
+        "<br><strong>Comment:</strong> " + comment;
         document.getElementById("contact-output").style.color = "green";
     }
 }
@@ -241,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Add popular destinations dynamically
-        const actions = ["Font Size", "Background Color"];
+        const actions = ["Change Font Size", "Change Background Color"];
         const sidebar = document.getElementById('sidebar');
         const sidebarHeader = document.createElement('h2');
         sidebarHeader.textContent = "Change font size and/or background color of the webpage";
@@ -250,10 +264,10 @@ document.addEventListener('DOMContentLoaded', () => {
         actions.forEach(action => {
             const button = document.createElement('button');
             button.textContent = action;
-            if (action == "Font Size") {
+            if (action == "Change Font Size") {
                 button.addEventListener('click', changeFontSize);
             }
-            else if (action == "Background Color") {
+            else if (action == "Change Background Color") {
                 button.addEventListener('click', changeBackgroundColor);
             }
             sidebar.appendChild(button);
@@ -274,11 +288,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const checkOut = new Date(document.getElementById('checkOut').value);
 
             // Validation rules
+            // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
+            const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
             const validCarTypes = ["economy", "suv", "compact", "midsize"];
             const minDate = new Date("2024-09-01");
             const maxDate = new Date("2024-12-01");
 
             let errors = [];
+
+            // Validate city
+            if (city.length == 0) {
+                errors.push("City is required.");
+            } else if (!cityRegex.test(city)) {
+                errors.push("City must be alphabetic (can contain a space or dash), must end with a comma followed by a space and 2-letter state code that is capitalized.");
+            } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
+                errors.push("City must end with a 2-letter state code of TX or CA.");
+            }
 
             // Validate check-in and check-out dates
             if (checkIn < minDate || checkIn > maxDate) {
@@ -298,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Output validation results or form data
             if (errors.length > 0) {
-                output.innerHTML = errors.join('<br>');
+                output.innerHTML = "Your input has some errors:<br>" + errors.join('<br>');
                 output.style.color = "red";
             } else {
                 output.innerHTML = `
@@ -317,40 +342,11 @@ document.addEventListener('DOMContentLoaded', () => {
 $(document).ready(function(){
 
     if (window.location.pathname.includes('cruises.html')) {
-        // Dynamically create navigation links
-        // const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        // const navList = document.getElementById('nav-list');
-
-        // pages.forEach(page => {
-        //     const li = document.createElement('li');
-        //     const a = document.createElement('a');
-        //     a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-        //     a.textContent = page;
-        //     li.appendChild(a);
-        //     navList.appendChild(li);
-        // });
-
-        // // Add popular destinations dynamically
-        // const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
-        // const sidebar = document.getElementById('sidebar');
-        // const sidebarHeader = document.createElement('h2');
-        // sidebarHeader.textContent = "Popular Destinations";
-        // sidebar.appendChild(sidebarHeader);
-
-        // destinations.forEach(destination => {
-        //     const p = document.createElement('p');
-        //     p.textContent = destination;
-        //     sidebar.appendChild(p);
-        // });
 
         $('#header-title').text("Cruises");
 
         const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
-        const actions = ["Font Size", "Background Color"];
-
-        console.log("Nav list:", pages);
-        console.log("Sidebar destinations:", destinations);
+        const actions = ["Change Font Size", "Change Background Color"];
         
         pages.forEach(page => {
             const li = $('<li></li>');
@@ -369,10 +365,10 @@ $(document).ready(function(){
 
         actions.forEach(action => {
             const button = $('<button></button>').text(action);
-            if (action == "Font Size") {
+            if (action == "Change Font Size") {
                 button.click(changeFontSize);
             }
-            else if (action == "Background Color") {
+            else if (action == "Change Background Color") {
                 button.click(changeBackgroundColor);
             }
             $('#sidebar').append(button);
@@ -380,6 +376,8 @@ $(document).ready(function(){
         });
 
         // Dynamically generate the cruise booking form
+        // <label for="guests">Number of Guests Total:</label>
+        // <input type="number" id="guests" name="guests" min="1" required><br>
         const form = `
         <form id="cruiseForm">
             <label for="destination">Destination:</label>
@@ -400,11 +398,17 @@ $(document).ready(function(){
             <label for="maxDuration">Maximum Duration (3-10 days):</label>
             <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" required><br>
 
-            <label for="guests">Number of Guests per Room (Max 2):</label>
-            <input type="number" id="guests" name="guests" min="1" max="2" required><br>
+            <label for="adults">Number of Adults Total:</label>
+            <input type="number" id="adults" name="adults" min="1" required><br>
+
+            <label for="children">Number of Children Total:</label>
+            <input type="number" id="children" name="children" min="0" required><br>
 
             <label for="infants">Number of Infants:</label>
             <input type="number" id="infants" name="infants" min="0" required><br>
+
+            <label for="rooms">Number of Rooms:</label>
+            <input type="number" id="rooms" name="rooms" min="1" required><br>
 
             <input type="submit" value="Submit">
         </form>`;
@@ -430,8 +434,13 @@ $(document).ready(function(){
             const departBetween = $('#departBetween').val();
             const minDuration = $('#minDuration').val();
             const maxDuration = $('#maxDuration').val();
-            const guests = $('#guests').val();
+            // const guests = $('#guests').val();
+            // const guests = parseInt($('#adults').val()) + parseInt($('#children').val());
+            const adults = $('#adults').val();
+            const children = $('#children').val();
             const infants = $('#infants').val();
+            const guests = parseInt(adults) + parseInt(children) + parseInt(infants);
+            const rooms = $('#rooms').val();
 
             var alertMessage = "";
             var today = new Date();
@@ -473,17 +482,14 @@ $(document).ready(function(){
             /*if(guests == ""){
                 alertMessage += "Number of guests is required.\n";
             }
-            else*/ if(guests > 2){
-                let adults = guests - infants;
-                if(adults > 2){
-                    alertMessage += "Number of guests (adults) per room cannot exceed 2.\n";
+            else*/ 
+            // Check if guests / room, rounded up, is greater than 2
+            if(Math.ceil(guests / rooms) > 2){
+                let withoutInfants = guests - infants;
+                if(Math.ceil(withoutInfants / rooms) > 2){
+                    alertMessage += "Number of guests total (without infants) cannot exceed 2 per room.\n";
                 }
             }
-
-            // check if infants is empty
-            // if(infants == ""){
-            //     alertMessage += "Number of infants is required.\n";
-            // }
 
             if(alertMessage != ""){
                 // alert("Your input has some errors:\n" + alertMessage);
@@ -491,7 +497,13 @@ $(document).ready(function(){
                 $('#output').css('color', 'red');
             } else {
                 // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
-                $('#output').html("Thank you for your submission! Here is your information:<br>" + "Destination: " + destination + "<br>Departure Date: " + departBetween + "<br>Duration: " + minDuration + " - " + maxDuration + " days<br>Guests: " + guests + "<br>Infants: " + infants);
+                $('#output').html("Thank you for your submission! Here is your information:<br>" + 
+                    "<strong>Destination:</strong> " + destination + 
+                    "<br><strong>Departure Date:</strong> " + departBetween + 
+                    "<br><strong>Duration:</strong> " + minDuration + " - " + maxDuration + 
+                    " days<br><strong>Adults:</strong> " + adults + 
+                    "<br><strong>Children:</strong> " + children +
+                    "<br><strong>Infants:</strong> " + infants);
                 $('#output').css('color', 'green');
             }
         });

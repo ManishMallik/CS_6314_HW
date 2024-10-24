@@ -393,39 +393,48 @@ function validateAndSubmitStay(event) {
     let children = parseInt(document.getElementById('children').value);
     let infants = parseInt(document.getElementById('infants').value);
 
+    var errors = "";
+
     // Validation
     if (!city || !checkIn || !checkOut || adults < 1) {
-        alert("Please fill in all required fields.");
-        return;
+        // alert("Please fill in all required fields.");
+        errors += "Please fill in all of the fields.<br>";
+        // return;
     }
 
     // Check if city is in Texas or California
     if (!isValidStayState(city)) {
-        alert("The city must be in Texas (TX) or California (CA).");
-        return;
+        // alert("The city must be in Texas (TX) or California (CA).");
+        errors += "The city must be in Texas (TX) or California (CA).<br>";
+        // return;
     }
 
     // Validate check-in and check-out dates
     if (!isValidStayDate(checkIn) || !isValidStayDate(checkOut)) {
-        alert("Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.");
-        return;
-    }
-
-    // Check if check-out date is after check-in date
-    if (new Date(checkOut) < new Date(checkIn)) {
-        alert("Check-out date must be after the check-in date.");
-        return;
+        // alert("Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.");
+        errors += "Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.<br>";
+        // return;
+    } else if (new Date(checkOut) < new Date(checkIn)) {
+        // alert("Check-out date must be after the check-in date.");
+        errors += "Check-out date must be after the check-in date.<br>";
+        // return;
     }
 
     // Validate number of guests
-    if (adults > 10 || children > 10 || infants > 5) {
-        alert("Number of adults and children cannot exceed 10 each. Infants cannot exceed 5.");
-        return;
-    }
+    // if (adults > 10 || children > 10 || infants > 5) {
+    //     // alert("Number of adults and children cannot exceed 10 each. Infants cannot exceed 5.");
+    //     errors += "Number of adults and children cannot exceed 2 per room each.<br>";
+    //     // return;
+    // }
 
     // Calculate the number of rooms needed
     let roomsNeeded = calculateRooms(adults, children);
 
+    if (errors != "") {
+        document.getElementById('stayDetails').innerHTML = "Your input has some errors:<br>" + errors;
+        document.getElementById('stayDetails').style.color = "red";
+        return;
+    }
     // Display stay details
     let stayDetails = `
         <h3>Stay Details</h3>
@@ -441,6 +450,7 @@ function validateAndSubmitStay(event) {
     `;
 
     document.getElementById('stayDetails').innerHTML = stayDetails;
+    document.getElementById('stayDetails').style.color = "green";
 }
 
 // DOM Method to load and build the cars.html page
@@ -753,6 +763,8 @@ $(document).ready(function(){
         // Dynamically generate the cruise booking form
         // <label for="guests">Number of Guests Total:</label>
         // <input type="number" id="guests" name="guests" min="1" required><br>
+        // <label for="rooms">Number of Rooms:</label>
+        // <input type="number" id="rooms" name="rooms" min="1" required><br>
         const form = `
         <form id="cruiseForm">
             <label for="destination">Destination:</label>
@@ -768,22 +780,19 @@ $(document).ready(function(){
             <input type="date" id="departBetween" name="departBetween" required><br>
 
             <label for="minDuration">Minimum Duration (3-10 days):</label>
-            <input type="number" id="minDuration" name="minDuration" min="3" max="10" required><br>
+            <input type="number" id="minDuration" name="minDuration" min="3" max="10" value="3" required><br>
 
             <label for="maxDuration">Maximum Duration (3-10 days):</label>
-            <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" required><br>
+            <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" value="10" required><br>
 
             <label for="adults">Number of Adults Total:</label>
-            <input type="number" id="adults" name="adults" min="1" required><br>
+            <input type="number" id="adults" name="adults" min="1" value="1" required><br>
 
             <label for="children">Number of Children Total:</label>
-            <input type="number" id="children" name="children" min="0" required><br>
+            <input type="number" id="children" name="children" min="0" value="0" required><br>
 
             <label for="infants">Number of Infants:</label>
-            <input type="number" id="infants" name="infants" min="0" required><br>
-
-            <label for="rooms">Number of Rooms:</label>
-            <input type="number" id="rooms" name="rooms" min="1" required><br>
+            <input type="number" id="infants" name="infants" min="0" value="0" required><br>
 
             <input type="submit" value="Submit">
         </form>`;
@@ -811,11 +820,11 @@ $(document).ready(function(){
             const maxDuration = $('#maxDuration').val();
             // const guests = $('#guests').val();
             // const guests = parseInt($('#adults').val()) + parseInt($('#children').val());
-            const adults = $('#adults').val();
-            const children = $('#children').val();
-            const infants = $('#infants').val();
-            const guests = parseInt(adults) + parseInt(children) + parseInt(infants);
-            const rooms = $('#rooms').val();
+            const adults = parseInt($('#adults').val());
+            const children = parseInt($('#children').val());
+            const infants = parseInt($('#infants').val());
+            const guests = adults + children + infants;
+            // const rooms = $('#rooms').val();
 
             var alertMessage = "";
             var today = new Date();
@@ -859,12 +868,14 @@ $(document).ready(function(){
             }
             else*/ 
             // Check if guests / room, rounded up, is greater than 2
-            if(Math.ceil(guests / rooms) > 2){
-                let withoutInfants = guests - infants;
-                if(Math.ceil(withoutInfants / rooms) > 2){
-                    alertMessage += "Number of guests total (without infants) cannot exceed 2 per room.\n";
-                }
-            }
+            // if(Math.ceil(guests / rooms) > 2){
+            //     let withoutInfants = guests - infants;
+            //     if(Math.ceil(withoutInfants / rooms) > 2){
+            //         alertMessage += "Number of guests total (without infants) cannot exceed 2 per room.\n";
+            //     }
+            // }
+
+            const rooms = calculateRooms(adults, children);
 
             if(alertMessage != ""){
                 // alert("Your input has some errors:\n" + alertMessage);
@@ -872,13 +883,14 @@ $(document).ready(function(){
                 $('#output').css('color', 'red');
             } else {
                 // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
-                $('#output').html("Thank you for your submission! Here is your information:<br>" + 
+                $('#output').html("<h3>Thank you for your submission! Here is your information:</h3><br>" + 
                     "<strong>Destination:</strong> " + destination + 
                     "<br><strong>Departure Date:</strong> " + departBetween + 
-                    "<br><strong>Duration:</strong> " + minDuration + " - " + maxDuration + 
+                    "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 
                     " days<br><strong>Adults:</strong> " + adults + 
                     "<br><strong>Children:</strong> " + children +
-                    "<br><strong>Infants:</strong> " + infants);
+                    "<br><strong>Infants:</strong> " + infants +
+                    "<br><strong>Rooms Needed:</strong> " + rooms);
                 $('#output').css('color', 'green');
             }
         });

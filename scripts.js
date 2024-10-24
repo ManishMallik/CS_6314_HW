@@ -579,19 +579,94 @@ document.addEventListener('DOMContentLoaded', () => {
         const carForm = document.getElementById('carForm');
         const output = document.getElementById('output');
 
+        // Create city label and input field
+        const cityLabel = document.createElement('label');
+        cityLabel.setAttribute('for', 'city');
+        cityLabel.textContent = "City (provide the state as a 2-letter abbreviation):";
+        const cityInput = document.createElement('input');
+        cityInput.setAttribute('type', 'text');
+        cityInput.setAttribute('id', 'city');
+        cityInput.setAttribute('name', 'city');
+        cityInput.setAttribute('placeholder', 'Format: Dallas, TX');
+        cityInput.setAttribute('required', true);
+
+        // Create car type label and select field
+        const carTypeLabel = document.createElement('label');
+        carTypeLabel.setAttribute('for', 'carType');
+        carTypeLabel.textContent = "Type of Car:";
+        const carTypeSelect = document.createElement('select');
+        carTypeSelect.setAttribute('id', 'carType');
+        carTypeSelect.setAttribute('name', 'car');
+        carTypeSelect.setAttribute('required', true);
+
+        // Add options to car type select
+        const carTypes = ["Select Car Type", "Economy", "SUV", "Compact", "Midsize"];
+        carTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type == "Select Car Type" ? "" : type;
+            option.textContent = type;
+            carTypeSelect.appendChild(option);
+        });
+
+        // Create check-in and check-out date inputs
+        const checkInLabel = document.createElement('label');
+        checkInLabel.setAttribute('for', 'checkIn');
+        checkInLabel.textContent = "Check In Date:";
+        const checkInInput = document.createElement('input');
+        checkInInput.setAttribute('type', 'date');
+        checkInInput.setAttribute('id', 'checkIn');
+        checkInInput.setAttribute('name', 'checkIn');
+        checkInInput.setAttribute('required', true);
+
+        const checkOutLabel = document.createElement('label');
+        checkOutLabel.setAttribute('for', 'checkOut');
+        checkOutLabel.textContent = "Check Out Date:";
+        const checkOutInput = document.createElement('input');
+        checkOutInput.setAttribute('type', 'date');
+        checkOutInput.setAttribute('id', 'checkOut');
+        checkOutInput.setAttribute('name', 'checkOut');
+        checkOutInput.setAttribute('required', true);
+
+        // Append elements to the form
+        carForm.appendChild(cityLabel);
+        carForm.appendChild(document.createElement('br'));
+        carForm.appendChild(cityInput);
+        carForm.appendChild(document.createElement('br'));
+
+        carForm.appendChild(carTypeLabel);
+        carForm.appendChild(document.createElement('br'));
+        carForm.appendChild(carTypeSelect);
+        carForm.appendChild(document.createElement('br'));
+
+        carForm.appendChild(checkInLabel);
+        carForm.appendChild(document.createElement('br'));
+        carForm.appendChild(checkInInput);
+        carForm.appendChild(document.createElement('br'));
+
+        carForm.appendChild(checkOutLabel);
+        carForm.appendChild(document.createElement('br'));
+        carForm.appendChild(checkOutInput);
+        carForm.appendChild(document.createElement('br'));
+
+        // Add submit button
+        const submitButton = document.createElement('input');
+        submitButton.setAttribute('type', 'submit');
+        submitButton.setAttribute('value', 'Submit');
+        carForm.appendChild(submitButton);
+
         carForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
             // Retrieve user input values
             const city = document.getElementById('city').value;
-            const carType = document.getElementById('carType').value.toLowerCase();
+            const carType = document.getElementById('carType').value;
             const checkIn = new Date(document.getElementById('checkIn').value);
             const checkOut = new Date(document.getElementById('checkOut').value);
 
             // Validation rules
             // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
             const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
-            const validCarTypes = ["economy", "suv", "compact", "midsize"];
+            const validCarTypes = ["Economy", "SUV", "Compact", "Midsize"];
             const minDate = new Date("2024-09-01");
             const maxDate = new Date("2024-12-01");
 
@@ -603,7 +678,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (!cityRegex.test(city)) {
                 errors.push("City must be alphabetic (can contain a space or dash), must end with a comma followed by a space and 2-letter state code that is capitalized.");
             } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
-                errors.push("City must end with a 2-letter state code of TX or CA.");
+                errors.push("City must either be from Texas or California.");
+            }
+
+            // Validate car type
+            if (!validCarTypes.includes(carType)) {
+                errors.push("Car type must be economy, SUV, compact, or midsize.");
             }
 
             // Validate check-in and check-out dates
@@ -617,11 +697,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 errors.push("Check-in date must be before the check-out date.");
             }
 
-            // Validate car type
-            if (!validCarTypes.includes(carType)) {
-                errors.push("Car type must be economy, SUV, compact, or midsize.");
-            }
-
             // Output validation results or form data
             if (errors.length > 0) {
                 output.innerHTML = "Your input has some errors:<br>" + errors.join('<br>');
@@ -629,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 output.innerHTML = `
                     <strong>City:</strong> ${city} <br>
-                    <strong>Car Type:</strong> ${carType.charAt(0).toUpperCase() + carType.slice(1)} <br>
+                    <strong>Car Type:</strong> ${carType} <br>
                     <strong>Check In:</strong> ${checkIn.toLocaleDateString()} <br>
                     <strong>Check Out:</strong> ${checkOut.toLocaleDateString()} <br>
                 `;

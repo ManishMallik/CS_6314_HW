@@ -364,8 +364,8 @@ function validateAndSubmit(event) {
 
 // Helper function to check if the city is in Texas or California
 function isValidStayState(city) {
-    const lowerCity = city.toLowerCase();
-    return lowerCity.endsWith('tx') || lowerCity.endsWith('ca');
+    const lowerCity = city;
+    return lowerCity.endsWith('TX') || lowerCity.endsWith('CA');
 }
 
 // Helper function to check if the date is between Sep 1, 2024, and Dec 1, 2024
@@ -429,15 +429,15 @@ function validateAndSubmitStay(event) {
     // Display stay details
     let stayDetails = `
         <h3>Stay Details</h3>
-        <ul>
-            <li><strong>City:</strong> ${city}</li><br>
-            <li><strong>Check-In Date:</strong> ${checkIn}</li><br>
-            <li><strong>Check-Out Date:</strong> ${checkOut}</li><br>
-            <li><strong>Adults:</strong> ${adults}</li><br>
-            <li><strong>Children:</strong> ${children}</li><br>
-            <li><strong>Infants:</strong> ${infants}</li><br>
-            <li><strong>Rooms Needed:</strong> ${roomsNeeded}</li>
-        </ul>
+        
+            <strong>City:</strong> ${city}<br>
+            <strong>Check-In Date:</strong> ${checkIn}<br>
+            <strong>Check-Out Date:</strong> ${checkOut}<br>
+            <strong>Adults:</strong> ${adults}<br>
+            <strong>Children:</strong> ${children}<br>
+            <strong>Infants:</strong> ${infants}<br>
+            <strong>Rooms Needed:</strong> ${roomsNeeded}
+        
     `;
 
     document.getElementById('stayDetails').innerHTML = stayDetails;
@@ -488,85 +488,85 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(updateFooter, 1000);
     }
 
-    // if (window.location.pathname.includes('flights.html')) {
-    //     // Dynamically create navigation links
-    //     const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-    //     const navList = document.getElementById('nav-list');
+    if (window.location.pathname.includes('flights.html')) {
+        // Dynamically create navigation links
+        // const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+        // const navList = document.getElementById('nav-list');
 
-    //     pages.forEach(page => {
-    //         const li = document.createElement('li');
-    //         const a = document.createElement('a');
-    //         if(page == "Home"){
-    //             a.href = "index.html";
-    //         } else {
-    //             a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-    //         }
-    //         a.textContent = page;
-    //         li.appendChild(a);
-    //         navList.appendChild(li);
-    //     });
+        // pages.forEach(page => {
+        //     const li = document.createElement('li');
+        //     const a = document.createElement('a');
+        //     if(page == "Home"){
+        //         a.href = "index.html";
+        //     } else {
+        //         a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+        //     }
+        //     a.textContent = page;
+        //     li.appendChild(a);
+        //     navList.appendChild(li);
+        // });
 
-    //     // Add actions dynamically
-    //     const actions = ["Change Font Size", "Change Background Color"];
-    //     const sidebar = document.getElementById('sidebar');
-    //     const sidebarHeader = document.createElement('h2');
-    //     sidebarHeader.textContent = "Change font size and/or background color of the webpage";
-    //     sidebar.appendChild(sidebarHeader);
+        // // Add actions dynamically
+        // const actions = ["Change Font Size", "Change Background Color"];
+        // const sidebar = document.getElementById('sidebar');
+        // const sidebarHeader = document.createElement('h2');
+        // sidebarHeader.textContent = "Change font size and/or background color of the webpage";
+        // sidebar.appendChild(sidebarHeader);
 
-    //     actions.forEach(action => {
-    //         const button = document.createElement('button');
-    //         button.textContent = action;
-    //         if (action == "Change Font Size") {
-    //             button.addEventListener('click', changeFontSize);
-    //         }
-    //         else if (action == "Change Background Color") {
-    //             button.addEventListener('click', changeBackgroundColor);
-    //         }
-    //         sidebar.appendChild(button);
-    //         sidebar.appendChild(document.createElement('br'));
-    //     });
-    // }
+        // actions.forEach(action => {
+        //     const button = document.createElement('button');
+        //     button.textContent = action;
+        //     if (action == "Change Font Size") {
+        //         button.addEventListener('click', changeFontSize);
+        //     }
+        //     else if (action == "Change Background Color") {
+        //         button.addEventListener('click', changeBackgroundColor);
+        //     }
+        //     sidebar.appendChild(button);
+        //     sidebar.appendChild(document.createElement('br'));
+        // });
+    }
 
-    // if (window.location.pathname.includes('stays.html')) {
-    //     const form = document.getElementById('stayForm');
-    //     form.addEventListener('submit', validateAndSubmitStay);
-    //     // Dynamically create navigation links
-    //     const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-    //     const navList = document.getElementById('nav-list');
+    if (window.location.pathname.includes('stays.html')) {
+        const form = document.getElementById('stayForm');
+        form.addEventListener('submit', validateAndSubmitStay);
+        // Dynamically create navigation links
+        // const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+        // const navList = document.getElementById('nav-list');
 
-    //     pages.forEach(page => {
-    //         const li = document.createElement('li');
-    //         const a = document.createElement('a');
-    //         if(page == "Home"){
-    //             a.href = "index.html";
-    //         } else {
-    //             a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-    //         }
-    //         a.textContent = page;
-    //         li.appendChild(a);
-    //         navList.appendChild(li);
-    //     });
+        // pages.forEach(page => {
+        //     const li = document.createElement('li');
+        //     const a = document.createElement('a');
+        //     if(page == "Home"){
+        //         a.href = "index.html";
+        //     } else {
+        //         a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+        //     }
+        //     a.textContent = page;
+        //     li.appendChild(a);
+        //     navList.appendChild(li);
+        // });
 
-    //     // Add actions dynamically
-    //     const actions = ["Change Font Size", "Change Background Color"];
-    //     const sidebar = document.getElementById('sidebar');
-    //     const sidebarHeader = document.createElement('h2');
-    //     sidebarHeader.textContent = "Change font size and/or background color of the webpage";
-    //     sidebar.appendChild(sidebarHeader);
+        // // Add actions dynamically
+        // const actions = ["Change Font Size", "Change Background Color"];
+        // const sidebar = document.getElementById('sidebar');
+        // const sidebarHeader = document.createElement('h2');
+        // sidebarHeader.textContent = "Change font size and/or background color of the webpage";
+        // sidebar.appendChild(sidebarHeader);
 
-    //     actions.forEach(action => {
-    //         const button = document.createElement('button');
-    //         button.textContent = action;
-    //         if (action == "Change Font Size") {
-    //             button.addEventListener('click', changeFontSize);
-    //         }
-    //         else if (action == "Change Background Color") {
-    //             button.addEventListener('click', changeBackgroundColor);
-    //         }
-    //         sidebar.appendChild(button);
-    //         sidebar.appendChild(document.createElement('br'));
-    //     });
-    // }
+        // actions.forEach(action => {
+        //     const button = document.createElement('button');
+        //     button.textContent = action;
+        //     if (action == "Change Font Size") {
+        //         button.addEventListener('click', changeFontSize);
+        //     }
+        //     else if (action == "Change Background Color") {
+        //         button.addEventListener('click', changeBackgroundColor);
+        //     }
+        //     sidebar.appendChild(button);
+        //     sidebar.appendChild(document.createElement('br'));
+        // });
+    }
 
     // Apply this only to the cars.html page
     if (window.location.pathname.includes('cars.html')) {

@@ -449,16 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add footer text dynamically
     if(!window.location.pathname.includes('cruises.html')){
-        updateFooter();
-        setInterval(updateFooter, 1000);
-    }
-
-    // Apply this only to the cars.html page
-    if (window.location.pathname.includes('cars.html')) {
-
-        const header = document.getElementById('header-title');
-        header.textContent = "Cars";
-
         // Dynamically create navigation links
         const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
         const navList = document.getElementById('nav-list');
@@ -476,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navList.appendChild(li);
         });
 
-        // Add popular destinations dynamically
+        // Add actions dynamically
         const actions = ["Change Font Size", "Change Background Color"];
         const sidebar = document.getElementById('sidebar');
         const sidebarHeader = document.createElement('h2');
@@ -495,6 +485,95 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.appendChild(button);
             sidebar.appendChild(document.createElement('br'));
         });
+        updateFooter();
+        setInterval(updateFooter, 1000);
+    }
+
+    // if (window.location.pathname.includes('flights.html')) {
+    //     // Dynamically create navigation links
+    //     const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+    //     const navList = document.getElementById('nav-list');
+
+    //     pages.forEach(page => {
+    //         const li = document.createElement('li');
+    //         const a = document.createElement('a');
+    //         if(page == "Home"){
+    //             a.href = "index.html";
+    //         } else {
+    //             a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+    //         }
+    //         a.textContent = page;
+    //         li.appendChild(a);
+    //         navList.appendChild(li);
+    //     });
+
+    //     // Add actions dynamically
+    //     const actions = ["Change Font Size", "Change Background Color"];
+    //     const sidebar = document.getElementById('sidebar');
+    //     const sidebarHeader = document.createElement('h2');
+    //     sidebarHeader.textContent = "Change font size and/or background color of the webpage";
+    //     sidebar.appendChild(sidebarHeader);
+
+    //     actions.forEach(action => {
+    //         const button = document.createElement('button');
+    //         button.textContent = action;
+    //         if (action == "Change Font Size") {
+    //             button.addEventListener('click', changeFontSize);
+    //         }
+    //         else if (action == "Change Background Color") {
+    //             button.addEventListener('click', changeBackgroundColor);
+    //         }
+    //         sidebar.appendChild(button);
+    //         sidebar.appendChild(document.createElement('br'));
+    //     });
+    // }
+
+    // if (window.location.pathname.includes('stays.html')) {
+    //     const form = document.getElementById('stayForm');
+    //     form.addEventListener('submit', validateAndSubmitStay);
+    //     // Dynamically create navigation links
+    //     const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+    //     const navList = document.getElementById('nav-list');
+
+    //     pages.forEach(page => {
+    //         const li = document.createElement('li');
+    //         const a = document.createElement('a');
+    //         if(page == "Home"){
+    //             a.href = "index.html";
+    //         } else {
+    //             a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+    //         }
+    //         a.textContent = page;
+    //         li.appendChild(a);
+    //         navList.appendChild(li);
+    //     });
+
+    //     // Add actions dynamically
+    //     const actions = ["Change Font Size", "Change Background Color"];
+    //     const sidebar = document.getElementById('sidebar');
+    //     const sidebarHeader = document.createElement('h2');
+    //     sidebarHeader.textContent = "Change font size and/or background color of the webpage";
+    //     sidebar.appendChild(sidebarHeader);
+
+    //     actions.forEach(action => {
+    //         const button = document.createElement('button');
+    //         button.textContent = action;
+    //         if (action == "Change Font Size") {
+    //             button.addEventListener('click', changeFontSize);
+    //         }
+    //         else if (action == "Change Background Color") {
+    //             button.addEventListener('click', changeBackgroundColor);
+    //         }
+    //         sidebar.appendChild(button);
+    //         sidebar.appendChild(document.createElement('br'));
+    //     });
+    // }
+
+    // Apply this only to the cars.html page
+    if (window.location.pathname.includes('cars.html')) {
+
+        const header = document.getElementById('header-title');
+        header.textContent = "Cars";
 
         // Validate and handle form submission
         const carForm = document.getElementById('carForm');
@@ -729,71 +808,5 @@ $(document).ready(function(){
                 $('#output').css('color', 'green');
             }
         });
-    }
-
-    if (window.location.pathname.includes('flights.html')) {
-        // Dynamically create navigation links
-        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        const navList = document.getElementById('nav-list');
-
-        pages.forEach(page => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-            a.textContent = page;
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-
-        // Add popular destinations dynamically
-        const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
-        const sidebar = document.getElementById('sidebar');
-        const sidebarHeader = document.createElement('h2');
-        sidebarHeader.textContent = "Popular Destinations";
-        sidebar.appendChild(sidebarHeader);
-
-        destinations.forEach(destination => {
-            const p = document.createElement('p');
-            p.textContent = destination;
-            sidebar.appendChild(p);
-        });
-
-        // Add footer text dynamically
-        const footerText = document.getElementById('footer-text');
-        footerText.textContent = "© 2024 Traveling Inc. All rights reserved.";
-    }
-
-    if (window.location.pathname.includes('stays.html')) {
-        const form = document.getElementById('stayForm');
-        form.addEventListener('submit', validateAndSubmitStay);
-        // Dynamically create navigation links
-        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        const navList = document.getElementById('nav-list');
-
-        pages.forEach(page => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-            a.textContent = page;
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
-
-        // Add popular destinations dynamically
-        const destinations = ["Dallas, TX", "Los Angeles, CA", "New York, NY"];
-        const sidebar = document.getElementById('sidebar');
-        const sidebarHeader = document.createElement('h2');
-        sidebarHeader.textContent = "Popular Destinations";
-        sidebar.appendChild(sidebarHeader);
-
-        destinations.forEach(destination => {
-            const p = document.createElement('p');
-            p.textContent = destination;
-            sidebar.appendChild(p);
-        });
-
-        // Add footer text dynamically
-        const footerText = document.getElementById('footer-text');
-        footerText.textContent = "© 2024 Traveling Inc. All rights reserved.";
     }
 });

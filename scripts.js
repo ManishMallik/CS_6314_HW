@@ -284,12 +284,12 @@ function isValidState(location) {
 
 // Function to validate if a date is between Sep 1, 2024, and Dec 1, 2024
 function isValidDate(departure) {
-    const date = new Date(departure);
-    const startDate = new Date("2024-09-01");
-    const endDate = new Date("2024-12-01");
+    // Regex pattern to match dates between Sep 1, 2024 and Dec 1, 2024
+    const dateRegex = /^(2024)-(09-(0[1-9]|[1-2][0-9]|30)|10-(0[1-9]|[1-2][0-9]|3[0-1])|11-(0[1-9]|[1-2][0-9]|30)|12-01)$/;
 
-    return date >= startDate && date <= endDate;
+    return dateRegex.test(departure);
 }
+
 
 function isValidArrival(departure, arrival) {
     const dep = new Date(departure);
@@ -303,6 +303,20 @@ function isValidArrival(departure, arrival) {
 function isValidCity(city) {
     return validCities.includes(city);
 }
+
+function isValidPassengerCount(adults, children, infants) {
+    const adultregex = /^[1-4]$/;
+    const passengerRegex = /^[0-4]$/;
+
+    // Check if adults, children, or infants exceed the allowed range (0-4)
+    if (!adultregex.test(adults) || !passengerRegex.test(children) || !passengerRegex.test(infants)) {
+        alert("The number of passengers in each category (adults, children, infants) must be between 0 and 4.");
+        return false;
+    }
+    return true;
+}
+
+
 // Validate user inputs and display entered information
 function validateAndSubmit(event) {
     event.preventDefault(); // Prevent form submission
@@ -334,9 +348,7 @@ function validateAndSubmit(event) {
         return;
     }
 
-    // Passenger count validation (no more than 4 per category)
-    if (adults > 4 || children > 4 || infants > 4) {
-        alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
+    if (!isValidPassengerCount(adults, children, infants)){
         return;
     }
 
@@ -418,15 +430,9 @@ function validateAndSubmitStay(event) {
         return;
     }
 
-    // Validate number of guests
-    if (adults > 10 || children > 10 || infants > 5) {
-        alert("Number of adults and children cannot exceed 10 each. Infants cannot exceed 5.");
-        return;
-    }
-
     // Calculate the number of rooms needed
     let roomsNeeded = calculateRooms(adults, children);
-
+    
     // Display stay details
     let stayDetails = `
         <h3>Stay Details</h3>

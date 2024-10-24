@@ -1,0 +1,79 @@
+<!-- . . In the flight webpage, the user should be able to choose the type of trip. 
+If the user chooses one way trip, the user should be able to enter the origin, destination, and departure date. 
+If the user chooses a round trip, the user should be able to enter the origin, destination, departure date for departing flight and arriving flight. 
+In the flight webpage, there should be a passenger icon. 
+    If the user clicks on the passenger icon, a form should be displayed.
+        In this form, the user also should be able to enter the number of passengers for each category (adults, children, or infants). 
+When the user clicks search button, after validating the user inputs, you should display all the above information entered by the user. 
+If any user input is not valid, you should inform the user.   -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>Traveling</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">Flights</h1>
+    </header>
+    <nav>
+        <ul id="nav-list"></ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-content">
+            <form id="flightForm" action="flights.php" method="post">
+                <label for="type">Type of trip</label>
+                <select id="tripdropdown">
+                    <option value="one-way">One Way</option>
+                    <option value="round-trip">Round Trip</option>
+                </select>
+
+                <button type="button" onclick="confirmTripType()">Confirm Trip Type</button>
+
+                <label id="origin-label" for="origin" style="display: none;">Origin:</label><br>
+                <input type="text" id="origin" name="origin" style="display: none;" required><br>
+
+                <label id="destination-label"  for="destination" style="display: none;">Destination:</label><br>
+                <input type="text" id="destination" name="destination" style="display: none;" required><br>
+
+                <label id="departure-label" for="departure" style="display: none;">Departure Date:</label><br>
+                <input type="date" id="departure" name="departure" style="display: none;" required><br>
+
+                <label id="arriving-label" for="arriving" style="display: none;">Return Date (for Round Trip):</label><br>
+                <input type="date" id="arriving" name="arriving" style="display: none;"><br>
+
+                <!-- Passenger Icon -->
+                <div id="passenger-icon" style="cursor: pointer;">
+                    <img src="passenger-icon.png" alt="Passenger Icon" width="30" height="30" onclick="showPassengerForm()">
+                    <label>Passengers</label>
+                </div>
+
+                <!-- Passenger Form -->
+                <div id="passengerForm" style="display: none;">
+                    <label for="adults">Adults:</label>
+                    <input type="number" id="adults" name="adults" min="1" value="1" required><br>
+
+                    <label for="children">Children:</label>
+                    <input type="number" id="children" name="children" min="0" value="0"><br>
+
+                    <label for="infants">Infants:</label>
+                    <input type="number" id="infants" name="infants" min="0" value="0"><br>
+                </div>
+
+                <input type="submit" value="Search" id="searchButton" style="display: none;" onclick="validateAndSubmit(event)">
+
+                <div id="tripDetails" style="margin-top: 20px;"></div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p id="footer-text"></p>
+    </footer>
+</body>
+</html>

@@ -213,7 +213,7 @@ function contactSubmit(){
         document.getElementById("contact-output").style.color = "red";
     } else {
         // alert("Thank you for your submission! Here is your information:\n" + "First Name: " + fname + "\nLast Name: " + lname + "\nPhone: " + phone + "\nEmail: " + email);
-        document.getElementById("contact-output").innerHTML = "Thank you for your submission! Here is your information:<br>" + 
+        document.getElementById("contact-output").innerHTML = "<h3>Thank you for your submission! Here are your submission details:</h3>" + 
         "<strong>First Name:</strong> " + fname + 
         "<br><strong>Last Name:</strong> " + lname + 
         "<br><strong>Phone:</strong> " + phone + 
@@ -364,7 +364,7 @@ function validateAndSubmit(event) {
 
     if (!isValidCity(origin) || !isValidCity(destination)) {
         // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters as it does not make sense for a city name to be only 1 letter.<br>";
+        errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters (starting with a letter) as it does not make sense for a city name to be only 1 letter/character.<br>";
         // return;
     }
 
@@ -401,7 +401,7 @@ function validateAndSubmit(event) {
 
     // Display entered information
     let tripDetails = `
-        <h3>Trip Details</h3>
+        <h3>Trip Details:</h3>
         <strong>Origin: </strong> ${origin}<br>
             <strong>Destination: </strong> ${destination}<br>
             <strong>Departure Date: </strong> ${departure}<br>
@@ -491,7 +491,7 @@ function validateAndSubmitStay(event) {
     }
     // Display stay details
     let stayDetails = `
-        <h3>Stay Details</h3>
+        <h3>Stay Details:</h3>
         
             <strong>City:</strong> ${city}<br>
             <strong>Check-In Date:</strong> ${checkIn}<br>
@@ -768,6 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 output.style.color = "red";
             } else {
                 output.innerHTML = `
+                    <h3>Car Details:</h3>
                     <strong>City:</strong> ${city} <br>
                     <strong>Car Type:</strong> ${carType} <br>
                     <strong>Check In:</strong> ${checkIn.toLocaleDateString()} <br>
@@ -939,7 +940,7 @@ $(document).ready(function(){
                 $('#output').css('color', 'red');
             } else {
                 // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
-                $('#output').html("<h3>Thank you for your submission! Here is your information:</h3>" + 
+                $('#output').html("<h3>Cruise Details:</h3>" + 
                     "<strong>Destination:</strong> " + destination + 
                     "<br><strong>Departure Date:</strong> " + departBetween + 
                     "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 

@@ -102,8 +102,10 @@ function changeBackgroundColor() {
     var footerColor = window.getComputedStyle(footer).backgroundColor;
     if (footerColor == "rgb(0, 255, 0)") { // Green
         footer.style.backgroundColor = "cyan";
+        footer.style.color = "black";
     } else {
         footer.style.backgroundColor = "rgb(0, 255, 0)";
+        footer.style.color = "white";
     }
 }
 

@@ -253,8 +253,8 @@ function isValidArrival(departure, arrival) {
 
 // Function to validate if city is in valid format
 function isValidCity(city) {
-    // const cityRegex = /^[A-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
-    // const cityRegex = /^[A-Z][a-zA-Z\s-]*[a-zA-Z],\s[A-Z]{2}$/;
+    
+    // City name must be at least 2 characters long, can have periods, apostrophes, hypens, and spaces, start with a capital letter or number, and end with a letter or number before the comma, followed by a space and 2-letter state code.
     const cityRegex = /^[A-Z0-9][a-zA-Z0-9\s.'-]*[a-zA-Z0-9],\s[A-Z]{2}$/;
     return cityRegex.test(city);
 }
@@ -302,9 +302,6 @@ function validateAndSubmit(event) {
     }
 
     if (!isValidCity(origin) || !isValidCity(destination)) {
-        // errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters (starting with a capital letter and ending with a letter) as it does not make sense for a city name to be only 1 letter/character.<br>";
-        // errors += "Check if city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), has first character be an uppercase letter or number, last character be a number or a letter of any case, and ends with a comma followed by a space and 2-letter state code that is capitalized."
-        // errors += "Make sure the city names (the name before the comma) for both Origin and Destination are alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, last character be a number or a letter of any case, and ends with a comma followed by a space and 2-letter state code that is capitalized.<br>";
         errors += "Make sure the city name (the name before the comma) for both Origin and Destination are alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, has last character be a number or a letter of any case, and is followed by a comma, one space character, and 2-letter state code that is capitalized.<br>";
     }
     // Origin and destination validation (must be a city in Texas or California)
@@ -317,7 +314,7 @@ function validateAndSubmit(event) {
     }
 
     if (document.getElementById('tripdropdown').value === "round-trip" && (!arrival || !isValidArrival(departure, arrival))) {
-        errors += "Please provide a valid return date for a round trip.<br>";
+        errors += "Please provide a valid return date for a round trip. Make sure it is a date after the departure date.<br>";
     }
 
     if (errors != "") {
@@ -432,10 +429,8 @@ function validateAndSubmitStay(event) {
     // Check if city is in the correct format and is trimmed
     let trimmedCity = isValidStayCityPt1(city);
     if (trimmedCity == "invalid") {
-        // errors += "Please enter the city in the correct format as shown in the example. Make sure first letter of city is capitalized, there is one comma followed by a space, and the input ends with 2 uppercase letters.<br>";
         errors += "There can only be one comma, and make sure that comma is followed by a space and 2-letter state code that is capitalized.<br>"
     } else if(!isValidStayCityPt2(trimmedCity))
-        // errors += "Make sure the city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, last character be a number or a letter of any case, and ends with one comma followed by a space and 2-letter state code that is capitalized. <br>";
         errors += "Make sure the city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, has last character be a number or a letter of any case, and is followed by a comma, one space character, and 2-letter state code that is capitalized.<br>";
     else {
         city = trimmedCity;
@@ -448,7 +443,7 @@ function validateAndSubmitStay(event) {
     // Validate check-in and check-out dates
     if (!isValidStayDate(checkIn) || !isValidStayDate(checkOut)) {
         errors += "Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.<br>";
-    } else if (new Date(checkOut) < new Date(checkIn)) {
+    } else if (new Date(checkOut) <= new Date(checkIn)) {
         errors += "Check-out date must be after the check-in date.<br>";
     }
 
@@ -626,8 +621,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validation rules
             // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
-            // const cityRegex = /^[A-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
-            // const cityRegex = /^[A-Z][a-zA-Z\s-]*[a-zA-Z],\s[A-Z]{2}$/;
             const cityRegex = /^[A-Z0-9][a-zA-Z0-9\s.'-]*[a-zA-Z0-9],\s[A-Z]{2}$/;
             const validCarTypes = ["Economy", "SUV", "Compact", "Midsize"];
             const minDate = new Date("2024-09-01");
@@ -639,8 +632,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (city.length == 0) {
                 errors.push("City is required.");
             } else if (!cityRegex.test(city)) {
-                // errors.push("Check if city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), has first character be an uppercase letter or number, last character be a number or a letter of any case, and ends with a comma followed by a space and 2-letter state code that is capitalized.");
-                // errors.push("Make sure the city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, last character be a number or a letter of any case, and ends with a comma followed by a space and 2-letter state code that is capitalized.");
                 errors.push("Make sure the city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, has last character be a number or a letter of any case, and is followed by a comma, one space character, and 2-letter state code that is capitalized.");
             } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
                 errors.push("City must either be from Texas (TX) or California (CA).");

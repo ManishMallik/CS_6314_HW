@@ -112,7 +112,7 @@ function updateFooter() {
     // display current local date and time in the footer. Make sure time is updated every minute
     var today = new Date();
     const dateTime = today.toLocaleString();
-    footerText.textContent = dateTime;
+    footerText.innerHTML = dateTime + "<br>Manish Mallik<br>mkm200004<br>Sameer Islam<br>sdi200000<br>Section 002";
 }
 
 function updateFooterJQuery() {
@@ -120,7 +120,7 @@ function updateFooterJQuery() {
     // display current local date and time in the footer. Make sure time is updated every minute
     var today = new Date();
     const dateTime = today.toLocaleString();
-    footerText.text(dateTime);
+    footerText.html(dateTime + "<br>Manish Mallik<br>mkm200004<br>Sameer Islam<br>sdi200000<br>Section 002");
 }
 
 function contactSubmit(){

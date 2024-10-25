@@ -509,41 +509,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add footer text dynamically
     if(!window.location.pathname.includes('cruises.html')){
         // Dynamically create navigation links
-        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        const navList = document.getElementById('nav-list');
+        if(!window.location.pathname.includes('index.html') && !window.location.pathname.includes('contact-us.html')){
+            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+            const navList = document.getElementById('nav-list');
 
-        pages.forEach(page => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            if(page == "Home"){
-                a.href = "index.html";
-            } else {
-                a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-            }
-            a.textContent = page;
-            li.appendChild(a);
-            navList.appendChild(li);
-        });
+            pages.forEach(page => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                if(page == "Home"){
+                    a.href = "index.html";
+                } else {
+                    a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
+                }
+                a.textContent = page;
+                li.appendChild(a);
+                navList.appendChild(li);
+            });
 
-        // Add actions dynamically
-        const actions = ["Change Font Size", "Change Background Color"];
-        const sidebar = document.getElementById('sidebar');
-        const sidebarHeader = document.createElement('h2');
-        sidebarHeader.textContent = "Change font size and/or background color of the webpage";
-        sidebar.appendChild(sidebarHeader);
+            // Add actions dynamically
+            const actions = ["Change Font Size", "Change Background Color"];
+            const sidebar = document.getElementById('sidebar');
+            const sidebarHeader = document.createElement('h2');
+            sidebarHeader.textContent = "Change font size and/or background color of the webpage";
+            sidebar.appendChild(sidebarHeader);
 
-        actions.forEach(action => {
-            const button = document.createElement('button');
-            button.textContent = action;
-            if (action == "Change Font Size") {
-                button.addEventListener('click', changeFontSize);
-            }
-            else if (action == "Change Background Color") {
-                button.addEventListener('click', changeBackgroundColor);
-            }
-            sidebar.appendChild(button);
-            sidebar.appendChild(document.createElement('br'));
-        });
+            actions.forEach(action => {
+                const button = document.createElement('button');
+                button.textContent = action;
+                if (action == "Change Font Size") {
+                    button.addEventListener('click', changeFontSize);
+                }
+                else if (action == "Change Background Color") {
+                    button.addEventListener('click', changeBackgroundColor);
+                }
+                sidebar.appendChild(button);
+                sidebar.appendChild(document.createElement('br'));
+            });
+        }
         updateFooter();
         setInterval(updateFooter, 1000);
     }

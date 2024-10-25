@@ -868,8 +868,8 @@ $(document).ready(function(){
 
             const destination = $('#destination').val();
             const departBetween = $('#departBetween').val();
-            const minDuration = $('#minDuration').val();
-            const maxDuration = $('#maxDuration').val();
+            const minDuration = parseInt($('#minDuration').val());
+            const maxDuration = parseInt($('#maxDuration').val());
             // const guests = $('#guests').val();
             // const guests = parseInt($('#adults').val()) + parseInt($('#children').val());
             const adults = parseInt($('#adults').val());

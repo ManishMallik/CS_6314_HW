@@ -257,6 +257,8 @@ function confirmTripType() {
         departureLabel.style.display = "block";
         departure.style.display = "block";
         searchButton.style.display = "block"; 
+
+        arrivalLabel.value = ""; // Hide arrival date for one-way
     } else if (selectedValue === "round-trip") {
         originLabel.style.display = "block";
         origin.style.display = "block";
@@ -360,14 +362,14 @@ function validateAndSubmit(event) {
 
     if (!isValidCity(origin) || !isValidCity(destination)) {
         // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        errors += "Make sure you enter the cities in the proper format.<br>";
+        errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters as it does not make sense for a city name to be only 1 letter.<br>";
         // return;
     }
 
     // Origin and destination validation (must be a city in Texas or California)
     if (!isValidState(origin) || !isValidState(destination)) {
         // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        errors += "Origin and destination must be cities in Texas or California.<br>";
+        errors += "Origin and destination must be cities in Texas (TX) or California (CA).<br>";
         // return;
     }
 
@@ -401,7 +403,7 @@ function validateAndSubmit(event) {
         <strong>Origin: </strong> ${origin}<br>
             <strong>Destination: </strong> ${destination}<br>
             <strong>Departure Date: </strong> ${departure}<br>
-            ${arrival ? `<strong>Return Date:</strong> ${arrival}` : ""}<br>
+            ${arrival ? `<strong>Return Date:</strong> ${arrival}<br>` : ""}
             <strong>Adults:</strong> ${adults}<br>
             <strong>Children:</strong> ${children}<br>
             <strong>Infants:</strong> ${infants}<br>
@@ -643,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create city label and input field
         const cityLabel = document.createElement('label');
         cityLabel.setAttribute('for', 'city');
-        cityLabel.textContent = "City (provide the state as a 2-letter abbreviation):";
+        cityLabel.textContent = "City (make sure to follow the format as shown in the below example):";
         const cityInput = document.createElement('input');
         cityInput.setAttribute('type', 'text');
         cityInput.setAttribute('id', 'city');
@@ -739,7 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (!cityRegex.test(city)) {
                 errors.push("City must be alphabetic (can contain a space or dash), must end with a comma followed by a space and 2-letter state code that is capitalized.");
             } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
-                errors.push("City must either be from Texas or California.");
+                errors.push("City must either be from Texas (TX) or California (CA).");
             }
 
             // Validate car type

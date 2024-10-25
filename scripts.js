@@ -10,53 +10,6 @@ function changeFontSize() {
     }
 }
 
-// function changeBackgroundColor() {
-//     // //Change background color back and forth
-//     var body = document.getElementsByTagName('body')[0];
-//     var bodyColor = body.style.backgroundColor;
-//     if (bodyColor == "yellow") {
-//         body.style.backgroundColor = "white";
-//     }
-//     else {
-//         body.style.backgroundColor = "yellow";
-//     }
-
-//     // Get color of header
-//     var header = document.getElementsByTagName('header')[0];
-//     var headerColor = header.style.backgroundColor;
-//     if (headerColor == "black") {
-//         header.style.color = "black";
-//         header.style.backgroundColor = "white";
-//     }
-//     else {
-//         header.style.color = "white";
-//         header.style.backgroundColor = "black";
-//     }
-
-//     // Get backgroundcolor of navbar ul
-//     var navList = document.getElementsByTagName('ul')[0];
-//     var navListColor = navList.style.backgroundColor;
-//     if (navListColor == "pink") {
-//         navList.style.backgroundColor = "purple";
-//     }
-//     else {
-//         navList.style.backgroundColor = "pink";
-//     }
-
-//     // Get backgroundcolor of sidebar
-//     var sidebar = document.getElementsByClassName('sidebar')[0];
-//     console.log(sidebar);
-//     var sidebarColor = sidebar.style.backgroundColor;
-
-//     if (sidebarColor == "blue") {
-//         sidebar.style.backgroundColor = "red";
-//     }
-//     else {
-//         sidebar.style.backgroundColor = "blue";
-//     }
-
-// }
-
 function changeBackgroundColor() {
     var body = document.getElementsByTagName('body')[0];
     var header = document.getElementsByTagName('header')[0];
@@ -189,7 +142,7 @@ function contactSubmit(){
     }
     // check if email is in the correct format
     else if(!emailRegex.test(email)){
-        alertMessage += "Email must be in correct format.<br>";
+        alertMessage += "Email must be in correct format. Make sure you have an \"@\" and \".\" in your input (neither as first nor last characters).<br>";
     }
 
     if(gender == undefined){
@@ -212,7 +165,6 @@ function contactSubmit(){
         document.getElementById("contact-output").innerHTML = "Your input has some errors:<br>" + alertMessage;
         document.getElementById("contact-output").style.color = "red";
     } else {
-        // alert("Thank you for your submission! Here is your information:\n" + "First Name: " + fname + "\nLast Name: " + lname + "\nPhone: " + phone + "\nEmail: " + email);
         document.getElementById("contact-output").innerHTML = "<h3>Thank you for your submission! Here are your submission details:</h3>" + 
         "<strong>First Name:</strong> " + fname + 
         "<br><strong>Last Name:</strong> " + lname + 
@@ -288,11 +240,6 @@ function isValidState(location) {
 
 // Function to validate if a date is between Sep 1, 2024, and Dec 1, 2024
 function isValidDate(departure) {
-    // const date = new Date(departure);
-    // const startDate = new Date("2024-09-01");
-    // const endDate = new Date("2024-12-01");
-
-    // return date >= startDate && date <= endDate;
 
     // Regex pattern to match dates between Sep 1, 2024 and Dec 1, 2024
     const dateRegex = /^(2024)-(09-(0[1-9]|[1-2][0-9]|30)|10-(0[1-9]|[1-2][0-9]|3[0-1])|11-(0[1-9]|[1-2][0-9]|30)|12-01)$/;
@@ -310,7 +257,7 @@ function isValidArrival(departure, arrival) {
 
 // Function to validate if city is in valid format
 function isValidCity(city) {
-    const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
+    const cityRegex = /^[A-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
     return cityRegex.test(city);
 }
 
@@ -342,55 +289,35 @@ function validateAndSubmit(event) {
 
     // Validation checks
     if (!origin || !destination || !departure || adults < 1) {
-        // alert("Please fill in all required fields with valid values.");
         errors += "Please fill in all required fields with valid values.<br>";
-        // return;
     }
 
     // Departure date validation (between Sep 1, 2024, and Dec 1, 2024)
     if (!isValidDate(departure)) {
-        // alert("Departure date must be between Sep 1, 2024, and Dec 1, 2024.");
         errors += "Departure date must be between Sep 1, 2024, and Dec 1, 2024.<br>";
-        // return;
     }
 
     if (arrival) {
         if (!isValidDate(arrival)) {
-            // alert("Return date must be between Sep 1, 2024, and Dec 1, 2024.");
             errors += "Return date must be between Sep 1, 2024, and Dec 1, 2024.<br>";
-            // return;
         }
     }
 
     if (!isValidCity(origin) || !isValidCity(destination)) {
-        // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
-        errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters (starting with a letter) as it does not make sense for a city name to be only 1 letter/character.<br>";
-        // return;
+        errors += "Make sure you enter the cities in the proper format, and make sure the city names are at least 2 characters (starting with a capital letter) as it does not make sense for a city name to be only 1 letter/character.<br>";
     }
 
     // Origin and destination validation (must be a city in Texas or California)
     if (!isValidState(origin) || !isValidState(destination)) {
-        // alert("Make sure you enter the cities properly. Also, origin and Destination must be cities in Texas or California.");
         errors += "Origin and destination must be cities in Texas (TX) or California (CA).<br>";
-        // return;
     }
-
-    // Passenger count validation (no more than 4 per category)
-    // if (adults > 4 || children > 4 || infants > 4) {
-    //     // alert("The number of passengers in each category (adults, children, infants) cannot exceed 4.");
-    //     errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
-    //     // return;
-    // }
 
     if (!isValidPassengerCount(adults, children, infants)){
         errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
-        // return;
     }
 
     if (document.getElementById('tripdropdown').value === "round-trip" && (!arrival || !isValidArrival(departure, arrival))) {
-        // alert("Please provide a valid return date for a round trip.");
         errors += "Please provide a valid return date for a round trip.<br>";
-        // return;
     }
 
     if (errors != "") {
@@ -414,6 +341,23 @@ function validateAndSubmit(event) {
     // Display the trip details in the designated div
     document.getElementById('tripDetails').innerHTML = tripDetails;
     document.getElementById('tripDetails').style.color = "green";
+}
+
+function isValidStayCity(city) {
+    // Check if city starts with an uppercase letter (without using regex)
+    if (city.length < 2 || city[0] != city[0].toUpperCase()) {
+        return false;
+    }
+
+    // Check if there is only 1 comma
+    if (!city.includes(', ') || city.split(',').length != 2) {
+        return false;
+    }
+
+    const state = city.split(', ')[1];
+
+    // Check if the state is exactly 2 characters long and both characters are uppercase
+    return state.length == 2 && state == state.toUpperCase();
 }
 
 // Helper function to check if the city is in Texas or California
@@ -451,35 +395,25 @@ function validateAndSubmitStay(event) {
 
     // Validation
     if (!city || !checkIn || !checkOut || adults < 1) {
-        // alert("Please fill in all required fields.");
         errors += "Please fill in all of the fields.<br>";
-        // return;
+    }
+
+    // Check if city is in the correct format
+    if (!isValidStayCity(city)) {
+        errors += "Please enter the city in the correct format as shown in the example. Make sure first letter of city is capitalized, there is one comma followed by a space, and the input ends with 2 uppercase letters.<br>";
     }
 
     // Check if city is in Texas or California
     if (!isValidStayState(city)) {
-        // alert("The city must be in Texas (TX) or California (CA).");
         errors += "The city must be in Texas (TX) or California (CA).<br>";
-        // return;
     }
 
     // Validate check-in and check-out dates
     if (!isValidStayDate(checkIn) || !isValidStayDate(checkOut)) {
-        // alert("Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.");
         errors += "Check-in and check-out dates must be between Sep 1, 2024, and Dec 1, 2024.<br>";
-        // return;
     } else if (new Date(checkOut) < new Date(checkIn)) {
-        // alert("Check-out date must be after the check-in date.");
         errors += "Check-out date must be after the check-in date.<br>";
-        // return;
     }
-
-    // Validate number of guests
-    // if (adults > 10 || children > 10 || infants > 5) {
-    //     // alert("Number of adults and children cannot exceed 10 each. Infants cannot exceed 5.");
-    //     errors += "Number of adults and children cannot exceed 2 per room each.<br>";
-    //     // return;
-    // }
 
     // Calculate the number of rooms needed
     let roomsNeeded = calculateRooms(adults, children);
@@ -554,84 +488,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(updateFooter, 1000);
     }
 
-    // if (window.location.pathname.includes('flights.html')) {
-    //     // Dynamically create navigation links
-    //     // const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-    //     // const navList = document.getElementById('nav-list');
-
-    //     // pages.forEach(page => {
-    //     //     const li = document.createElement('li');
-    //     //     const a = document.createElement('a');
-    //     //     if(page == "Home"){
-    //     //         a.href = "index.html";
-    //     //     } else {
-    //     //         a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-    //     //     }
-    //     //     a.textContent = page;
-    //     //     li.appendChild(a);
-    //     //     navList.appendChild(li);
-    //     // });
-
-    //     // // Add actions dynamically
-    //     // const actions = ["Change Font Size", "Change Background Color"];
-    //     // const sidebar = document.getElementById('sidebar');
-    //     // const sidebarHeader = document.createElement('h2');
-    //     // sidebarHeader.textContent = "Change font size and/or background color of the webpage";
-    //     // sidebar.appendChild(sidebarHeader);
-
-    //     // actions.forEach(action => {
-    //     //     const button = document.createElement('button');
-    //     //     button.textContent = action;
-    //     //     if (action == "Change Font Size") {
-    //     //         button.addEventListener('click', changeFontSize);
-    //     //     }
-    //     //     else if (action == "Change Background Color") {
-    //     //         button.addEventListener('click', changeBackgroundColor);
-    //     //     }
-    //     //     sidebar.appendChild(button);
-    //     //     sidebar.appendChild(document.createElement('br'));
-    //     // });
-    // }
-
     if (window.location.pathname.includes('stays.html')) {
         const form = document.getElementById('stayForm');
         form.addEventListener('submit', validateAndSubmitStay);
-        // Dynamically create navigation links
-        // const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
-        // const navList = document.getElementById('nav-list');
-
-        // pages.forEach(page => {
-        //     const li = document.createElement('li');
-        //     const a = document.createElement('a');
-        //     if(page == "Home"){
-        //         a.href = "index.html";
-        //     } else {
-        //         a.href = `${page.toLowerCase().replace(" ", "-")}.html`;
-        //     }
-        //     a.textContent = page;
-        //     li.appendChild(a);
-        //     navList.appendChild(li);
-        // });
-
-        // // Add actions dynamically
-        // const actions = ["Change Font Size", "Change Background Color"];
-        // const sidebar = document.getElementById('sidebar');
-        // const sidebarHeader = document.createElement('h2');
-        // sidebarHeader.textContent = "Change font size and/or background color of the webpage";
-        // sidebar.appendChild(sidebarHeader);
-
-        // actions.forEach(action => {
-        //     const button = document.createElement('button');
-        //     button.textContent = action;
-        //     if (action == "Change Font Size") {
-        //         button.addEventListener('click', changeFontSize);
-        //     }
-        //     else if (action == "Change Background Color") {
-        //         button.addEventListener('click', changeBackgroundColor);
-        //     }
-        //     sidebar.appendChild(button);
-        //     sidebar.appendChild(document.createElement('br'));
-        // });
     }
 
     // Apply this only to the cars.html page
@@ -730,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Validation rules
             // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
-            const cityRegex = /^[a-zA-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
+            const cityRegex = /^[A-Z]+[a-zA-Z\s-]+,\s[A-Z]{2}$/;
             const validCarTypes = ["Economy", "SUV", "Compact", "Midsize"];
             const minDate = new Date("2024-09-01");
             const maxDate = new Date("2024-12-01");
@@ -741,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (city.length == 0) {
                 errors.push("City is required.");
             } else if (!cityRegex.test(city)) {
-                errors.push("City must be alphabetic (can contain a space or dash), must end with a comma followed by a space and 2-letter state code that is capitalized.");
+                errors.push("Check if city is alphabetic (can contain a space or dash), has first letter uppercase, and ends with a comma followed by a space and 2-letter state code that is capitalized.");
             } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
                 errors.push("City must either be from Texas (TX) or California (CA).");
             }
@@ -818,10 +677,6 @@ $(document).ready(function(){
         });
 
         // Dynamically generate the cruise booking form
-        // <label for="guests">Number of Guests Total:</label>
-        // <input type="number" id="guests" name="guests" min="1" required><br>
-        // <label for="rooms">Number of Rooms:</label>
-        // <input type="number" id="rooms" name="rooms" min="1" required><br>
         const form = `
         <form id="cruiseForm">
             <label for="destination">Destination:</label>
@@ -862,84 +717,39 @@ $(document).ready(function(){
         setInterval(updateFooterJQuery, 1000);
 
         $('#cruiseForm').submit(function(event){
-            // Validate user inputs for this page as following
-            // • The destination should be Alaska, Bahamas, Europe, or Mexico
-            // • For duration of cruise (minimum and maximum), minimum can not be less than
-            // 3 and maximum can not be greater than 10 days
-            // • Departing between can be anytime between Sep 1, 2024 to Dec 1st 2024.
-            // • Number of guesses can not be more than 2 for each room. However infants
-            // can stay with adults even if the number of guesses exceeds 2 
             event.preventDefault();
 
             const destination = $('#destination').val();
             const departBetween = $('#departBetween').val();
             const minDuration = parseInt($('#minDuration').val());
             const maxDuration = parseInt($('#maxDuration').val());
-            // const guests = $('#guests').val();
-            // const guests = parseInt($('#adults').val()) + parseInt($('#children').val());
             const adults = parseInt($('#adults').val());
             const children = parseInt($('#children').val());
             const infants = parseInt($('#infants').val());
-            const guests = adults + children + infants;
-            // const rooms = $('#rooms').val();
 
             var alertMessage = "";
-            var today = new Date();
             var departDate = new Date(departBetween);
             var minDate = new Date("2024-09-01");
             var maxDate = new Date("2024-12-01");
 
-            // check if destination is empty
-            // if(destination == ""){
-            //     alertMessage += "Destination is required.\n";
-            // }
-            // else if(destination != "Alaska" && destination != "Bahamas" && destination != "Europe" && destination != "Mexico"){
-            //     alertMessage += "Please select a valid destination.\n";
-            // }
-
-            // check if departBetween is empty
-            /* if(departBetween == ""){
-            //     alertMessage += "Departure date is required.\n";
-            // }
-            else if(departDate < today){
-                alertMessage += "Departure date must be today or in the future.\n";
-            }
-            else*/ if(departDate < minDate || departDate > maxDate){
+            if(departDate < minDate || departDate > maxDate){
                 alertMessage += "Departure date must be between Sep 1, 2024 and Dec 1, 2024.\n";
             }
 
-            // check if minDuration is empty
-            /*if(minDuration == "" || maxDuration == ""){
-                alertMessage += "Minimum duration and maximum duration are required.\n";
-            }
-            else*/ if(minDuration < 3 || minDuration > 10 || maxDuration < 3 || maxDuration > 10){
+            // Validate min and max duration
+            if(minDuration < 3 || minDuration > 10 || maxDuration < 3 || maxDuration > 10){
                 alertMessage += "Duration must be between 3 and 10 days.\n";
             }
             else if(minDuration > maxDuration){
                 alertMessage += "Minimum duration cannot be greater than maximum duration.\n";
             }
 
-            // check if guests is empty
-            /*if(guests == ""){
-                alertMessage += "Number of guests is required.\n";
-            }
-            else*/ 
-            // Check if guests / room, rounded up, is greater than 2
-            // if(Math.ceil(guests / rooms) > 2){
-            //     let withoutInfants = guests - infants;
-            //     if(Math.ceil(withoutInfants / rooms) > 2){
-            //         alertMessage += "Number of guests total (without infants) cannot exceed 2 per room.\n";
-            //     }
-            // }
-
             const rooms = calculateRooms(adults, children);
 
             if(alertMessage != ""){
-                // alert("Your input has some errors:\n" + alertMessage);
                 $('#output').html("Your input has some errors:<br>" + alertMessage);
                 $('#output').css('color', 'red');
             } else {
-                // alert("Thank you for your submission! Here is your information:\n" + "Destination: " + destination + "\nDeparture Date: " + departBetween + "\nDuration: " + minDuration + " - " + maxDuration + " days\nGuests: " + guests + "\nInfants: " + infants);
                 $('#output').html("<h3>Cruise Details:</h3>" + 
                     "<strong>Destination:</strong> " + destination + 
                     "<br><strong>Departure Date:</strong> " + departBetween + 

@@ -344,17 +344,20 @@ function validateAndSubmit(event) {
 }
 
 function isValidStayCity(city) {
-    // Check if city starts with an uppercase letter (without using regex)
-    if (city.length < 2 || city[0] != city[0].toUpperCase()) {
+
+     // Check if there is only 1 comma
+     if (!city.includes(', ') || city.split(',').length != 2) {
         return false;
     }
 
-    // Check if there is only 1 comma
-    if (!city.includes(', ') || city.split(',').length != 2) {
-        return false;
-    }
-
+    // Remove/strip of any white space that is right before the comma. Do not use regex
+    const cityName = city.split(', ')[0].trim();
     const state = city.split(', ')[1];
+
+    // Check if city starts with an uppercase letter (without using regex)
+    if (cityName.length < 2 || cityName[0] != cityName[0].toUpperCase()) {
+        return false;
+    }
 
     // Check if the state is exactly 2 characters long and both characters are uppercase
     return state.length == 2 && state == state.toUpperCase();

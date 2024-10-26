@@ -616,8 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Retrieve user input values
             const city = document.getElementById('city').value.trim();
             const carType = document.getElementById('carType').value;
-            const checkIn = new Date(document.getElementById('checkIn').value);
-            const checkOut = new Date(document.getElementById('checkOut').value);
+            const checkIn = document.getElementById('checkIn').value;
+            const checkOut = document.getElementById('checkOut').value;
 
             // Validation rules
             // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
@@ -643,13 +643,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Validate check-in and check-out dates
-            if (checkIn < minDate || checkIn > maxDate) {
+            if (new Date(checkIn) < minDate || new Date(checkIn) > maxDate) {
                 errors.push("Check-in date must be between Sep 1, 2024 and Dec 1, 2024.");
             }
-            if (checkOut < minDate || checkOut > maxDate) {
+            if (new Date(checkOut) < minDate || new Date(checkOut) > maxDate) {
                 errors.push("Check-out date must be between Sep 1, 2024 and Dec 1, 2024.");
             }
-            if (checkIn >= checkOut) {
+            if (new Date(checkIn) >= new Date(checkOut)) {
                 errors.push("Check-in date must be before the check-out date.");
             }
 
@@ -662,8 +662,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Car Details:</h3>
                     <strong>City:</strong> ${city} <br>
                     <strong>Car Type:</strong> ${carType} <br>
-                    <strong>Check In:</strong> ${checkIn.toLocaleDateString()} <br>
-                    <strong>Check Out:</strong> ${checkOut.toLocaleDateString()} <br>
+                    <strong>Check In:</strong> ${checkIn} <br>
+                    <strong>Check Out:</strong> ${checkOut} <br>
                 `;
                 output.style.color = "green";
             }

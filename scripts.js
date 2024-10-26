@@ -208,7 +208,7 @@ function confirmTripType() {
         departure.style.display = "block";
         searchButton.style.display = "block"; 
 
-        arrivalLabel.value = ""; // Hide arrival date for one-way
+        arrival.value = ""; // Hide arrival date for one-way
     } else if (selectedValue === "round-trip") {
         originLabel.style.display = "block";
         origin.style.display = "block";

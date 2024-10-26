@@ -308,9 +308,9 @@ function validateAndSubmit(event) {
     else if (!isValidState(origin) || !isValidState(destination)) {
         errors += "Origin and destination must be cities in Texas (TX) or California (CA).<br>";
     }
-
+    
     if (!isValidPassengerCount(adults, children, infants)){
-        errors += "The number of passengers in each category (adults, children, infants) cannot exceed 4.<br>";
+        errors += "Make sure the number of passengers in each category (adults, children, infants) are not negative and cannot exceed 4. Also, make sure there is at least 1 adult.<br>";
     }
 
     if (document.getElementById('tripdropdown').value === "round-trip" && (!arrival || !isValidArrival(departure, arrival))) {

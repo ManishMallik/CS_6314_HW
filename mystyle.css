@@ -38,7 +38,7 @@ li a:hover:not(.active) {
     display: flex;
     flex-direction: row;
     clear: none;
-    height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px);
 }
 
 .sidebar {

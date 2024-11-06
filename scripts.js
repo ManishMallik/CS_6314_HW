@@ -169,6 +169,31 @@ function contactSubmit(){
         "<br><strong>Gender:</strong> " + gender + 
         "<br><strong>Comment:</strong> " + comment;
         document.getElementById("contact-output").style.color = "green";
+
+        // store information in an XML file
+        var xhttp = new XMLHttpRequest();
+        // xhttp.open("POST", "contacts.asp", true);
+        // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // // Format for each submission:
+        // /*
+        // <contact>
+        //     <fname>...</fname>
+        //     <lname>...</lname>
+        //     <phone>...</phone>
+        //     <email>...</email>
+        //     <gender>...</gender>
+        //     <comment>...</comment>
+        // </contact>
+        // */
+        // // var xml = "<contact><fname>" + fname + "</fname><lname>" + lname + "</lname><phone>" + phone + "</phone><email>" + email
+        //         // + "</email><gender>" + gender + "</gender><comment>" + comment + "</comment></contact>";
+        
+        // var xml = "fname=" + fname + "&lname=" + lname + "&phone=" + phone + "&email=" + email + 
+        // "&gender=" + gender + "&comment=" + comment;
+
+        // console.log(xml);
+        
+        // xhttp.send(xml);
     }
 }
 

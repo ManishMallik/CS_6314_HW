@@ -52,13 +52,125 @@ li a:hover:not(.active) {
     box-sizing: border-box;
 }
 
-.main-content {
+/* .main-content {
     width: 65%;
     float: left;
     padding-left: 5%;
     padding-right: 5%;
     background-color: None;
     box-sizing: border-box;
+} */
+
+.main-content {
+    width: 65%;
+    padding: 40px;
+    background-color: #f7f9fc; /* Light blue-gray background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 10px;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+.main-content h2 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#stayForm label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #555;
+}
+
+#stayForm input[type="text"],
+#stayForm input[type="date"],
+#stayForm input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#searchButton {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#searchButton:hover {
+    background-color: #0056b3;
+}
+
+#stayDetails {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: #333;
+}
+
+#flightForm label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #555;
+}
+
+#flightForm input[type="text"],
+#flightForm input[type="date"],
+#flightForm input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#flightForm select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Get label with id="fname" */
+input[type="text"], input[type="email"], input[type="date"], input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+
+select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
 footer {

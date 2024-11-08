@@ -170,30 +170,31 @@ function contactSubmit(){
         "<br><strong>Comment:</strong> " + comment;
         document.getElementById("contact-output").style.color = "green";
 
-        // store information in an XML file
-        var xhttp = new XMLHttpRequest();
-        // xhttp.open("POST", "contacts.asp", true);
-        // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        // // Format for each submission:
-        // /*
-        // <contact>
-        //     <fname>...</fname>
-        //     <lname>...</lname>
-        //     <phone>...</phone>
-        //     <email>...</email>
-        //     <gender>...</gender>
-        //     <comment>...</comment>
-        // </contact>
-        // */
-        // // var xml = "<contact><fname>" + fname + "</fname><lname>" + lname + "</lname><phone>" + phone + "</phone><email>" + email
-        //         // + "</email><gender>" + gender + "</gender><comment>" + comment + "</comment></contact>";
-        
-        // var xml = "fname=" + fname + "&lname=" + lname + "&phone=" + phone + "&email=" + email + 
-        // "&gender=" + gender + "&comment=" + comment;
+        const data = new URLSearchParams();
+        data.append("fname", fname);
+        data.append("lname", lname);
+        data.append("phone", phone);
+        data.append("email", email);
+        data.append("gender", gender);
+        data.append("comment", comment);
 
-        // console.log(xml);
-        
-        // xhttp.send(xml);
+        fetch('/submit-form', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+        .then(response => response.text())
+        .then(responseText => {
+            document.getElementById("contact-output").innerHTML += responseText;
+            document.getElementById("contact-output").style.color = "green";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById("contact-output").innerHTML += "Error submitting form";
+            document.getElementById("contact-output").style.color = "red";
+        });
     }
 }
 

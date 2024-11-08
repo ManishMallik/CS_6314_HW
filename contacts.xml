@@ -24,4 +24,12 @@
     <gender>Male</gender>
     <comment>This is a test</comment>
   </contact>
+  <contact>
+    <fname>Manish</fname>
+    <lname>Mall</lname>
+    <phone>(469) 798-1208</phone>
+    <email>mkm200004@utdallas.edu</email>
+    <gender>Male</gender>
+    <comment>This is a 2nd test</comment>
+  </contact>
 </contacts>

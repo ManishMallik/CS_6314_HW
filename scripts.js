@@ -497,6 +497,27 @@ function validateAndSubmitStay(event) {
 
     document.getElementById('stayDetails').innerHTML = stayDetails;
     document.getElementById('stayDetails').style.color = "green";
+
+    // Read from the availableHotels.json file
+    fetch('/availableHotels.json')
+        .then(response => response.json())
+        .then(hotels => {
+            let availableHotels = hotels.filter(hotel => hotel.city == city);
+            let hotelDetails = "<h3>Available Hotels:</h3>";
+            availableHotels.forEach(hotel => {
+                hotelDetails += `
+                    <strong>Name:</strong> ${hotel.name}<br>
+                    <strong>Address:</strong> ${hotel.address}<br>
+                    <strong>Rooms Available:</strong> ${hotel.rooms}<br>
+                    <strong>Price Per Night:</strong> $${hotel.price}<br><br>
+                `;
+            });
+            document.getElementById('hotelDetails').innerHTML = hotelDetails;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('hotelDetails').innerHTML = "Error fetching hotel data";
+        });
 }
 
 // DOM Method to load and build the cars.html page

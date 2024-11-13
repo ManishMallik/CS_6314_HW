@@ -499,24 +499,52 @@ function validateAndSubmitStay(event) {
     document.getElementById('stayDetails').style.color = "green";
 
     // Read from the availableHotels.json file
-    fetch('/availableHotels.json')
-        .then(response => response.json())
-        .then(hotels => {
+    fetch('./availableHotels.json')
+        .then(response =>  {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const hotels = data.hotels;
             let availableHotels = hotels.filter(hotel => hotel.city == city);
+
+            // If available hotels is not empty, then filter by availability, checking if any of the dates are within range
+            if (availableHotels.length > 0) {
+                availableHotels = availableHotels.filter(hotel => {
+                    if(hotel.availableRooms >= roomsNeeded)
+                    {
+                        return hotel.availability.some(availability => {
+                            const availableDate = new Date(availability.date);
+                            return availableDate >= new Date(checkIn) && availableDate <= new Date(checkOut);
+                        });
+                    }
+                });
+            }
+
             let hotelDetails = "<h3>Available Hotels:</h3>";
             availableHotels.forEach(hotel => {
                 hotelDetails += `
                     <strong>Name:</strong> ${hotel.name}<br>
-                    <strong>Address:</strong> ${hotel.address}<br>
-                    <strong>Rooms Available:</strong> ${hotel.rooms}<br>
-                    <strong>Price Per Night:</strong> $${hotel.price}<br><br>
+                    <strong>Address:</strong> ${hotel.city}<br>
+                    <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
+                    <strong>Availability for this Hotel:</strong><br>
                 `;
+                hotel.availability.forEach(availability => {
+                    hotelDetails += `
+                        <strong>Date:</strong> ${availability.date}<br>
+                        <strong>Price:</strong> $${availability.pricePerNight}<br><br>
+                    `;
+                });
             });
             document.getElementById('hotelDetails').innerHTML = hotelDetails;
+            document.getElementById('hotelDetails').style.color = "green";
         })
         .catch(error => {
             console.error('Error:', error);
             document.getElementById('hotelDetails').innerHTML = "Error fetching hotel data";
+            document.getElementById('hotelDetails').style.color = "red";
         });
 }
 

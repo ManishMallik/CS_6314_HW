@@ -517,7 +517,7 @@ function validateAndSubmitStay(event) {
                     {
                         return hotel.availability.some(availability => {
                             const availableDate = new Date(availability.date);
-                            return availableDate >= new Date(checkIn) && availableDate <= new Date(checkOut);
+                            return availableDate >= new Date(checkIn) && availableDate < new Date(checkOut);
                         });
                     }
                 });

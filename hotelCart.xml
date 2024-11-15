@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hotelBookings>
+  <hotel>
+    <hotelId>H001</hotelId>
+    <name>The Grand Austin</name>
+    <city>Austin, TX</city>
+    <adultGuests>6</adultGuests>
+    <childGuests>3</childGuests>
+    <infantGuests>5</infantGuests>
+    <checkIn>2024-09-11</checkIn>
+    <checkOut>2024-09-15</checkOut>
+    <rooms>5</rooms>
+    <pricePerNight>150</pricePerNight>
+    <totalPrice>3000</totalPrice>
+  </hotel>
+  <hotel>
+    <hotelId>H011</hotelId>
+    <name>Bay City Hotel</name>
+    <city>Austin, TX</city>
+    <adultGuests>4</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>111</infantGuests>
+    <checkIn>2024-09-11</checkIn>
+    <checkOut>2024-09-12</checkOut>
+    <rooms>2</rooms>
+    <pricePerNight>160</pricePerNight>
+    <totalPrice>320</totalPrice>
+  </hotel>
+</hotelBookings>

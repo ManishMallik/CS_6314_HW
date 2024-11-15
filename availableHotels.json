@@ -1,0 +1,344 @@
+{
+  "hotels": [
+    {
+      "hotelId": "H001",
+      "name": "The Grand Austin",
+      "city": "Austin, TX",
+      "availableRooms": 0,
+      "pricePerNight": 150,
+      "availability": [
+        {
+          "startDate": "2024-09-01",
+          "endDate": "2024-09-20"
+        },
+        {
+          "startDate": "2024-10-01",
+          "endDate": "2024-10-31"
+        }
+      ]
+    },
+    {
+      "hotelId": "H002",
+      "name": "Austin City Inn",
+      "city": "Austin, TX",
+      "availableRooms": 10,
+      "pricePerNight": 120,
+      "availability": [
+        {
+          "startDate": "2024-09-15",
+          "endDate": "2024-10-15"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2024-11-20"
+        }
+      ]
+    },
+    {
+      "hotelId": "H003",
+      "name": "The San Francisco Lodge",
+      "city": "San Francisco, CA",
+      "availableRooms": 20,
+      "pricePerNight": 200,
+      "availability": [
+        {
+          "startDate": "2024-09-25",
+          "endDate": "2024-10-20"
+        },
+        {
+          "startDate": "2024-11-10",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H004",
+      "name": "Golden Gate Suites",
+      "city": "San Francisco, CA",
+      "availableRooms": 5,
+      "pricePerNight": 220,
+      "availability": [
+        {
+          "startDate": "2024-09-20",
+          "endDate": "2024-10-10"
+        },
+        {
+          "startDate": "2024-10-25",
+          "endDate": "2024-11-20"
+        }
+      ]
+    },
+    {
+      "hotelId": "H005",
+      "name": "Ocean View Resort",
+      "city": "Los Angeles, CA",
+      "availableRooms": 8,
+      "pricePerNight": 180,
+      "availability": [
+        {
+          "startDate": "2024-10-01",
+          "endDate": "2024-10-30"
+        },
+        {
+          "startDate": "2024-11-05",
+          "endDate": "2024-11-25"
+        }
+      ]
+    },
+    {
+      "hotelId": "H006",
+      "name": "Downtown LA Inn",
+      "city": "Los Angeles, CA",
+      "availableRooms": 12,
+      "pricePerNight": 150,
+      "availability": [
+        {
+          "startDate": "2024-09-25",
+          "endDate": "2024-10-25"
+        },
+        {
+          "startDate": "2024-11-10",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H007",
+      "name": "Houston Heights Hotel",
+      "city": "Houston, TX",
+      "availableRooms": 25,
+      "pricePerNight": 140,
+      "availability": [
+        {
+          "startDate": "2024-09-01",
+          "endDate": "2024-09-30"
+        },
+        {
+          "startDate": "2024-10-15",
+          "endDate": "2024-11-10"
+        }
+      ]
+    },
+    {
+      "hotelId": "H008",
+      "name": "Bay Area Inn",
+      "city": "Houston, TX",
+      "availableRooms": 18,
+      "pricePerNight": 130,
+      "availability": [
+        {
+          "startDate": "2024-09-10",
+          "endDate": "2024-10-10"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2024-11-25"
+        }
+      ]
+    },
+    {
+      "hotelId": "H009",
+      "name": "Dallas Downtown Hotel",
+      "city": "Dallas, TX",
+      "availableRooms": 14,
+      "pricePerNight": 125,
+      "availability": [
+        {
+          "startDate": "2024-10-05",
+          "endDate": "2024-10-25"
+        },
+        {
+          "startDate": "2024-11-15",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H010",
+      "name": "The Dallas Retreat",
+      "city": "Dallas, TX",
+      "availableRooms": 20,
+      "pricePerNight": 140,
+      "availability": [
+        {
+          "startDate": "2024-09-20",
+          "endDate": "2024-10-20"
+        },
+        {
+          "startDate": "2024-11-10",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H011",
+      "name": "Bay City Hotel",
+      "city": "Austin, TX",
+      "availableRooms": 8,
+      "pricePerNight": 160,
+      "availability": [
+        {
+          "startDate": "2024-09-01",
+          "endDate": "2024-09-30"
+        },
+        {
+          "startDate": "2024-10-10",
+          "endDate": "2024-10-31"
+        }
+      ]
+    },
+    {
+      "hotelId": "H012",
+      "name": "The Palm Lodge",
+      "city": "San Diego, CA",
+      "availableRooms": 7,
+      "pricePerNight": 210,
+      "availability": [
+        {
+          "startDate": "2024-09-20",
+          "endDate": "2024-10-20"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2024-11-25"
+        }
+      ]
+    },
+    {
+      "hotelId": "H013",
+      "name": "The Lux San Diego",
+      "city": "San Diego, CA",
+      "availableRooms": 6,
+      "pricePerNight": 230,
+      "availability": [
+        {
+          "startDate": "2024-10-05",
+          "endDate": "2024-10-31"
+        },
+        {
+          "startDate": "2024-11-05",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H014",
+      "name": "Austin Oasis",
+      "city": "Austin, TX",
+      "availableRooms": 9,
+      "pricePerNight": 155,
+      "availability": [
+        {
+          "startDate": "2024-09-15",
+          "endDate": "2024-10-10"
+        },
+        {
+          "startDate": "2024-10-20",
+          "endDate": "2024-11-10"
+        }
+      ]
+    },
+    {
+      "hotelId": "H015",
+      "name": "Hill Country Inn",
+      "city": "San Antonio, TX",
+      "availableRooms": 11,
+      "pricePerNight": 160,
+      "availability": [
+        {
+          "startDate": "2024-10-05",
+          "endDate": "2024-10-25"
+        },
+        {
+          "startDate": "2024-11-01",
+          "endDate": "2024-11-20"
+        }
+      ]
+    },
+    {
+      "hotelId": "H016",
+      "name": "Alamo Heights Hotel",
+      "city": "San Antonio, TX",
+      "availableRooms": 5,
+      "pricePerNight": 190,
+      "availability": [
+        {
+          "startDate": "2024-09-20",
+          "endDate": "2024-10-15"
+        },
+        {
+          "startDate": "2024-11-05",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H017",
+      "name": "Hollywood Haven",
+      "city": "Los Angeles, CA",
+      "availableRooms": 12,
+      "pricePerNight": 200,
+      "availability": [
+        {
+          "startDate": "2024-09-30",
+          "endDate": "2024-10-25"
+        },
+        {
+          "startDate": "2024-11-10",
+          "endDate": "2024-11-30"
+        }
+      ]
+    },
+    {
+      "hotelId": "H018",
+      "name": "Santa Monica Suites",
+      "city": "Los Angeles, CA",
+      "availableRooms": 8,
+      "pricePerNight": 220,
+      "availability": [
+        {
+          "startDate": "2024-09-15",
+          "endDate": "2024-10-15"
+        },
+        {
+          "startDate": "2024-10-20",
+          "endDate": "2024-11-15"
+        }
+      ]
+    },
+    {
+      "hotelId": "H019",
+      "name": "San Jose Gardens",
+      "city": "San Jose, CA",
+      "availableRooms": 10,
+      "pricePerNight": 180,
+      "availability": [
+        {
+          "startDate": "2024-10-01",
+          "endDate": "2024-10-31"
+        },
+        {
+          "startDate": "2024-11-05",
+          "endDate": "2024-11-25"
+        }
+      ]
+    },
+    {
+      "hotelId": "H020",
+      "name": "Silicon Valley Suites",
+      "city": "San Jose, CA",
+      "availableRooms": 14,
+      "pricePerNight": 210,
+      "availability": [
+        {
+          "startDate": "2024-10-10",
+          "endDate": "2024-10-30"
+        },
+        {
+          "startDate": "2024-11-10",
+          "endDate": "2024-11-30"
+        }
+      ]
+    }
+  ]
+}

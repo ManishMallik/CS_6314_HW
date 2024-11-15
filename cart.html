@@ -1,0 +1,40 @@
+<!-- In the cart page,
+you should display the information of the selected hotel (hotel-id, hotel name,
+city, number of guesses per category, check in date, check out date, number of
+rooms, and price per night for each room , and total price). If the user clicks the
+book button, you should store all information in the cart (hotel-id, city, hotel
+name, check in date, check out date, number of guesses per category, number
+of rooms, and price per night for each room , and total price) in a XML file and
+update available rooms in the available hotels JSON file . -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="mystyle.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/JavaScript" src="scripts.js"></script>
+        <title>Traveling</title>
+    </head>
+    <body>
+        <header>
+            <h1>Cart</h1>
+        </header>
+        <nav>
+            <ul id="nav-list"></ul>
+        </nav>
+        <div class="container">
+            <div class="sidebar" id="sidebar">
+            </div>
+            <div class="main-content">
+                <h2>Cart Information:</h2>
+                <div id="selectedFlightDetails" style="margin-top: 20px;"></div>
+                <button type="submit" value="Book Flights" onclick="bookFlights()">Book Flight(s)</button>
+                <!-- <div id="bookedFlightDetails" style="margin-top: 20px;"></div> -->
+                <div id="selectedHotelsDetails" style="margin-top: 20px;"></div>
+                <button type="submit" value="Book Hotels" onclick="bookHotels()">Book Hotel(s)</button>
+            </div>
+        </div>
+        <footer>
+        </footer>
+    </body>
+</html>

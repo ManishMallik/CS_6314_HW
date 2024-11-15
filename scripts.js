@@ -633,6 +633,7 @@ function addHotelToCart(hotelId, name, city, adultGuests, childGuests, infantGue
                     })
                     .then(responseText => {
                         console.log(responseText);
+                        window.location.reload();
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -644,6 +645,98 @@ function addHotelToCart(hotelId, name, city, adultGuests, childGuests, infantGue
     }
 }
 
+function removeHotelFromCart(hotelID, rooms){
+    if (confirm("Are you sure you want to remove this hotel from your cart?")) {
+        const data = new URLSearchParams();
+        data.append("hotelID", hotelID);
+
+        fetch('/remove-hotel-from-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(responseText => {
+                console.log(responseText);
+                alert("Hotel removed successfully!");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error removing hotel!");
+            });
+        
+
+        // Update the available rooms in the availableHotels.json file
+        fetch('./availableHotels.json')
+            .then(response =>  {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const hotels = data.hotels;
+                let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelID);
+                availableHotels[0].availableRooms += rooms;
+                console.log(availableHotels[0].availableRooms);
+                
+                // Update the availableHotels.json file
+                const updatedData = { hotels: hotels };
+                console.log(updatedData);
+                console.log(JSON.stringify(updatedData));
+                fetch('/update-available-hotels', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(responseText => {
+                        console.log(responseText);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            })
+    }
+}
+
+function bookAllHotelsFromCart(){
+    if (confirm("Are you sure you want to book all hotels in your cart?")) {
+        fetch('/confirm-booking-hotel', {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            console.log(responseText);
+            alert("All hotels booked successfully!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error booking hotels!");
+        });
+    }
+}
+
 // DOM Method to load and build the cars.html page
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -651,7 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!window.location.pathname.includes('cruises.html')){
         // Dynamically create navigation links
         if(!window.location.pathname.includes('index.html') && !window.location.pathname.includes('contact-us.html')){
-            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
             const navList = document.getElementById('nav-list');
 
             pages.forEach(page => {
@@ -694,6 +787,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('stays.html')) {
         const form = document.getElementById('stayForm');
         form.addEventListener('submit', validateAndSubmitStay);
+    }
+
+    if (window.location.pathname.includes('cart.html')) {
+        const hotelDetails = document.getElementById('selectedHotelDetails');
+
+        // Read the selected hotel details from the hotelCart.xml file
+        fetch('./hotelCart.xml')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'application/xml');
+                const hotels = xmlDoc.getElementsByTagName('hotel');
+
+                let hotelDetails = "<h3>Selected Hotels:</h3>";
+                for (let i = 0; i < hotels.length; i++) {
+                    const hotel = hotels[i];
+
+                    const hotelId = hotel.getElementsByTagName('hotelId')[0].textContent;
+                    const name = hotel.getElementsByTagName('name')[0].textContent;
+                    const city = hotel.getElementsByTagName('city')[0].textContent;
+                    const adultGuests = hotel.getElementsByTagName('adultGuests')[0].textContent;
+                    const childGuests = hotel.getElementsByTagName('childGuests')[0].textContent;
+                    const infantGuests = hotel.getElementsByTagName('infantGuests')[0].textContent;
+                    const checkIn = hotel.getElementsByTagName('checkIn')[0].textContent;
+                    const checkOut = hotel.getElementsByTagName('checkOut')[0].textContent;
+                    const rooms = hotel.getElementsByTagName('rooms')[0].textContent;
+                    const pricePerNight = hotel.getElementsByTagName('pricePerNight')[0].textContent;
+                    const totalPrice = hotel.getElementsByTagName('totalPrice')[0].textContent;
+
+                    hotelDetails += `
+                        <strong>Hotel ID:</strong> ${hotelId}<br>
+                        <strong>Name:</strong> ${name}<br>
+                        <strong>City:</strong> ${city}<br>
+                        <strong>Adults:</strong> ${adultGuests}<br>
+                        <strong>Children:</strong> ${childGuests}<br>
+                        <strong>Infants:</strong> ${infantGuests}<br>
+                        <strong>Check-In Date:</strong> ${checkIn}<br>
+                        <strong>Check-Out Date:</strong> ${checkOut}<br>
+                        <strong>Rooms:</strong> ${rooms}<br>
+                        <strong>Price Per Night:</strong> $${pricePerNight}<br>
+                        <strong>Total Price:</strong> $${totalPrice}<br><br>
+                    `;
+                }
+                hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
+                document.getElementById('selectedHotelsDetails').innerHTML = hotelDetails;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('selectedHotelsDetails').innerHTML = "Error fetching hotel data";
+            });
     }
 
     // Apply this only to the cars.html page
@@ -849,7 +992,7 @@ $(document).ready(function(){
 
         $('#header-title').text("Cruises");
 
-        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us"];
+        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
         const actions = ["Change Font Size", "Change Background Color"];
         
         pages.forEach(page => {

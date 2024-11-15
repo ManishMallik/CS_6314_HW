@@ -195,6 +195,103 @@ app.post('/update-available-hotels', (req, res) => {
     });
 });
 
+// Remove a hotelID from the cart
+app.post('/remove-hotel-from-cart', (req, res) => {
+    const { hotelId } = req.body;
+    const xmlFilePath = 'hotelCart.xml';
+
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        if (err) {
+            console.error('Error reading XML file:', err);
+            res.status(500).send('Error reading XML file');
+            return;
+        }
+
+        // Parse existing XML data
+        parser.parseString(data, (parseErr, result) => {
+            if (parseErr) {
+                console.error('Error parsing XML:', parseErr);
+                res.status(500).send('Error parsing XML file');
+                return;
+            }
+
+            const xmlContent = result;
+
+            // Find the hotel to remove
+            const hotelIndex = xmlContent.hotelBookings.hotel.findIndex(hotel => hotel.hotelId[0] === hotelId);
+
+            if (hotelIndex === -1) {
+                res.status(404).send('Hotel not found in the cart');
+                return;
+            }
+
+            // Remove the hotel from the array
+            xmlContent.hotelBookings.hotel.splice(hotelIndex, 1);
+
+            // Save the updated XML
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        });
+    });
+});
+
+// After confirming on the cart page, the user can book the hotels. Save it to a confirmedHotel.xml file
+app.post('/confirm-booking-hotel', (req, res) => {
+    const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
+
+    // Define new hotel structure in XML format
+    const newHotel = {
+        hotelId,
+        name,
+        city,
+        adultGuests,
+        childGuests,
+        infantGuests,
+        checkIn,
+        checkOut,
+        rooms,
+        pricePerNight,
+        totalPrice
+    };
+
+    const xmlFilePath = 'confirmedHotel.xml';
+
+    // Check if XML file exists
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        let xmlContent = { confirmedHotels: { hotel: [] } }; // Default structure if file is empty or doesn't exist
+
+        if (!err && data) {
+            // Parse existing XML data
+            parser.parseString(data, (parseErr, result) => {
+                if (parseErr) {
+                    console.error('Error parsing XML:', parseErr);
+                    res.status(500).send('Error parsing XML file');
+                    return;
+                }
+                xmlContent = result; // Use existing structure if file data is available
+
+                if (!xmlContent.confirmedHotels) {
+                    xmlContent.confirmedHotels = { hotel: [] };
+                } else if (!Array.isArray(xmlContent.confirmedHotels.hotel)) {
+                    xmlContent.confirmedHotels.hotel = [];
+                }
+
+                // Add new hotel to the array
+                xmlContent.confirmedHotels.hotel.push(newHotel);
+
+                // Save the updated XML
+                saveXMLFile(xmlFilePath, xmlContent, res);
+            });
+        } else {
+            // If the file does not exist, create a new structure
+            xmlContent.confirmedHotels.hotel.push(newHotel);
+
+            // Save the XML with the new structure
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        }
+    });
+});
+
+
 // Save XML content
 function saveXMLFile(filePath, content, res) {
     const xml = builder.buildObject(content);

@@ -13,6 +13,7 @@ const builder = new xml2js.Builder();
 // Middleware to serve static files and parse form data
 app.use(express.static('.'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Navigating to home page
 app.get('/', (req, res) => {
@@ -33,7 +34,48 @@ app.post('/submit-form', (req, res) => {
         comment
     };
 
+    const newContactXML = `
+    <contact>
+        <fname>${fname}</fname>
+        <lname>${lname}</lname>
+        <phone>${phone}</phone>
+        <email>${email}</email>
+        <gender>${gender}</gender>
+        <comment>${comment}</comment>
+    </contact>
+`;
+
     const xmlFilePath = 'contacts.xml';
+
+    // Read the existing XML file
+    // fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+    //     if (err) {
+    //         console.error('Error reading XML file:', err);
+    //         res.status(500).send('Error reading XML file');
+    //         return;
+    //     }
+
+    //     // Find the closing </contacts> tag and insert the new contact before it
+    //     const insertPosition = data.lastIndexOf('</contacts>');
+    //     if (insertPosition === -1) {
+    //         console.error('Invalid XML structure: Missing </contacts> tag');
+    //         res.status(500).send('Invalid XML structure');
+    //         return;
+    //     }
+
+    //     // Construct the new XML content with the contact inserted
+    //     const updatedXML = data.slice(0, insertPosition) + newContactXML + data.slice(insertPosition);
+
+    //     // Write the updated XML back to the file
+    //     fs.writeFile(xmlFilePath, updatedXML, (writeErr) => {
+    //         if (writeErr) {
+    //             console.error('Error writing XML file:', writeErr);
+    //             res.status(500).send('Error saving data');
+    //         } else {
+    //             res.send('<response>Success: Data has been saved to contacts.xml</response>');
+    //         }
+    //     });
+    // });
 
     // Check if XML file exists
     fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
@@ -66,6 +108,89 @@ app.post('/submit-form', (req, res) => {
 
             // Save the XML with the new structure
             saveXMLFile(xmlFilePath, xmlContent, res);
+        }
+    });
+});
+
+app.post('/book-hotel-to-cart', (req, res) => {
+
+    // In the cart page,
+    // you should display the information of the selected hotel (hotel-id, hotel name,
+    // city, number of guesses per category, check in date, check out date, number of
+    // rooms, and price per night for each room , and total price). If the user clicks the
+    // book button, you should store all information in the cart (hotel-id, city, hotel
+    // name, check in date, check out date, number of guesses per category, number
+    // of rooms, and price per night for each room , and total price) in a XML file and
+    // update available rooms in the available hotels JSON file .
+    
+    const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
+
+    // Define new hotel structure in XML format
+    const newHotel = {
+        hotelId,
+        name,
+        city,
+        adultGuests,
+        childGuests,
+        infantGuests,
+        checkIn,
+        checkOut,
+        rooms,
+        pricePerNight,
+        totalPrice
+    };
+
+    const xmlFilePath = 'hotelCart.xml';
+
+    // Check if XML file exists
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        let xmlContent = { hotelBookings: { hotel: [] } }; // Default structure if file is empty or doesn't exist
+
+        if (!err && data) {
+            // Parse existing XML data
+            parser.parseString(data, (parseErr, result) => {
+                if (parseErr) {
+                    console.error('Error parsing XML:', parseErr);
+                    res.status(500).send('Error parsing XML file');
+                    return;
+                }
+                xmlContent = result; // Use existing structure if file data is available
+
+                if (!xmlContent.hotelBookings) {
+                    xmlContent.hotelBookings = { hotel: [] };
+                } else if (!Array.isArray(xmlContent.hotelBookings.hotel)) {
+                    xmlContent.hotelBookings.hotel = [];
+                }
+
+                // Add new hotel to the array
+                xmlContent.hotelBookings.hotel.push(newHotel);
+
+                // Save the updated XML
+                saveXMLFile(xmlFilePath, xmlContent, res);
+            });
+        } else {
+            // If the file does not exist, create a new structure
+            xmlContent.hotelBookings.hotel.push(newHotel);
+
+            // Save the XML with the new structure
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        }
+    });
+
+});
+
+// This is where we reduce the number of available rooms in the available hotels JSON file
+app.post('/update-available-hotels', (req, res) => {
+    console.log('Parsed Request Body:', req.body);
+    const updatedData = req.body;
+    // console.log(updatedData);
+    // console.log(JSON.stringify(updatedData));
+    fs.writeFile('./availableHotels.json', JSON.stringify(updatedData, null, 2), (err) => {
+        if (err) {
+            console.error('Error writing to JSON file:', err);
+            res.status(500).send('Error updating hotels data');
+        } else {
+            res.send('Available hotels data updated successfully');
         }
     });
 });

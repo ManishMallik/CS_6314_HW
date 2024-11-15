@@ -187,12 +187,12 @@ function contactSubmit(){
         })
         .then(response => response.text())
         .then(responseText => {
-            document.getElementById("contact-output").innerHTML += responseText;
+            document.getElementById("contact-output").innerHTML += "<br>" + responseText;
             document.getElementById("contact-output").style.color = "green";
         })
         .catch(error => {
             console.error('Error:', error);
-            document.getElementById("contact-output").innerHTML += "Error submitting form";
+            document.getElementById("contact-output").innerHTML += "<br>Error submitting form";
             document.getElementById("contact-output").style.color = "red";
         });
     }
@@ -516,8 +516,11 @@ function validateAndSubmitStay(event) {
                     if(hotel.availableRooms >= roomsNeeded)
                     {
                         return hotel.availability.some(availability => {
-                            const availableDate = new Date(availability.date);
-                            return availableDate >= new Date(checkIn) && availableDate < new Date(checkOut);
+                            const startDate = new Date(availability.startDate);
+                            const endDate = new Date(availability.endDate);
+                            const checkInDate = new Date(checkIn);
+                            const checkOutDate = new Date(checkOut);
+                            return checkInDate >= startDate && checkOutDate <= endDate;
                         });
                     }
                 });
@@ -525,18 +528,28 @@ function validateAndSubmitStay(event) {
 
             let hotelDetails = "<h3>Available Hotels:</h3>";
             availableHotels.forEach(hotel => {
+                // calculate the number of days between check-in and check-out dates
+                const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
                 hotelDetails += `
+                    <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
                     <strong>Name:</strong> ${hotel.name}<br>
-                    <strong>Address:</strong> ${hotel.city}<br>
+                    <strong>City:</strong> ${hotel.city}<br>
                     <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
-                    <strong>Availability for this Hotel:</strong><br>
+                    <strong>Check-In Date:</strong> ${checkIn}<br>
+                    <strong>Check-Out Date:</strong> ${checkOut}<br>
+                    <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
+                    <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
                 `;
-                hotel.availability.forEach(availability => {
-                    hotelDetails += `
-                        <strong>Date:</strong> ${availability.date}<br>
-                        <strong>Price:</strong> $${availability.pricePerNight}<br><br>
-                    `;
-                });
+                // <strong>Availability Dates for this Hotel:</strong><br>
+                // hotel.availability.forEach(availability => {
+                //     hotelDetails += `
+                //         <strong>Open Date:</strong> ${availability.startDate}<br>
+                //         <strong>Close Date:</strong> ${availability.endDate}<br>
+                //     `;
+                // });
+                // Add a button to book the hotel on that date
+                hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
+                hotelDetails += "<br>";
             });
             document.getElementById('hotelDetails').innerHTML = hotelDetails;
             document.getElementById('hotelDetails').style.color = "green";
@@ -546,6 +559,89 @@ function validateAndSubmitStay(event) {
             document.getElementById('hotelDetails').innerHTML = "Error fetching hotel data";
             document.getElementById('hotelDetails').style.color = "red";
         });
+}
+
+function addHotelToCart(hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice) {
+    if (confirm("Are you sure you want to book this hotel with the following details:\n" + "Hotel ID: " + hotelId + "\nName: " + name + "\nCity: " + city + "\nAdults: " + adultGuests + "\nChildren: " + childGuests + "\nInfants: " + infantGuests + "\nCheck-In Date: " + checkIn + "\nCheck-Out Date: " + checkOut + "\nRooms: " + rooms + "\nPrice Per Night: $" + pricePerNight + "\nTotal Price: $" + totalPrice + "\n\nPress OK to confirm.")) {
+        
+        const data = new URLSearchParams();
+        data.append("hotelId", hotelId);
+        data.append("name", name);
+        data.append("city", city);
+        data.append("adultGuests", adultGuests);
+        data.append("childGuests", childGuests);
+        data.append("infantGuests", infantGuests);
+        data.append("checkIn", checkIn);
+        data.append("checkOut", checkOut);
+        data.append("rooms", rooms);
+        data.append("pricePerNight", pricePerNight);
+        data.append("totalPrice", totalPrice);
+
+        // Book the hotel
+        fetch('/book-hotel-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(responseText => {
+                console.log(responseText);
+                alert("Hotel booked successfully!");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error booking flight!");
+            });
+        
+        // Update the available rooms in the availableHotels.json file
+        fetch('./availableHotels.json')
+            .then(response =>  {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const hotels = data.hotels;
+                let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelId);
+                availableHotels[0].availableRooms -= rooms;
+                console.log(availableHotels[0].availableRooms);
+                
+                // Update the availableHotels.json file
+                const updatedData = { hotels: hotels };
+                console.log(updatedData);
+                console.log(JSON.stringify(updatedData));
+                fetch('/update-available-hotels', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(responseText => {
+                        console.log(responseText);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 }
 
 // DOM Method to load and build the cars.html page

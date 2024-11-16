@@ -1,0 +1,37 @@
+{
+    "flights": [
+        {
+            "flightId": "TX101",
+            "origin": "Dallas, TX",
+            "destination": "San Francisco, CA",
+            "departureDate": "2024-09-05",
+            "arrivalDate": "2024-09-05",
+            "departureTime": "08:00",
+            "arrivalTime": "10:30",
+            "availableSeats": 5,
+            "price": 300
+        },
+        {
+            "flightId": "TX102",
+            "origin": "Austin, TX",
+            "destination": "Los Angeles, CA",
+            "departureDate": "2024-09-07",
+            "arrivalDate": "2024-09-07",
+            "departureTime": "12:00",
+            "arrivalTime": "14:30",
+            "availableSeats": 3,
+            "price": 350
+        },
+        {
+            "flightId": "TX103",
+            "origin": "Houston, TX",
+            "destination": "San Diego, CA",
+            "departureDate": "2024-09-10",
+            "arrivalDate": "2024-09-10",
+            "departureTime": "15:00",
+            "arrivalTime": "17:30",
+            "availableSeats": 4,
+            "price": 320
+        }
+    ]
+}

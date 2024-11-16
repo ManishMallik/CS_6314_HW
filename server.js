@@ -291,6 +291,168 @@ app.post('/confirm-booking-hotel', (req, res) => {
     });
 });
 
+app.post('/book-flight-to-cart', (req, res) => {
+    const { flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice } = req.body;
+
+    // Define new flight structure in XML format
+    const newFlight = {
+        flightId,
+        origin,
+        destination,
+        departureDate,
+        arrivalDate,
+        departureTime,
+        arrivalTime,
+        seatsNeeded,
+        pricePerSeat,
+        totalPrice
+    };
+
+    const xmlFilePath = 'flightCart.xml';
+
+    // Check if XML file exists
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        let xmlContent = { flightBookings: { flight: [] } }; // Default structure if file is empty or doesn't exist
+
+        if (!err && data) {
+            // Parse existing XML data
+            parser.parseString(data, (parseErr, result) => {
+                if (parseErr) {
+                    console.error('Error parsing XML:', parseErr);
+                    res.status(500).send('Error parsing XML file');
+                    return;
+                }
+                xmlContent = result; // Use existing structure if file data is available
+
+                if (!xmlContent.flightBookings) {
+                    xmlContent.flightBookings = { flight: [] };
+                } else if (!Array.isArray(xmlContent.flightBookings.flight)) {
+                    xmlContent.flightBookings.flight = [];
+                }
+
+                // Add new flight to the array
+                xmlContent.flightBookings.flight.push(newFlight);
+
+                // Save the updated XML
+                saveXMLFile(xmlFilePath, xmlContent, res);
+            });
+        } else {
+            // If the file does not exist, create a new structure
+            xmlContent.flightBookings.flight.push(newFlight);
+
+            // Save the XML with the new structure
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        }
+    });
+});
+
+app.post('/update-available-flights', (req, res) => {
+    console.log('Parsed Request Body:', req.body);
+    const updatedData = req.body;
+
+    fs.writeFile('./availableFlights.json', JSON.stringify(updatedData, null, 2), (err) => {
+        if (err) {
+            console.error('Error writing to JSON file:', err);
+            res.status(500).send('Error updating flights data');
+        } else {
+            res.send('Available flights data updated successfully');
+        }
+    });
+});
+
+app.post('/remove-flight-from-cart', (req, res) => {
+    const { flightId } = req.body;
+    const xmlFilePath = 'flightCart.xml';
+
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        if (err) {
+            console.error('Error reading XML file:', err);
+            res.status(500).send('Error reading XML file');
+            return;
+        }
+
+        // Parse existing XML data
+        parser.parseString(data, (parseErr, result) => {
+            if (parseErr) {
+                console.error('Error parsing XML:', parseErr);
+                res.status(500).send('Error parsing XML file');
+                return;
+            }
+
+            const xmlContent = result;
+
+            // Find the flight to remove
+            const flightIndex = xmlContent.flightBookings.flight.findIndex(flight => flight.flightId[0] === flightId);
+
+            if (flightIndex === -1) {
+                res.status(404).send('Flight not found in the cart');
+                return;
+            }
+
+            // Remove the flight from the array
+            xmlContent.flightBookings.flight.splice(flightIndex, 1);
+
+            // Save the updated XML
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        });
+    });
+});
+
+app.post('/confirm-booking-flights', (req, res) => {
+    const { flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice } = req.body;
+
+    // Define new flight structure in XML format
+    const newFlight = {
+        flightId,
+        origin,
+        destination,
+        departureDate,
+        arrivalDate,
+        departureTime,
+        arrivalTime,
+        seatsNeeded,
+        pricePerSeat,
+        totalPrice
+    };
+
+    const xmlFilePath = 'confirmedFlights.xml';
+
+    // Check if XML file exists
+    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+        let xmlContent = { confirmedFlights: { flight: [] } }; // Default structure if file is empty or doesn't exist
+
+        if (!err && data) {
+            // Parse existing XML data
+            parser.parseString(data, (parseErr, result) => {
+                if (parseErr) {
+                    console.error('Error parsing XML:', parseErr);
+                    res.status(500).send('Error parsing XML file');
+                    return;
+                }
+                xmlContent = result; // Use existing structure if file data is available
+
+                if (!xmlContent.confirmedFlights) {
+                    xmlContent.confirmedFlights = { flight: [] };
+                } else if (!Array.isArray(xmlContent.confirmedFlights.flight)) {
+                    xmlContent.confirmedFlights.flight = [];
+                }
+
+                // Add new flight to the array
+                xmlContent.confirmedFlights.flight.push(newFlight);
+
+                // Save the updated XML
+                saveXMLFile(xmlFilePath, xmlContent, res);
+            });
+        } else {
+            // If the file does not exist, create a new structure
+            xmlContent.confirmedFlights.flight.push(newFlight);
+
+            // Save the XML with the new structure
+            saveXMLFile(xmlFilePath, xmlContent, res);
+        }
+    });
+});
+
 
 // Save XML content
 function saveXMLFile(filePath, content, res) {

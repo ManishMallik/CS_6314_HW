@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flights>
+    <flight>
+        <flightId>TX101</flightId>
+        <origin>Dallas, TX</origin>
+        <destination>San Francisco, CA</destination>
+        <departureDate>2024-09-05</departureDate>
+        <arrivalDate>2024-09-05</arrivalDate>
+        <departureTime>08:00</departureTime>
+        <arrivalTime>10:30</arrivalTime>
+        <availableSeats>5</availableSeats>
+        <price>300</price>
+    </flight>
+    <flight>
+        <flightId>TX102</flightId>
+        <origin>Austin, TX</origin>
+        <destination>Los Angeles, CA</destination>
+        <departureDate>2024-09-07</departureDate>
+        <arrivalDate>2024-09-07</arrivalDate>
+        <departureTime>12:00</departureTime>
+        <arrivalTime>14:30</arrivalTime>
+        <availableSeats>3</availableSeats>
+        <price>350</price>
+    </flight>
+    <flight>
+        <flightId>TX103</flightId>
+        <origin>Houston, TX</origin>
+        <destination>San Diego, CA</destination>
+        <departureDate>2024-09-10</departureDate>
+        <arrivalDate>2024-09-10</arrivalDate>
+        <departureTime>15:00</departureTime>
+        <arrivalTime>17:30</arrivalTime>
+        <availableSeats>4</availableSeats>
+        <price>320</price>
+    </flight>
+</flights>

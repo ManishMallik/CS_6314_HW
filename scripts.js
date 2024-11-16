@@ -364,6 +364,76 @@ function validateAndSubmit(event) {
     // Display the trip details in the designated div
     document.getElementById('tripDetails').innerHTML = tripDetails;
     document.getElementById('tripDetails').style.color = "green";
+
+    // Read from the availableFlights.json file
+function searchAvailableFlights(origin, destination, departureDate, returnDate = null, seatsNeeded) {
+    fetch('./availableFlights.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const flights = data.flights;
+            let availableFlights = flights.filter(flight => 
+                flight.origin === origin &&
+                flight.destination === destination &&
+                flight.availableSeats >= seatsNeeded &&
+                flight.departureDate === departureDate
+            );
+
+            // If no exact match is found and it's a round trip, consider ±3 days for both departure and return dates
+            if (availableFlights.length === 0 && returnDate) {
+                availableFlights = flights.filter(flight => {
+                    const departureDateObj = new Date(flight.departureDate);
+                    const inputDepartureDateObj = new Date(departureDate);
+                    const returnDateObj = returnDate ? new Date(flight.returnDate) : null;
+                    const inputReturnDateObj = returnDate ? new Date(returnDate) : null;
+
+                    return (
+                        flight.origin === origin &&
+                        flight.destination === destination &&
+                        flight.availableSeats >= seatsNeeded &&
+                        Math.abs(departureDateObj - inputDepartureDateObj) <= 3 * 24 * 60 * 60 * 1000 && // ±3 days
+                        (!returnDate || Math.abs(returnDateObj - inputReturnDateObj) <= 3 * 24 * 60 * 60 * 1000) // ±3 days for return
+                    );
+                });
+            }
+
+            let flightDetails = "<h3>Available Flights:</h3>";
+            if (availableFlights.length > 0) {
+                availableFlights.forEach(flight => {
+                    const totalPrice = flight.price * seatsNeeded;
+                    flightDetails += `
+                        <strong>Flight ID:</strong> ${flight.flightId}<br>
+                        <strong>Origin:</strong> ${flight.origin}<br>
+                        <strong>Destination:</strong> ${flight.destination}<br>
+                        <strong>Departure Date:</strong> ${flight.departureDate}<br>
+                        <strong>Arrival Date:</strong> ${flight.arrivalDate}<br>
+                        <strong>Departure Time:</strong> ${flight.departureTime}<br>
+                        <strong>Arrival Time:</strong> ${flight.arrivalTime}<br>
+                        <strong>Available Seats:</strong> ${flight.availableSeats}<br>
+                        <strong>Price Per Seat:</strong> $${flight.price}<br>
+                        <strong>Total Price (Computed):</strong> $${totalPrice}<br>
+                        <button onclick="addFlightToCart('${flight.flightId}', '${flight.origin}', '${flight.destination}', '${flight.departureDate}', '${flight.arrivalDate}', '${flight.departureTime}', '${flight.arrivalTime}', ${seatsNeeded}, ${flight.price}, ${totalPrice})">Add to Cart</button>
+                        <br><br>
+                    `;
+                });
+            } else {
+                flightDetails += "<p>No flights available matching your criteria.</p>";
+            }
+
+            document.getElementById('flightDetails').innerHTML = flightDetails;
+            document.getElementById('flightDetails').style.color = "green";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('flightDetails').innerHTML = "Error fetching flight data";
+            document.getElementById('flightDetails').style.color = "red";
+        });
+    }
+
 }
 
 function isValidStayCityPt1(city) {
@@ -737,6 +807,190 @@ function bookAllHotelsFromCart(){
     }
 }
 
+function addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
+    if (confirm("Are you sure you want to book this flight with the following details:\n" + 
+                "Flight ID: " + flightId + 
+                "\nOrigin: " + origin + 
+                "\nDestination: " + destination + 
+                "\nDeparture Date: " + departureDate + 
+                "\nArrival Date: " + arrivalDate + 
+                "\nDeparture Time: " + departureTime + 
+                "\nArrival Time: " + arrivalTime + 
+                "\nSeats Needed: " + seatsNeeded + 
+                "\nPrice Per Seat: $" + pricePerSeat + 
+                "\nTotal Price: $" + totalPrice + 
+                "\n\nPress OK to confirm.")) {
+        
+        const data = new URLSearchParams();
+        data.append("flightId", flightId);
+        data.append("origin", origin);
+        data.append("destination", destination);
+        data.append("departureDate", departureDate);
+        data.append("arrivalDate", arrivalDate);
+        data.append("departureTime", departureTime);
+        data.append("arrivalTime", arrivalTime);
+        data.append("seatsNeeded", seatsNeeded);
+        data.append("pricePerSeat", pricePerSeat);
+        data.append("totalPrice", totalPrice);
+
+        // Book the flight
+        fetch('/book-flight-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            console.log(responseText);
+            alert("Flight booked successfully!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error booking flight!");
+        });
+
+        // Update available seats in the `availableFlights.json` file
+        fetch('./availableFlights.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const flights = data.flights;
+                let selectedFlight = flights.find(flight => flight.flightId === flightId);
+                if (selectedFlight) {
+                    selectedFlight.availableSeats -= seatsNeeded;
+                    console.log(`Updated seats: ${selectedFlight.availableSeats}`);
+                }
+
+                // Update the availableFlights.json file
+                const updatedData = { flights: flights };
+                fetch('/update-available-flights', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    console.log(responseText);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error updating flight data:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching flights:', error);
+            });
+    }
+}
+function removeFlightFromCart(flightId, seatsRemoved) {
+    if (confirm("Are you sure you want to remove this flight from your cart?")) {
+        const data = new URLSearchParams();
+        data.append("flightId", flightId);
+
+        fetch('/remove-flight-from-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            console.log(responseText);
+            alert("Flight removed successfully!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error removing flight!");
+        });
+
+        // Update available seats in the `availableFlights.json` file
+        fetch('./availableFlights.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const flights = data.flights;
+                let selectedFlight = flights.find(flight => flight.flightId === flightId);
+                if (selectedFlight) {
+                    selectedFlight.availableSeats += seatsRemoved;
+                    console.log(`Updated seats: ${selectedFlight.availableSeats}`);
+                }
+
+                // Update the availableFlights.json file
+                const updatedData = { flights: flights };
+                fetch('/update-available-flights', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    console.log(responseText);
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error updating flight data:', error);
+                });
+            });
+    }
+}
+
+function bookAllFlightsFromCart() {
+    if (confirm("Are you sure you want to book all flights in your cart?")) {
+        fetch('/confirm-booking-flights', {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            console.log(responseText);
+            alert("All flights booked successfully!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error booking flights!");
+        });
+    }
+}
+
 // DOM Method to load and build the cars.html page
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -790,8 +1044,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.location.pathname.includes('cart.html')) {
-        const hotelDetails = document.getElementById('selectedHotelDetails');
-
+        const hotelDetailsElement = document.getElementById('selectedHotelsDetails');
+        const flightDetailsElement = document.getElementById('selectedFlightsDetails');
+    
         // Read the selected hotel details from the hotelCart.xml file
         fetch('./hotelCart.xml')
             .then(response => response.text())
@@ -799,11 +1054,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(data, 'application/xml');
                 const hotels = xmlDoc.getElementsByTagName('hotel');
-
+    
                 let hotelDetails = "<h3>Selected Hotels:</h3>";
                 for (let i = 0; i < hotels.length; i++) {
                     const hotel = hotels[i];
-
                     const hotelId = hotel.getElementsByTagName('hotelId')[0].textContent;
                     const name = hotel.getElementsByTagName('name')[0].textContent;
                     const city = hotel.getElementsByTagName('city')[0].textContent;
@@ -831,11 +1085,56 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 }
                 hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
-                document.getElementById('selectedHotelsDetails').innerHTML = hotelDetails;
+                hotelDetailsElement.innerHTML = hotelDetails;
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('selectedHotelsDetails').innerHTML = "Error fetching hotel data";
+                hotelDetailsElement.innerHTML = "Error fetching hotel data";
+            });
+    
+        // Read the selected flight details from the flightCart.xml file
+        fetch('./flightCart.xml')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'application/xml');
+                const flights = xmlDoc.getElementsByTagName('flight');
+    
+                let flightDetails = "<h3>Selected Flights:</h3>";
+                for (let i = 0; i < flights.length; i++) {
+                    const flight = flights[i];
+                    const flightId = flight.getElementsByTagName('flightId')[0].textContent;
+                    const origin = flight.getElementsByTagName('origin')[0].textContent;
+                    const destination = flight.getElementsByTagName('destination')[0].textContent;
+                    const departureDate = flight.getElementsByTagName('departureDate')[0].textContent;
+                    const arrivalDate = flight.getElementsByTagName('arrivalDate')[0].textContent;
+                    const departureTime = flight.getElementsByTagName('departureTime')[0].textContent;
+                    const arrivalTime = flight.getElementsByTagName('arrivalTime')[0].textContent;
+                    const availableSeats = flight.getElementsByTagName('availableSeats')[0].textContent;
+                    const price = flight.getElementsByTagName('price')[0].textContent;
+    
+                    // Calculate the total price for booking all available seats
+                    const totalPrice = price * availableSeats;
+    
+                    flightDetails += `
+                        <strong>Flight ID:</strong> ${flightId}<br>
+                        <strong>Origin:</strong> ${origin}<br>
+                        <strong>Destination:</strong> ${destination}<br>
+                        <strong>Departure Date:</strong> ${departureDate}<br>
+                        <strong>Arrival Date:</strong> ${arrivalDate}<br>
+                        <strong>Departure Time:</strong> ${departureTime}<br>
+                        <strong>Arrival Time:</strong> ${arrivalTime}<br>
+                        <strong>Available Seats:</strong> ${availableSeats}<br>
+                        <strong>Price per Seat:</strong> $${price}<br>
+                        <strong>Total Price:</strong> $${totalPrice}<br><br>
+                    `;
+                }
+                flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
+                flightDetailsElement.innerHTML = flightDetails;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                flightDetailsElement.innerHTML = "Error fetching flight data";
             });
     }
 

@@ -197,7 +197,7 @@ app.post('/update-available-hotels', (req, res) => {
 
 // Remove a hotelID from the cart
 app.post('/remove-hotel-from-cart', (req, res) => {
-    const { hotelId } = req.body;
+    const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
     const xmlFilePath = 'hotelCart.xml';
 
     fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
@@ -217,8 +217,20 @@ app.post('/remove-hotel-from-cart', (req, res) => {
 
             const xmlContent = result;
 
-            // Find the hotel to remove
-            const hotelIndex = xmlContent.hotelBookings.hotel.findIndex(hotel => hotel.hotelId[0] === hotelId);
+            // Find the hotel to remove. Just only remove one instance of the hotel containing the exact same data
+            const hotelIndex = xmlContent.hotelBookings.hotel.findIndex(hotel => (
+                hotel.hotelId[0] === hotelId &&
+                hotel.name[0] === name &&
+                hotel.city[0] === city &&
+                hotel.adultGuests[0] === adultGuests &&
+                hotel.childGuests[0] === childGuests &&
+                hotel.infantGuests[0] === infantGuests &&
+                hotel.checkIn[0] === checkIn &&
+                hotel.checkOut[0] === checkOut &&
+                hotel.rooms[0] === rooms &&
+                hotel.pricePerNight[0] === pricePerNight &&
+                hotel.totalPrice[0] === totalPrice
+            ));
 
             if (hotelIndex === -1) {
                 res.status(404).send('Hotel not found in the cart');

@@ -13,17 +13,4 @@
     <pricePerNight>150</pricePerNight>
     <totalPrice>3000</totalPrice>
   </hotel>
-  <hotel>
-    <hotelId>H011</hotelId>
-    <name>Bay City Hotel</name>
-    <city>Austin, TX</city>
-    <adultGuests>4</adultGuests>
-    <childGuests>0</childGuests>
-    <infantGuests>111</infantGuests>
-    <checkIn>2024-09-11</checkIn>
-    <checkOut>2024-09-12</checkOut>
-    <rooms>2</rooms>
-    <pricePerNight>160</pricePerNight>
-    <totalPrice>320</totalPrice>
-  </hotel>
 </hotelBookings>

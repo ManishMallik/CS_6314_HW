@@ -645,10 +645,20 @@ function addHotelToCart(hotelId, name, city, adultGuests, childGuests, infantGue
     }
 }
 
-function removeHotelFromCart(hotelID, rooms){
+function removeHotelFromCart(hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice){
     if (confirm("Are you sure you want to remove this hotel from your cart?")) {
         const data = new URLSearchParams();
-        data.append("hotelID", hotelID);
+        data.append("hotelId", hotelId);
+        data.append("name", name);
+        data.append("city", city);
+        data.append("adultGuests", adultGuests);
+        data.append("childGuests", childGuests);
+        data.append("infantGuests", infantGuests);
+        data.append("checkIn", checkIn);
+        data.append("checkOut", checkOut);
+        data.append("rooms", rooms);
+        data.append("pricePerNight", pricePerNight);
+        data.append("totalPrice", totalPrice);
 
         fetch('/remove-hotel-from-cart', {
             method: 'POST',
@@ -683,7 +693,7 @@ function removeHotelFromCart(hotelID, rooms){
             })
             .then(data => {
                 const hotels = data.hotels;
-                let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelID);
+                let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelId);
                 availableHotels[0].availableRooms += rooms;
                 console.log(availableHotels[0].availableRooms);
                 
@@ -827,8 +837,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>Check-Out Date:</strong> ${checkOut}<br>
                         <strong>Rooms:</strong> ${rooms}<br>
                         <strong>Price Per Night:</strong> $${pricePerNight}<br>
-                        <strong>Total Price:</strong> $${totalPrice}<br><br>
+                        <strong>Total Price:</strong> $${totalPrice}<br>
                     `;
+
+                    // Add a button for each hotel to remove that hotel from cart
+                    hotelDetails += `<button onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
                 }
                 hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
                 document.getElementById('selectedHotelsDetails').innerHTML = hotelDetails;

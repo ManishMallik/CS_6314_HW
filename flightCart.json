@@ -25,6 +25,19 @@
       "seatsNeeded": 1,
       "pricePerSeat": 365,
       "totalPrice": 365
+    },
+    {
+      "bookingNumber": 1191,
+      "flightId": "TX101",
+      "origin": "Dallas, TX",
+      "destination": "San Francisco, CA",
+      "departureDate": "2024-09-01",
+      "arrivalDate": "2024-09-01",
+      "departureTime": "08:00",
+      "arrivalTime": "10:30",
+      "seatsNeeded": 1,
+      "pricePerSeat": 300,
+      "totalPrice": 300
     }
   ]
 }

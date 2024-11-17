@@ -398,39 +398,42 @@ app.post('/update-available-flights', (req, res) => {
 });
 
 app.post('/remove-flight-from-cart', (req, res) => {
-    const { flightId } = req.body;
-    const xmlFilePath = 'flightCart.xml';
+    
+    console.log("Booking Number time")
+    
+    const { bookingNumber } = req.body;
+    const flightCartJson = 'flightCart.json';
 
-    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
+    console.log('Removing flight with booking number:', bookingNumber);
+
+    fs.readFile(flightCartJson, 'utf-8', (err, data) => {
         if (err) {
-            console.error('Error reading XML file:', err);
-            res.status(500).send('Error reading XML file');
+            console.error('Error reading JSON file:', err);
+            res.status(500).send('Error reading JSON file');
             return;
         }
 
-        // Parse existing XML data
-        parser.parseString(data, (parseErr, result) => {
-            if (parseErr) {
-                console.error('Error parsing XML:', parseErr);
-                res.status(500).send('Error parsing XML file');
-                return;
+        const jsonData = JSON.parse(data);
+
+        // Find all of the flights with the booking number and remove them
+        const flightIndex = jsonData.flights.findIndex(flight => flight.bookingNumber === bookingNumber);
+
+        if (flightIndex === -1) {
+            res.status(404).send('Flight not found in the cart');
+            return;
+        }
+
+        // Remove the flight from the array
+        jsonData.flights.splice(flightIndex, 1);
+
+        // Save the updated JSON
+        fs.writeFile(flightCartJson, JSON.stringify(jsonData, null, 2), (writeErr) => {
+            if (writeErr) {
+                console.error('Error writing JSON file:', writeErr);
+                res.status(500).send('Error saving data');
+            } else {
+                res.send('Flight removed from cart successfully');
             }
-
-            const xmlContent = result;
-
-            // Find the flight to remove
-            const flightIndex = xmlContent.flightBookings.flight.findIndex(flight => flight.flightId[0] === flightId);
-
-            if (flightIndex === -1) {
-                res.status(404).send('Flight not found in the cart');
-                return;
-            }
-
-            // Remove the flight from the array
-            xmlContent.flightBookings.flight.splice(flightIndex, 1);
-
-            // Save the updated XML
-            saveXMLFile(xmlFilePath, xmlContent, res);
         });
     });
 });

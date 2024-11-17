@@ -1424,16 +1424,21 @@ function updateAvailableSeats(flightId, seatsNeeded) {
         });
 }
 
-function removeFlightFromCart(flightId, seatsRemoved) {
-    if (confirm("Are you sure you want to remove this flight from your cart?")) {
+function removeFlightFromCart(bookingNumber) {
+    if (confirm("Are you sure you want to remove this booking from your cart?")) {
         
+        // Store it in JSON format
+        const data = {
+            bookingNumber: bookingNumber
+        }
 
+        // Retrieve and remove the flights from the flightCart.json that contain the bookingNumber
         fetch('/remove-flight-from-cart', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: data
+            body: JSON.stringify(data)
         })
         .then(response => {
             if (!response.ok) {
@@ -1444,51 +1449,12 @@ function removeFlightFromCart(flightId, seatsRemoved) {
         .then(responseText => {
             console.log(responseText);
             alert("Flight removed successfully!");
+            window.location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
             alert("Error removing flight!");
         });
-
-        // Update available seats in the `availableFlights.xml` file
-        fetch('./availableFlights.xml')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const flights = data.flights;
-                let selectedFlight = flights.find(flight => flight.flightId === flightId);
-                if (selectedFlight) {
-                    selectedFlight.availableSeats += seatsRemoved;
-                    console.log(`Updated seats: ${selectedFlight.availableSeats}`);
-                }
-
-                // Update the availableFlights.xml file
-                const updatedData = { flights: flights };
-                fetch('/update-available-flights', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(updatedData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(responseText => {
-                    console.log(responseText);
-                    window.location.reload();
-                })
-                .catch(error => {
-                    console.error('Error updating flight data:', error);
-                });
-            });
     }
 }
 
@@ -1512,13 +1478,6 @@ function bookAllFlightsFromCart() {
             alert("Error booking flights!");
         });
     }
-}
-
-function flightGroupBy(flights, key) {
-    return flights.reduce((acc, flight) => {
-        (acc[flight[key]] = acc[flight[key]] || []).push(flight);
-        return acc;
-    }, {});
 }
 
 // DOM Method to load and build the cars.html page
@@ -1592,76 +1551,53 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 const flights = data.flights;
-    
-                let flightDetails = "<h3>Selected Flights:</h3>";
-                // Group selected flights by booking number
-                const groupedFlights = groupBy(flights, 'bookingNumber');
-                console.log(groupedFlights);
-                for (const bookingNumber in groupedFlights) {
-                    if (groupedFlights.hasOwnProperty(bookingNumber)) {
-                        const flightGroup = groupedFlights[bookingNumber];
-                        console.log(flightGroup);
-                        let totalPrice = 0;
-                        flightGroup.forEach(flight => {
-                            const flightId = flight.flightId;
-                            const origin = flight.origin;
-                            const destination = flight.destination;
-                            const departureDate = flight.departureDate;
-                            const arrivalDate = flight.arrivalDate;
-                            const departureTime = flight.departureTime;
-                            const arrivalTime = flight.arrivalTime;
-                            const seatsNeeded = flight.seatsNeeded;
-                            const price = flight.pricePerSeat;
-                            totalPrice += flight.totalPrice;
-    
-                            flightDetails += `
-                                <strong>Flight ID:</strong> ${flightId}<br>
-                                <strong>Origin:</strong> ${origin}<br>
-                                <strong>Destination:</strong> ${destination}<br>
-                                <strong>Departure Date:</strong> ${departureDate}<br>
-                                <strong>Arrival Date:</strong> ${arrivalDate}<br>
-                                <strong>Departure Time:</strong> ${departureTime}<br>
-                                <strong>Arrival Time:</strong> ${arrivalTime}<br>
-                                <strong>Seats Needed:</strong> ${seatsNeeded}<br>
-                                <strong>Price per Seat:</strong> $${price}<br>
-                                <strong>Total Price:</strong> $${flight.totalPrice}<br><br>
-                            `;
-                        });
-                        flightDetails += `<button onclick="removeFlightGroupFromCart('${bookingNumber}', ${flightGroup.length})">Remove from Cart</button><br><br>`;
-                    }
-                }
                 
-                // flights.forEach(flight => {
-                //     const flightId = flight.flightId;
-                //     const origin = flight.origin;
-                //     const destination = flight.destination;
-                //     const departureDate = flight.departureDate;
-                //     const arrivalDate = flight.arrivalDate;
-                //     const departureTime = flight.departureTime;
-                //     const arrivalTime = flight.arrivalTime;
-                //     const seatsNeeded = flight.seatsNeeded;
-                //     const price = flight.pricePerSeat;
-                //     const totalPrice = flight.totalPrice;
-    
-                //     // Calculate the total price for booking all available seats
-                //     // const totalPrice = price * availableSeats;
-    
-                //     flightDetails += `
-                //         <strong>Flight ID:</strong> ${flightId}<br>
-                //         <strong>Origin:</strong> ${origin}<br>
-                //         <strong>Destination:</strong> ${destination}<br>
-                //         <strong>Departure Date:</strong> ${departureDate}<br>
-                //         <strong>Arrival Date:</strong> ${arrivalDate}<br>
-                //         <strong>Departure Time:</strong> ${departureTime}<br>
-                //         <strong>Arrival Time:</strong> ${arrivalTime}<br>
-                //         <strong>Seats Needed:</strong> ${seatsNeeded}<br>
-                //         <strong>Price per Seat:</strong> $${price}<br>
-                //         <strong>Total Price:</strong> $${totalPrice}<br><br>
-                //     `;
+                const groupFlightsByBooking = {};
+                flights.forEach(flight => {
+                    const bookingNumber = flight.bookingNumber;
+                    if (!groupFlightsByBooking[bookingNumber]) {
+                        groupFlightsByBooking[bookingNumber] = [];
+                    }
+                    groupFlightsByBooking[bookingNumber].push(flight);
+                });
 
-                //     // Add a button for each flight to remove that flight from cart
-                //     flightDetails += `<button onclick="removeFlightFromCart('${flightId}', ${seatsNeeded})">Remove from Cart</button><br><br>`;
-                // });
+                let flightDetails = "<h3>Selected Flights:</h3>";
+                
+                // Go through each group of flights
+                for (const [bookingNumber, flights] of Object.entries(groupFlightsByBooking)) {
+                    flightDetails += `<strong>Booking Number:</strong> ${bookingNumber}<br><br>`
+                    flights.forEach(flight => {
+                        const flightId = flight.flightId;
+                        const origin = flight.origin;
+                        const destination = flight.destination;
+                        const departureDate = flight.departureDate;
+                        const arrivalDate = flight.arrivalDate;
+                        const departureTime = flight.departureTime;
+                        const arrivalTime = flight.arrivalTime;
+                        const seatsNeeded = flight.seatsNeeded;
+                        const price = flight.pricePerSeat;
+                        const totalPrice = flight.totalPrice;
+        
+                        // Calculate the total price for booking all available seats
+                        // const totalPrice = price * availableSeats;
+        
+                        flightDetails += `
+                            <strong>Flight ID:</strong> ${flightId}<br>
+                            <strong>Origin:</strong> ${origin}<br>
+                            <strong>Destination:</strong> ${destination}<br>
+                            <strong>Departure Date:</strong> ${departureDate}<br>
+                            <strong>Arrival Date:</strong> ${arrivalDate}<br>
+                            <strong>Departure Time:</strong> ${departureTime}<br>
+                            <strong>Arrival Time:</strong> ${arrivalTime}<br>
+                            <strong>Seats Needed:</strong> ${seatsNeeded}<br>
+                            <strong>Price per Seat:</strong> $${price}<br>
+                            <strong>Total Price:</strong> $${totalPrice}<br><br>
+                        `;
+                    });
+                    // Add a button for each flight to remove that flight from cart
+                    flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
+                }
+
                 flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
             })

@@ -199,60 +199,60 @@ function contactSubmit(){
 }
 
 // Show and hide form fields based on the trip type
-function confirmTripType() {
-    let dropdown = document.getElementById("tripdropdown"); 
-    let selectedValue = dropdown.value; 
+// function confirmTripType() {
+//     let dropdown = document.getElementById("tripdropdown"); 
+//     let selectedValue = dropdown.value; 
 
-    var originLabel = document.getElementById("origin-label");
-    var origin = document.getElementById("origin");
-    var destinationLabel = document.getElementById("destination-label");
-    var destination = document.getElementById("destination");
-    var departureLabel = document.getElementById("departure-label");
-    var departure = document.getElementById("departure");
-    var arrivalLabel = document.getElementById("arriving-label");
-    var arrival = document.getElementById("arriving");
-    var searchButton = document.getElementById("searchButton");
+//     var originLabel = document.getElementById("origin-label");
+//     var origin = document.getElementById("origin");
+//     var destinationLabel = document.getElementById("destination-label");
+//     var destination = document.getElementById("destination");
+//     var departureLabel = document.getElementById("departure-label");
+//     var departure = document.getElementById("departure");
+//     var arrivalLabel = document.getElementById("arriving-label");
+//     var arrival = document.getElementById("arriving");
+//     var searchButton = document.getElementById("searchButton");
 
-    // Reset all fields initially
-    originLabel.style.display = "none";
-    origin.style.display = "none";
-    destinationLabel.style.display = "none";
-    destination.style.display = "none";
-    departureLabel.style.display = "none";
-    departure.style.display = "none";
-    arrivalLabel.style.display = "none";
-    arrival.style.display = "none";
-    searchButton.style.display = "none";
+//     // Reset all fields initially
+//     originLabel.style.display = "none";
+//     origin.style.display = "none";
+//     destinationLabel.style.display = "none";
+//     destination.style.display = "none";
+//     departureLabel.style.display = "none";
+//     departure.style.display = "none";
+//     arrivalLabel.style.display = "none";
+//     arrival.style.display = "none";
+//     searchButton.style.display = "none";
 
-    // Show form fields based on selected option
-    if (selectedValue === "one-way") {
-        originLabel.style.display = "block";
-        origin.style.display = "block";
-        destinationLabel.style.display = "block"
-        destination.style.display = "block";
-        departureLabel.style.display = "block";
-        departure.style.display = "block";
-        searchButton.style.display = "block"; 
+//     // Show form fields based on selected option
+//     if (selectedValue === "one-way") {
+//         originLabel.style.display = "block";
+//         origin.style.display = "block";
+//         destinationLabel.style.display = "block"
+//         destination.style.display = "block";
+//         departureLabel.style.display = "block";
+//         departure.style.display = "block";
+//         searchButton.style.display = "block"; 
 
-        arrival.value = ""; // Hide arrival date for one-way
-    } else if (selectedValue === "round-trip") {
-        originLabel.style.display = "block";
-        origin.style.display = "block";
-        destinationLabel.style.display = "block"
-        destination.style.display = "block";
-        departureLabel.style.display = "block";
-        departure.style.display = "block";
-        arrivalLabel.style.display = "block";
-        arrival.style.display = "block"; // Show arrival date for round trip
-        searchButton.style.display = "block";
-    }
-}
+//         arrival.value = ""; // Hide arrival date for one-way
+//     } else if (selectedValue === "round-trip") {
+//         originLabel.style.display = "block";
+//         origin.style.display = "block";
+//         destinationLabel.style.display = "block"
+//         destination.style.display = "block";
+//         departureLabel.style.display = "block";
+//         departure.style.display = "block";
+//         arrivalLabel.style.display = "block";
+//         arrival.style.display = "block"; // Show arrival date for round trip
+//         searchButton.style.display = "block";
+//     }
+// }
 
 // Show the passenger form when the icon is clicked
-function showPassengerForm() {
-    var passengerForm = document.getElementById("passengerForm");
-    passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
-}
+// function showPassengerForm() {
+//     var passengerForm = document.getElementById("passengerForm");
+//     passengerForm.style.display = passengerForm.style.display === "none" ? "block" : "none";
+// }
 
 // Function to validate if the city ends with ", TX" or ", CA"
 function isValidState(location) {
@@ -1090,17 +1090,293 @@ function bookAllHotelsFromCart(){
     }
 }
 
-function addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
-    // Here's how this function works
-    // When booking a round trip, that means we will add two flights to the cart: one for the departure and one for the return
-    // The user will be prompted to confirm booking both flights
-    // If the user confirms, both flights will be added to the cart
-    // If the user cancels, nothing will be added to the cart
+// function addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
+//     // Here's how this function works
+//     // When booking a round trip, that means we will add two flights to the cart: one for the departure and one for the return
+//     // The user will be prompted to confirm booking both flights
+//     // If the user confirms, both flights will be added to the cart
+//     // If the user cancels, nothing will be added to the cart
     
-    // Prevent page refresh
-    // event.preventDefault();
+//     // Prevent page refresh
+//     // event.preventDefault();
 
-    if (confirm("Are you sure you want to book this round trip with the following details:\n" +
+//     if (confirm("Are you sure you want to book this round trip with the following details:\n" +
+//         "Departure Flight Details:" +
+//         "\nFlight ID: " + flightId +
+//         "\nOrigin: " + origin +
+//         "\nDestination: " + destination +
+//         "\nDeparture Date: " + departureDate +
+//         "\nArrival Date: " + arrivalDate +
+//         "\nDeparture Time: " + departureTime +
+//         "\nArrival Time: " + arrivalTime +
+//         "\nSeats Needed: " + seatsNeeded +
+//         "\nPrice Per Seat: $" + pricePerSeat +
+//         "\nTotal Price: $" + totalPrice +
+//         "\n\nReturn Flight Details:" +
+//         "\nFlight ID: " + returnFlightId +
+//         "\nOrigin: " + origin +
+//         "\nDestination: " + destination +
+//         "\nDeparture Date: " + returnDepartureDate +
+//         "\nArrival Date: " + returnArrivalDate +
+//         "\nDeparture Time: " + returnDepartureTime +
+//         "\nArrival Time: " + returnArrivalTime +
+//         "\nSeats Needed: " + seatsNeeded +
+//         "\nPrice Per Seat: $" + pricePerSeatReturn +
+//         "\nTotal Price: $" + returnTotalPrice +
+//         "\n\nPress OK to confirm.")) {
+//         // Store it 2 JSON files: one for the departure flight and one for the return flight
+//         const data = {
+//             flightId: flightId,
+//             origin: origin,
+//             destination: destination,
+//             departureDate: departureDate,
+//             arrivalDate: arrivalDate,
+//             departureTime: departureTime,
+//             arrivalTime: arrivalTime,
+//             seatsNeeded: seatsNeeded,
+//             pricePerSeat: pricePerSeat,
+//             totalPrice: totalPrice
+//         };
+
+//         const returnData = {
+//             flightId: returnFlightId,
+//             origin: destination,
+//             destination: origin,
+//             departureDate: returnDepartureDate,
+//             arrivalDate: returnArrivalDate,
+//             departureTime: returnDepartureTime,
+//             arrivalTime: returnArrivalTime,
+//             seatsNeeded: seatsNeeded,
+//             pricePerSeat: pricePerSeatReturn,
+//             totalPrice: returnTotalPrice
+//         };
+
+//         // Book the departure flight
+//         fetch('/book-flight-to-cart', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(data)
+//         })
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.text();
+//             })
+//             .then(responseText => {
+//                 console.log(responseText);
+//                 alert("Departure flight booked successfully!");
+//                 // Book the return flight
+//                 fetch('/book-flight-to-cart', {
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/json'
+//                     },
+//                     body: JSON.stringify(returnData)
+//                 })
+//                     .then(response => {
+//                         if (!response.ok) {
+//                             throw new Error('Network response was not ok');
+//                         }
+//                         return response.text();
+//                     })
+//                     .then(responseText => {
+//                         console.log(responseText);
+//                         alert("Return flight booked successfully!");
+//                     })
+//                     .catch(error => {
+//                         console.error('Error:', error);
+//                         alert("Error booking return flight!");
+//                     });
+//             })
+//             .catch(error => {
+//                 console.error('Error:', error);
+//                 alert("Error booking departure flight!");
+//             });
+//     }
+// }
+
+// function addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
+//     if (confirm("Are you sure you want to book this flight with the following details:\n" + 
+//                 "Flight ID: " + flightId + 
+//                 "\nOrigin: " + origin + 
+//                 "\nDestination: " + destination + 
+//                 "\nDeparture Date: " + departureDate + 
+//                 "\nArrival Date: " + arrivalDate + 
+//                 "\nDeparture Time: " + departureTime + 
+//                 "\nArrival Time: " + arrivalTime + 
+//                 "\nSeats Needed: " + seatsNeeded + 
+//                 "\nPrice Per Seat: $" + pricePerSeat + 
+//                 "\nTotal Price: $" + totalPrice + 
+//                 "\n\nPress OK to confirm.")) {
+
+//         // Store it in JSON format
+//         const data = {
+//             flightId: flightId,
+//             origin: origin,
+//             destination: destination,
+//             departureDate: departureDate,
+//             arrivalDate: arrivalDate,
+//             departureTime: departureTime,
+//             arrivalTime: arrivalTime,
+//             seatsNeeded: seatsNeeded,
+//             pricePerSeat: pricePerSeat,
+//             totalPrice: totalPrice
+//         };
+
+
+//         // Book the flight
+//         fetch('/book-flight-to-cart', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(data)
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.text();
+//         })
+//         .then(responseText => {
+//             console.log(responseText);
+//             alert("Flight booked successfully!");
+            
+//             // Reset it back to localhost:8080/flights.html
+//             window.location.href = "flights.html";
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             alert("Error booking flight!");
+//         });
+
+//         // Update available seats in the `availableFlights.xml` file
+//         fetch('./availableFlights.xml')
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('Network response was not ok');
+//                 }
+//                 return response.text();
+//             })
+//             .then(data => {
+//                 const parser = new DOMParser();
+//                 const xmlDoc = parser.parseFromString(data, "text/xml");
+//                 const flights = xmlDoc.getElementsByTagName("flight");
+//                 let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightId")[0].textContent === flightId);
+//                 if (selectedFlight) {
+//                     selectedFlight.getElementsByTagName("availableSeats")[0].textContent -= seatsNeeded;
+//                     console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableSeats")[0].textContent}`);
+//                 }
+
+//                 // Update the availableFlights.xml file
+//                 const updatedData = new XMLSerializer().serializeToString(xmlDoc);
+//                 fetch('/update-available-flights', {
+//                     method: 'POST',
+//                     headers: {
+//                         'Content-Type': 'application/xml'
+//                         // 'Content-Type': 'application/x-www-form-urlencoded'
+//                     },
+//                     body: updatedData
+//                 })
+//                 .then(response => {
+//                     if (!response.ok) {
+//                         throw new Error('Network response was not ok');
+//                     }
+//                     return response.text();
+//                 })
+//                 .then(responseText => {
+//                     console.log(responseText);
+//                     window.location.reload();
+//                 })
+//                 .catch(error => {
+//                     console.error('Error updating flight data:', error);
+//                 });
+//             });
+
+//     }
+// }
+
+// Added the new add flight to cart code here
+// You had a bunch of things inside of a single function that were async this lead to race conditions
+// in general make a scripts/ folder and then have multiple *.js files for different things 
+// so like have a flights.js that handles adding and removing all the filghts just makes the code nicer
+function confirmTripType() {
+    const tripType = document.getElementById('tripdropdown').value;
+
+    // Display relevant fields based on trip type
+    document.getElementById('origin-label').style.display = 'block';
+    document.getElementById('origin').style.display = 'block';
+    document.getElementById('destination-label').style.display = 'block';
+    document.getElementById('destination').style.display = 'block';
+    document.getElementById('departure-label').style.display = 'block';
+    document.getElementById('departure').style.display = 'block';
+
+    if (tripType === 'round-trip') {
+        document.getElementById('arriving-label').style.display = 'block';
+        document.getElementById('arriving').style.display = 'block';
+    } else {
+        document.getElementById('arriving-label').style.display = 'none';
+        document.getElementById('arriving').style.display = 'none';
+    }
+
+    document.getElementById('searchButton').style.display = 'block';
+}
+
+function showPassengerForm() {
+    document.getElementById('passengerForm').style.display = 'block';
+}
+
+// function validateAndSubmit(event) {
+//     event.preventDefault();
+
+//     const form = document.getElementById('flightForm');
+//     const flightId = generateFlightId();  // Assuming there's a function to generate a unique flight ID
+//     const origin = form.origin.value;
+//     const destination = form.destination.value;
+//     const departureDate = form.departure.value;
+//     const arrivalDate = form.arriving ? form.arriving.value : '';
+//     const seatsNeeded = parseInt(form.adults.value) + parseInt(form.children.value) + parseInt(form.infants.value);
+//     const pricePerSeat = calculatePricePerSeat();  // Assuming there's a function to calculate price per seat
+//     const totalPrice = pricePerSeat * seatsNeeded;
+
+//     const departureTime = "09:00"; // Hardcoded for simplicity, you can modify as needed
+//     const arrivalTime = "12:00"; // Hardcoded for simplicity, you can modify as needed
+
+//     addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice);
+// }
+
+function addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
+    const flightData = confirmFlightDetails(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice);
+    if (flightData) {
+        bookFlight(flightData)
+            .then(() => alert("Flight booked successfully!"))
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error booking flight!");
+            });
+    }
+}
+
+function addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
+    if (confirmRoundTripDetails(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice)) {
+        bookFlight({ flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice })
+            .then(() => {
+                alert("Departure flight booked successfully!");
+                return bookFlight({ flightId: returnFlightId, origin: destination, destination: origin, departureDate: returnDepartureDate, arrivalDate: returnArrivalDate, departureTime: returnDepartureTime, arrivalTime: returnArrivalTime, seatsNeeded, pricePerSeat: pricePerSeatReturn, totalPrice: returnTotalPrice });
+            })
+            .then(() => alert("Return flight booked successfully!"))
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error booking flight!");
+            });
+    }
+}
+
+function confirmRoundTripDetails(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
+    return confirm("Are you sure you want to book this round trip with the following details:\n" +
         "Departure Flight Details:" +
         "\nFlight ID: " + flightId +
         "\nOrigin: " + origin +
@@ -1123,8 +1399,22 @@ function addRoundTripToCart(flightId, returnFlightId, origin, destination, depar
         "\nSeats Needed: " + seatsNeeded +
         "\nPrice Per Seat: $" + pricePerSeatReturn +
         "\nTotal Price: $" + returnTotalPrice +
+        "\n\nPress OK to confirm.");
+}
+
+function confirmFlightDetails(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
+    if (confirm("Are you sure you want to book this flight with the following details:\n" +
+        "Flight ID: " + flightId +
+        "\nOrigin: " + origin +
+        "\nDestination: " + destination +
+        "\nDeparture Date: " + departureDate +
+        "\nArrival Date: " + arrivalDate +
+        "\nDeparture Time: " + departureTime +
+        "\nArrival Time: " + arrivalTime +
+        "\nSeats Needed: " + seatsNeeded +
+        "\nPrice Per Seat: $" + pricePerSeat +
+        "\nTotal Price: $" + totalPrice +
         "\n\nPress OK to confirm.")) {
-        // Store it 2 JSON files: one for the departure flight and one for the return flight
         const data = {
             flightId: flightId,
             origin: origin,
@@ -1137,104 +1427,20 @@ function addRoundTripToCart(flightId, returnFlightId, origin, destination, depar
             pricePerSeat: pricePerSeat,
             totalPrice: totalPrice
         };
-
-        const returnData = {
-            flightId: returnFlightId,
-            origin: destination,
-            destination: origin,
-            departureDate: returnDepartureDate,
-            arrivalDate: returnArrivalDate,
-            departureTime: returnDepartureTime,
-            arrivalTime: returnArrivalTime,
-            seatsNeeded: seatsNeeded,
-            pricePerSeat: pricePerSeatReturn,
-            totalPrice: returnTotalPrice
-        };
-
-        // Book the departure flight
-        fetch('/book-flight-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(responseText => {
-                console.log(responseText);
-                alert("Departure flight booked successfully!");
-                // Book the return flight
-                fetch('/book-flight-to-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(returnData)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.text();
-                    })
-                    .then(responseText => {
-                        console.log(responseText);
-                        alert("Return flight booked successfully!");
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert("Error booking return flight!");
-                    });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("Error booking departure flight!");
-            });
+        return data;
+    } else {
+        return null;
     }
 }
 
-function addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
-    if (confirm("Are you sure you want to book this flight with the following details:\n" + 
-                "Flight ID: " + flightId + 
-                "\nOrigin: " + origin + 
-                "\nDestination: " + destination + 
-                "\nDeparture Date: " + departureDate + 
-                "\nArrival Date: " + arrivalDate + 
-                "\nDeparture Time: " + departureTime + 
-                "\nArrival Time: " + arrivalTime + 
-                "\nSeats Needed: " + seatsNeeded + 
-                "\nPrice Per Seat: $" + pricePerSeat + 
-                "\nTotal Price: $" + totalPrice + 
-                "\n\nPress OK to confirm.")) {
-
-        // Store it in JSON format
-        const data = {
-            flightId: flightId,
-            origin: origin,
-            destination: destination,
-            departureDate: departureDate,
-            arrivalDate: arrivalDate,
-            departureTime: departureTime,
-            arrivalTime: arrivalTime,
-            seatsNeeded: seatsNeeded,
-            pricePerSeat: pricePerSeat,
-            totalPrice: totalPrice
-        };
-
-
-        // Book the flight
-        fetch('/book-flight-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+function bookFlight(data) {
+    fetch('/book-flight-to-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -1243,44 +1449,43 @@ function addFlightToCart(flightId, origin, destination, departureDate, arrivalDa
         })
         .then(responseText => {
             console.log(responseText);
-            alert("Flight booked successfully!");
-            
-            // Reset it back to localhost:8080/flights.html
-            window.location.href = "flights.html";
+            alert("The flight is booked successfully!");
+            updateAvailableSeats(data.flightId, data.seatsNeeded);
         })
         .catch(error => {
             console.error('Error:', error);
             alert("Error booking flight!");
         });
+}
 
-        // Update available seats in the `availableFlights.xml` file
-        fetch('./availableFlights.xml')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
+function updateAvailableSeats(flightId, seatsNeeded) {
+    fetch('./availableFlights.xml')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data, "text/xml");
+            const flights = xmlDoc.getElementsByTagName("flight");
+            let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightId")[0].textContent === flightId);
+            if (selectedFlight) {
+                const availableSeatsElem = selectedFlight.getElementsByTagName("availableSeats")[0];
+                let availableSeats = parseInt(availableSeatsElem.textContent);
+                availableSeatsElem.textContent = availableSeats - seatsNeeded;
+                console.log(`Updated seats: ${availableSeatsElem.textContent}`);
+            }
+
+            const updatedData = new XMLSerializer().serializeToString(xmlDoc);
+            fetch('/update-available-flights', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/xml'
+                },
+                body: updatedData
             })
-            .then(data => {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(data, "text/xml");
-                const flights = xmlDoc.getElementsByTagName("flight");
-                let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightId")[0].textContent === flightId);
-                if (selectedFlight) {
-                    selectedFlight.getElementsByTagName("availableSeats")[0].textContent -= seatsNeeded;
-                    console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableSeats")[0].textContent}`);
-                }
-
-                // Update the availableFlights.xml file
-                const updatedData = new XMLSerializer().serializeToString(xmlDoc);
-                fetch('/update-available-flights', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/xml'
-                        // 'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: updatedData
-                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -1289,15 +1494,14 @@ function addFlightToCart(flightId, origin, destination, departureDate, arrivalDa
                 })
                 .then(responseText => {
                     console.log(responseText);
-                    window.location.reload();
+                    window.location.href = "flights.html";
                 })
                 .catch(error => {
                     console.error('Error updating flight data:', error);
                 });
-            });
-
-    }
+        });
 }
+
 function removeFlightFromCart(flightId, seatsRemoved) {
     if (confirm("Are you sure you want to remove this flight from your cart?")) {
         
@@ -1464,11 +1668,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const arrivalDate = flight.arrivalDate;
                     const departureTime = flight.departureTime;
                     const arrivalTime = flight.arrivalTime;
-                    const availableSeats = flight.availableSeats;
-                    const price = flight.price;
+                    const seatsNeeded = flight.seatsNeeded;
+                    const price = flight.pricePerSeat;
+                    const totalPrice = flight.totalPrice;
     
                     // Calculate the total price for booking all available seats
-                    const totalPrice = price * availableSeats;
+                    // const totalPrice = price * availableSeats;
     
                     flightDetails += `
                         <strong>Flight ID:</strong> ${flightId}<br>
@@ -1478,13 +1683,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>Arrival Date:</strong> ${arrivalDate}<br>
                         <strong>Departure Time:</strong> ${departureTime}<br>
                         <strong>Arrival Time:</strong> ${arrivalTime}<br>
-                        <strong>Available Seats:</strong> ${availableSeats}<br>
+                        <strong>Seats Needed:</strong> ${seatsNeeded}<br>
                         <strong>Price per Seat:</strong> $${price}<br>
                         <strong>Total Price:</strong> $${totalPrice}<br><br>
                     `;
 
                     // Add a button for each flight to remove that flight from cart
-                    flightDetails += `<button onclick="removeFlightFromCart('${flightId}', ${availableSeats})">Remove from Cart</button><br><br>`;
+                    flightDetails += `<button onclick="removeFlightFromCart('${flightId}', ${seatsNeeded})">Remove from Cart</button><br><br>`;
                 });
                 flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;

@@ -345,13 +345,14 @@ app.post('/book-flight-to-cart', (req, res) => {
     });
 });
 
+// Update the available flights XML file
 app.post('/update-available-flights', (req, res) => {
-    console.log('Parsed Request Body:', req.body);
+    //get the updated data from the request body. it should be application/xml
     const updatedData = req.body;
-
-    fs.writeFile('./availableFlights.json', JSON.stringify(updatedData, null, 2), (err) => {
+    //write the updated data to the availableFlights.xml file
+    fs.writeFile('./availableFlights.xml', updatedData, (err) => {
         if (err) {
-            console.error('Error writing to JSON file:', err);
+            console.error('Error writing to XML file:', err);
             res.status(500).send('Error updating flights data');
         } else {
             res.send('Available flights data updated successfully');

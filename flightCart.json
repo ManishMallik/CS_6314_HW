@@ -9,7 +9,7 @@
       "departureTime": "08:00",
       "arrivalTime": "10:30",
       "seatsNeeded": 5,
-      "price": 300,
+      "pricePerSeat": 300,
       "totalPrice": 1500
     },
     {
@@ -21,7 +21,7 @@
       "departureTime": "12:00",
       "arrivalTime": "14:30",
       "seatsNeeded": 3,
-      "price": 350,
+      "pricePerSeat": 350,
       "totalPrice": 1050
     },
     {
@@ -33,7 +33,7 @@
       "departureTime": "15:00",
       "arrivalTime": "17:30",
       "seatsNeeded": 4,
-      "price": 320,
+      "pricePerSeat": 320,
       "totalPrice": 1280
     },
     {
@@ -119,6 +119,18 @@
       "seatsNeeded": 3,
       "pricePerSeat": 365,
       "totalPrice": 876
+    },
+    {
+      "flightId": "TX102",
+      "origin": "Austin, TX",
+      "destination": "Los Angeles, CA",
+      "departureDate": "2024-09-05",
+      "arrivalDate": "2024-09-05",
+      "departureTime": "12:00",
+      "arrivalTime": "14:30",
+      "seatsNeeded": 1,
+      "pricePerSeat": 350,
+      "totalPrice": 350
     }
   ]
 }

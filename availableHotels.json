@@ -225,7 +225,7 @@
       "hotelId": "H014",
       "name": "Austin Oasis",
       "city": "Austin, TX",
-      "availableRooms": 9,
+      "availableRooms": 8,
       "pricePerNight": 155,
       "availability": [
         {

@@ -13,4 +13,17 @@
     <pricePerNight>150</pricePerNight>
     <totalPrice>3000</totalPrice>
   </hotel>
+  <hotel>
+    <hotelId>H014</hotelId>
+    <name>Austin Oasis</name>
+    <city>Austin, TX</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-15</checkIn>
+    <checkOut>2024-09-18</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>155</pricePerNight>
+    <totalPrice>465</totalPrice>
+  </hotel>
 </hotelBookings>

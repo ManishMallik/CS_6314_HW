@@ -306,7 +306,7 @@ app.post('/confirm-booking-hotel', (req, res) => {
 app.post('/book-flight-to-cart', (req, res) => {
     const { flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice } = req.body;
 
-    // Define new flight structure in XML format
+    // Define new flight structure in JSON format
     const newFlight = {
         flightId,
         origin,
@@ -320,41 +320,28 @@ app.post('/book-flight-to-cart', (req, res) => {
         totalPrice
     };
 
-    const xmlFilePath = 'flightCart.xml';
+    const jsonFilePath = 'flightCart.json';
 
-    // Check if XML file exists
-    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
-        let xmlContent = { flightBookings: { flight: [] } }; // Default structure if file is empty or doesn't exist
+    // Check if JSON file exists
+    fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
+        let jsonData = { flights: [] }; // Default structure if file is empty or doesn't exist
 
         if (!err && data) {
-            // Parse existing XML data
-            parser.parseString(data, (parseErr, result) => {
-                if (parseErr) {
-                    console.error('Error parsing XML:', parseErr);
-                    res.status(500).send('Error parsing XML file');
-                    return;
-                }
-                xmlContent = result; // Use existing structure if file data is available
-
-                if (!xmlContent.flightBookings) {
-                    xmlContent.flightBookings = { flight: [] };
-                } else if (!Array.isArray(xmlContent.flightBookings.flight)) {
-                    xmlContent.flightBookings.flight = [];
-                }
-
-                // Add new flight to the array
-                xmlContent.flightBookings.flight.push(newFlight);
-
-                // Save the updated XML
-                saveXMLFile(xmlFilePath, xmlContent, res);
-            });
-        } else {
-            // If the file does not exist, create a new structure
-            xmlContent.flightBookings.flight.push(newFlight);
-
-            // Save the XML with the new structure
-            saveXMLFile(xmlFilePath, xmlContent, res);
+            jsonData = JSON.parse(data); // Use existing structure if file data is available
         }
+
+        // Add new flight to the array
+        jsonData.flights.push(newFlight);
+
+        // Save the updated JSON
+        fs.writeFile(jsonFilePath, JSON.stringify(jsonData, null, 2), (writeErr) => {
+            if (writeErr) {
+                console.error('Error writing JSON file:', writeErr);
+                res.status(500).send('Error saving data');
+            } else {
+                res.send('Flight added to cart successfully');
+            }
+        });
     });
 });
 

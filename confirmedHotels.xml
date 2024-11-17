@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<confirmedHotels>
+  <hotel>
+    <hotelId>H002</hotelId>
+    <name>Austin City Inn</name>
+    <city>Austin, TX</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-15</checkIn>
+    <checkOut>2024-09-18</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>120</pricePerNight>
+    <totalPrice>360</totalPrice>
+  </hotel>
+</confirmedHotels>

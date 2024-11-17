@@ -246,59 +246,67 @@ app.post('/remove-hotel-from-cart', (req, res) => {
     });
 });
 
-// After confirming on the cart page, the user can book the hotels. Save it to a confirmedHotel.xml file
+// After confirming on the cart page, the user can book the hotels. Add whatever is in hotelCart.xml to confirmedHotel.xml
 app.post('/confirm-booking-hotel', (req, res) => {
-    const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
 
-    // Define new hotel structure in XML format
-    const newHotel = {
-        hotelId,
-        name,
-        city,
-        adultGuests,
-        childGuests,
-        infantGuests,
-        checkIn,
-        checkOut,
-        rooms,
-        pricePerNight,
-        totalPrice
-    };
+    const hotelCartXML = "hotelCart.xml";
+    const confirmedHotelXML = "confirmedHotels.xml";
 
-    const xmlFilePath = 'confirmedHotel.xml';
+    fs.readFile(hotelCartXML, 'utf-8', (err, data) => {
+        //get the hotels list from the cart
+        parser.parseString(data, (parseErr, result) => {
+            if (parseErr) {
+                console.error('Error parsing XML:', parseErr);
+                res.status(500).send('Error parsing XML file');
+                return;
+            }
 
-    // Check if XML file exists
-    fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
-        let xmlContent = { confirmedHotels: { hotel: [] } }; // Default structure if file is empty or doesn't exist
+            const xmlContent = result;
 
-        if (!err && data) {
-            // Parse existing XML data
-            parser.parseString(data, (parseErr, result) => {
-                if (parseErr) {
-                    console.error('Error parsing XML:', parseErr);
-                    res.status(500).send('Error parsing XML file');
-                    return;
+            // Open up the confirmed hotels file and add all the hotels from the cart to it
+            fs.readFile(confirmedHotelXML, 'utf-8', (err, data) => {
+                let confirmedHotels = { confirmedHotels: { hotel: [] } }; // Default structure if file is empty or doesn't exist
+
+                if (!err && data) {
+                    // Parse existing XML data
+                    parser.parseString(data, (parseErr, result) => {
+                        if (parseErr) {
+                            console.error('Error parsing XML:', parseErr);
+                            res.status(500).send('Error parsing XML file');
+                            return;
+                        }
+                        confirmedHotels = result; // Use existing structure if file data is available
+
+                        if (!confirmedHotels.confirmedHotels) {
+                            confirmedHotels.confirmedHotels = { hotel: [] };
+                        } else if (!Array.isArray(confirmedHotels.confirmedHotels.hotel)) {
+                            confirmedHotels.confirmedHotels.hotel = [];
+                        }
+
+                        // Add new hotel to the array
+                        confirmedHotels.confirmedHotels.hotel.push(...xmlContent.hotelBookings.hotel);
+
+                        // Save the updated XML
+                        saveXMLFile(confirmedHotelXML, confirmedHotels, res);
+                    });
+                } else {
+                    // If the file does not exist, create a new structure
+                    confirmedHotels.confirmedHotels.hotel.push(...xmlContent.hotelBookings.hotel);
+
+                    // Save the XML with the new structure
+                    saveXMLFile(confirmedHotelXML, confirmedHotels, res);
                 }
-                xmlContent = result; // Use existing structure if file data is available
-
-                if (!xmlContent.confirmedHotels) {
-                    xmlContent.confirmedHotels = { hotel: [] };
-                } else if (!Array.isArray(xmlContent.confirmedHotels.hotel)) {
-                    xmlContent.confirmedHotels.hotel = [];
-                }
-
-                // Add new hotel to the array
-                xmlContent.confirmedHotels.hotel.push(newHotel);
-
-                // Save the updated XML
-                saveXMLFile(xmlFilePath, xmlContent, res);
             });
-        } else {
-            // If the file does not exist, create a new structure
-            xmlContent.confirmedHotels.hotel.push(newHotel);
+        });
+    });
 
-            // Save the XML with the new structure
-            saveXMLFile(xmlFilePath, xmlContent, res);
+    // Once the booking is confirmed, remove all hotels from the cart
+    fs.writeFile(hotelCartXML, '', (err) => {
+        if (err) {
+            console.error('Error writing to XML file:', err);
+            res.status(500).send('Error updating hotels data');
+        } else {
+            res.send('Hotels removed from cart successfully');
         }
     });
 });

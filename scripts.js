@@ -1699,12 +1699,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 flightDetailsElement.innerHTML = "Error fetching flight data";
             });
 
-        // Read the selected hotel details from the hotelCart.xml file
+        // Read the selected hotel details from the hotelCart.xml file. Check if hotelCart.xml file is empty first. if empty, then do not display anything
         fetch('./hotelCart.xml')
             .then(response => response.text())
             .then(data => {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(data, 'application/xml');
+                
+                // Check if the hotelCart.xml file is empty
+                if (xmlDoc.getElementsByTagName('hotel').length == 0) {
+                    hotelDetailsElement.innerHTML = "No hotels in cart";
+                    return;
+                }
                 const hotels = xmlDoc.getElementsByTagName('hotel');
     
                 let hotelDetails = "<h3>Selected Hotels:</h3>";

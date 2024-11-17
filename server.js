@@ -1,19 +1,45 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+require('body-parser-xml')(bodyParser);
 const fs = require('fs');
 const xml2js = require('xml2js');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Initialize parser and builder for XML
-const parser = new xml2js.Parser();
-const builder = new xml2js.Builder();
+// Initialize parser and builder for XML. Preserve the case of the tags. Do not make it all lowercase
+const parser = new xml2js.Parser(
+    // {
+    //     explicitArray: false,
+    //     mergeAttrs: true,
+    //     attrNameProcessors: [name => name],
+    //     tagNameProcessors: [name => name],
+    //     preserveChildrenOrder: true
+    // }
+);
+const builder = new xml2js.Builder(
+    // {
+    //     explicitArray: false,
+    //     mergeAttrs: true,
+    //     attrNameProcessors: [name => name],
+    //     tagNameProcessors: [name => name],
+    //     renderOpts: { pretty: true, indent: ' ', newline: '\n' },
+    //     headless: true,
+    // }
+);
 
 // Middleware to serve static files and parse form data
 app.use(express.static('.'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(bodyParser.xml({
+    limit: '1MB',
+    xmlParseOptions: {
+        normalize: true,
+        normalizeTags: true,
+        explicitArray: false
+    }
+}));
 
 // Navigating to home page
 app.get('/', (req, res) => {
@@ -312,10 +338,11 @@ app.post('/confirm-booking-hotel', (req, res) => {
 });
 
 app.post('/book-flight-to-cart', (req, res) => {
-    const { flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice } = req.body;
+    const { bookingNumber, flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice } = req.body;
 
     // Define new flight structure in JSON format
     const newFlight = {
+        bookingNumber,
         flightId,
         origin,
         destination,
@@ -357,8 +384,10 @@ app.post('/book-flight-to-cart', (req, res) => {
 app.post('/update-available-flights', (req, res) => {
     //get the updated data from the request body. it should be application/xml
     const updatedData = req.body;
+
+    const xmlString = builder.buildObject(updatedData);
     //write the updated data to the availableFlights.xml file
-    fs.writeFile('./availableFlights.xml', updatedData, (err) => {
+    fs.writeFile('./availableFlights.xml', xmlString, (err) => {
         if (err) {
             console.error('Error writing to XML file:', err);
             res.status(500).send('Error updating flights data');

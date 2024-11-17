@@ -1,66 +1,7 @@
 {
   "flights": [
     {
-      "flightId": "TX101",
-      "origin": "Dallas, TX",
-      "destination": "San Francisco, CA",
-      "departureDate": "2024-09-05",
-      "arrivalDate": "2024-09-05",
-      "departureTime": "08:00",
-      "arrivalTime": "10:30",
-      "seatsNeeded": 5,
-      "pricePerSeat": 300,
-      "totalPrice": 1500
-    },
-    {
-      "flightId": "TX102",
-      "origin": "Austin, TX",
-      "destination": "Los Angeles, CA",
-      "departureDate": "2024-09-07",
-      "arrivalDate": "2024-09-07",
-      "departureTime": "12:00",
-      "arrivalTime": "14:30",
-      "seatsNeeded": 3,
-      "pricePerSeat": 350,
-      "totalPrice": 1050
-    },
-    {
-      "flightId": "TX103",
-      "origin": "Houston, TX",
-      "destination": "San Diego, CA",
-      "departureDate": "2024-09-10",
-      "arrivalDate": "2024-09-10",
-      "departureTime": "15:00",
-      "arrivalTime": "17:30",
-      "seatsNeeded": 4,
-      "pricePerSeat": 320,
-      "totalPrice": 1280
-    },
-    {
-      "flightId": "TX101",
-      "origin": "Dallas, TX",
-      "destination": "San Francisco, CA",
-      "departureDate": "2024-09-01",
-      "arrivalDate": "2024-09-01",
-      "departureTime": "08:00",
-      "arrivalTime": "10:30",
-      "seatsNeeded": 70,
-      "pricePerSeat": 300,
-      "totalPrice": 1230
-    },
-    {
-      "flightId": "TX101",
-      "origin": "Dallas, TX",
-      "destination": "San Francisco, CA",
-      "departureDate": "2024-09-01",
-      "arrivalDate": "2024-09-01",
-      "departureTime": "08:00",
-      "arrivalTime": "10:30",
-      "seatsNeeded": 70,
-      "pricePerSeat": 300,
-      "totalPrice": 300
-    },
-    {
+      "bookingNumber": 9669,
       "flightId": "TX102",
       "origin": "Austin, TX",
       "destination": "Los Angeles, CA",
@@ -73,42 +14,7 @@
       "totalPrice": 350
     },
     {
-      "flightId": "TX102",
-      "origin": "Austin, TX",
-      "destination": "Los Angeles, CA",
-      "departureDate": "2024-09-05",
-      "arrivalDate": "2024-09-05",
-      "departureTime": "12:00",
-      "arrivalTime": "14:30",
-      "seatsNeeded": 1,
-      "pricePerSeat": 350,
-      "totalPrice": 350
-    },
-    {
-      "flightId": "TX102",
-      "origin": "Austin, TX",
-      "destination": "Los Angeles, CA",
-      "departureDate": "2024-09-05",
-      "arrivalDate": "2024-09-05",
-      "departureTime": "12:00",
-      "arrivalTime": "14:30",
-      "seatsNeeded": 1,
-      "pricePerSeat": 350,
-      "totalPrice": 350
-    },
-    {
-      "flightId": "TX102",
-      "origin": "Austin, TX",
-      "destination": "Los Angeles, CA",
-      "departureDate": "2024-09-05",
-      "arrivalDate": "2024-09-05",
-      "departureTime": "12:00",
-      "arrivalTime": "14:30",
-      "seatsNeeded": 100,
-      "pricePerSeat": 350,
-      "totalPrice": 350
-    },
-    {
+      "bookingNumber": 9669,
       "flightId": "CA211",
       "origin": "Los Angeles, CA",
       "destination": "Austin, TX",
@@ -116,21 +22,9 @@
       "arrivalDate": "2024-10-20",
       "departureTime": "12:00",
       "arrivalTime": "17:30",
-      "seatsNeeded": 3,
-      "pricePerSeat": 365,
-      "totalPrice": 876
-    },
-    {
-      "flightId": "TX102",
-      "origin": "Austin, TX",
-      "destination": "Los Angeles, CA",
-      "departureDate": "2024-09-05",
-      "arrivalDate": "2024-09-05",
-      "departureTime": "12:00",
-      "arrivalTime": "14:30",
       "seatsNeeded": 1,
-      "pricePerSeat": 350,
-      "totalPrice": 350
+      "pricePerSeat": 365,
+      "totalPrice": 365
     }
   ]
 }

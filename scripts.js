@@ -520,7 +520,7 @@ function validateAndSubmit(event) {
                             <strong>Available Seats:</strong> ${availableSeats}<br>
                             <strong>Price Per Seat:</strong> $${price}<br>
                             <strong>Total Price (Computed):</strong> $${totalPrice}<br>
-                            <button onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${availableSeats}, ${price}, ${totalPrice})">Add to Cart</button>
+                            <button onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
                             <br><br>
                         `;
                     });
@@ -1168,34 +1168,33 @@ function addRoundTripToCart(flightId, returnFlightId, origin, destination, depar
             .then(responseText => {
                 console.log(responseText);
                 alert("Departure flight booked successfully!");
+                // Book the return flight
+                fetch('/book-flight-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(returnData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(responseText => {
+                        console.log(responseText);
+                        alert("Return flight booked successfully!");
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Error booking return flight!");
+                    });
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert("Error booking departure flight!");
             });
-        
-            // Book the return flight
-            fetch('/book-flight-to-cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(returnData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(responseText => {
-                    console.log(responseText);
-                    alert("Return flight booked successfully!");
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert("Error booking return flight!");
-                });
     }
 }
 

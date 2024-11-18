@@ -386,8 +386,8 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                 // Make sure the origin, destination, and available seats match the user's input
                 const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
                 const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                const flightSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-                const departureDateObj = new Date(flight.getElementsByTagName("departureDate")[0].textContent);
+                const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
+                const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
                 const inputDepartureDateObj = new Date(departureDate);
                 // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
 
@@ -413,8 +413,8 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                 const availableFlightsClose = Array.from(flights).filter(flight => {
                     const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
                     const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                    const flightSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-                    const departureDateObj = new Date(flight.getElementsByTagName("departureDate")[0].textContent);
+                    const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
+                    const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
                     const inputDepartureDateObj = new Date(departureDate);
                     // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
 
@@ -435,8 +435,8 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                 const availableReturn = Array.from(flights).filter(flight => {
                     const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
                     const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                    const flightSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-                    const departureDateObj = new Date(flight.getElementsByTagName("departureDate")[0].textContent);
+                    const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
+                    const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
                     const inputDepartureDateObj = new Date(returnDate);
                     // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
 
@@ -459,8 +459,8 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                     const availableReturnClose = Array.from(flights).filter(flight => {
                         const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
                         const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                        const flightSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
-                        const departureDateObj = new Date(flight.getElementsByTagName("departureDate")[0].textContent);
+                        const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
+                        const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
                         const inputDepartureDateObj = new Date(returnDate);
                         // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
 
@@ -482,24 +482,24 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                     if(availableReturnFlights.length > 0){
                         availableFlights.forEach(flight => {
                             availableReturnFlights.forEach(returnFlight => {
-                                const flightId = flight.getElementsByTagName("flightId")[0].textContent;
+                                const flightId = flight.getElementsByTagName("flightid")[0].textContent;
                                 const origin = flight.getElementsByTagName("origin")[0].textContent;
                                 const destination = flight.getElementsByTagName("destination")[0].textContent;
-                                const departureDate = flight.getElementsByTagName("departureDate")[0].textContent;
-                                const arrivalDate = flight.getElementsByTagName("arrivalDate")[0].textContent;
-                                const departureTime = flight.getElementsByTagName("departureTime")[0].textContent;
-                                const arrivalTime = flight.getElementsByTagName("arrivalTime")[0].textContent;
-                                const availableSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
+                                const departureDate = flight.getElementsByTagName("departuredate")[0].textContent;
+                                const arrivalDate = flight.getElementsByTagName("arrivaldate")[0].textContent;
+                                const departureTime = flight.getElementsByTagName("departuretime")[0].textContent;
+                                const arrivalTime = flight.getElementsByTagName("arrivaltime")[0].textContent;
+                                const availableSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
                                 const price = parseFloat(flight.getElementsByTagName("price")[0].textContent);
                                 const totalPrice = price * adults + price * 0.7 * children + price * 0.1 * infants;
-                                const returnFlightId = returnFlight.getElementsByTagName("flightId")[0].textContent;
+                                const returnFlightId = returnFlight.getElementsByTagName("flightid")[0].textContent;
                                 // const origin = flight.getElementsByTagName("origin")[0].textContent;
                                 // const destination = flight.getElementsByTagName("destination")[0].textContent;
-                                const returnDepartureDate = returnFlight.getElementsByTagName("departureDate")[0].textContent;
-                                const returnArrivalDate = returnFlight.getElementsByTagName("arrivalDate")[0].textContent;
-                                const returnDepartureTime = returnFlight.getElementsByTagName("departureTime")[0].textContent;
-                                const returnArrivalTime = returnFlight.getElementsByTagName("arrivalTime")[0].textContent;
-                                const returnAvailableSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
+                                const returnDepartureDate = returnFlight.getElementsByTagName("departuredate")[0].textContent;
+                                const returnArrivalDate = returnFlight.getElementsByTagName("arrivaldate")[0].textContent;
+                                const returnDepartureTime = returnFlight.getElementsByTagName("departuretime")[0].textContent;
+                                const returnArrivalTime = returnFlight.getElementsByTagName("arrivaltime")[0].textContent;
+                                const returnAvailableSeats = parseInt(returnFlight.getElementsByTagName("availableseats")[0].textContent);
                                 const returnPrice = parseFloat(returnFlight.getElementsByTagName("price")[0].textContent);
                                 const totalReturnPrice = returnPrice * adults + returnPrice * 0.7 * children + returnPrice * 0.1 * infants;
                                 flightDetails += `
@@ -537,14 +537,14 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                 }
                 else{
                     availableFlights.forEach(flight => {
-                        const flightId = flight.getElementsByTagName("flightId")[0].textContent;
+                        const flightId = flight.getElementsByTagName("flightid")[0].textContent;
                         const origin = flight.getElementsByTagName("origin")[0].textContent;
                         const destination = flight.getElementsByTagName("destination")[0].textContent;
-                        const departureDate = flight.getElementsByTagName("departureDate")[0].textContent;
-                        const arrivalDate = flight.getElementsByTagName("arrivalDate")[0].textContent;
-                        const departureTime = flight.getElementsByTagName("departureTime")[0].textContent;
-                        const arrivalTime = flight.getElementsByTagName("arrivalTime")[0].textContent;
-                        const availableSeats = parseInt(flight.getElementsByTagName("availableSeats")[0].textContent);
+                        const departureDate = flight.getElementsByTagName("departuredate")[0].textContent;
+                        const arrivalDate = flight.getElementsByTagName("arrivaldate")[0].textContent;
+                        const departureTime = flight.getElementsByTagName("departuretime")[0].textContent;
+                        const arrivalTime = flight.getElementsByTagName("arrivaltime")[0].textContent;
+                        const availableSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
                         const price = parseFloat(flight.getElementsByTagName("price")[0].textContent);
                         const totalPrice = price * adults + price * 0.7 * children + price * 0.1 * infants;
                         flightDetails += `
@@ -1057,6 +1057,58 @@ function addRoundTripToCart(flightId, returnFlightId, origin, destination, depar
                     .then(responseText => {
                         console.log(responseText);
                         alert("Return flight booked successfully!");
+                        // Update available seats in the `availableFlights.xml` file
+                        fetch('./availableFlights.xml')
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                const parser = new DOMParser();
+                                const xmlDoc = parser.parseFromString(data, "text/xml");
+                                const flights = xmlDoc.getElementsByTagName("flight");
+                                let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
+                                if (selectedFlight) {
+                                    selectedFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
+                                    console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
+                                }
+                                
+                                let selectedReturnFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === returnFlightId);
+                                if (selectedReturnFlight) {
+                                    selectedReturnFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
+                                    console.log(`Updated seats: ${selectedReturnFlight.getElementsByTagName("availableseats")[0].textContent}`);
+                                }
+
+                                // Update the availableFlights.xml file
+                                const updatedData = new XMLSerializer().serializeToString(xmlDoc);
+                                fetch('/update-available-flights', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/xml'
+                                        // 'Content-Type': 'application/x-www-form-urlencoded'
+                                    },
+                                    body: updatedData
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.text();
+                                })
+                                .then(responseText => {
+                                    console.log(responseText);
+                                    window.location.reload();
+                                })
+                                .catch(error => {
+                                    console.error('Error updating flight data:', error);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -1138,10 +1190,10 @@ function addFlightToCart(flightId, origin, destination, departureDate, arrivalDa
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(data, "text/xml");
                 const flights = xmlDoc.getElementsByTagName("flight");
-                let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightId")[0].textContent === flightId);
+                let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
                 if (selectedFlight) {
-                    selectedFlight.getElementsByTagName("availableSeats")[0].textContent -= seatsNeeded;
-                    console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableSeats")[0].textContent}`);
+                    selectedFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
+                    console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
                 }
 
                 // Update the availableFlights.xml file
@@ -1392,9 +1444,9 @@ function updateAvailableSeats(flightId, seatsNeeded) {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(data, "text/xml");
             const flights = xmlDoc.getElementsByTagName("flight");
-            let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightId")[0].textContent === flightId);
+            let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
             if (selectedFlight) {
-                const availableSeatsElem = selectedFlight.getElementsByTagName("availableSeats")[0];
+                const availableSeatsElem = selectedFlight.getElementsByTagName("availableseats")[0];
                 let availableSeats = parseInt(availableSeatsElem.textContent);
                 availableSeatsElem.textContent = availableSeats - seatsNeeded;
                 console.log(`Updated seats: ${availableSeatsElem.textContent}`);
@@ -1416,7 +1468,6 @@ function updateAvailableSeats(flightId, seatsNeeded) {
                 })
                 .then(responseText => {
                     console.log(responseText);
-                    window.location.href = "flights.html";
                 })
                 .catch(error => {
                     console.error('Error updating flight data:', error);
@@ -1428,17 +1479,20 @@ function removeFlightFromCart(bookingNumber) {
     if (confirm("Are you sure you want to remove this booking from your cart?")) {
         
         // Store it in JSON format
-        const data = {
-            bookingNumber: bookingNumber
-        }
+        // const data = {
+        //     bookingNumber: bookingNumber
+        // }
+
+        const data = new URLSearchParams();
+        data.append("bookingNumber", bookingNumber);
 
         // Retrieve and remove the flights from the flightCart.json that contain the bookingNumber
         fetch('/remove-flight-from-cart', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify(data)
+            body: data
         })
         .then(response => {
             if (!response.ok) {
@@ -1551,6 +1605,12 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 const flights = data.flights;
+
+                // Check if the flightCart.json file is empty
+                if (flights.length == 0) {
+                    flightDetailsElement.innerHTML = "No flights in cart";
+                    return;
+                }
                 
                 const groupFlightsByBooking = {};
                 flights.forEach(flight => {

@@ -400,31 +400,54 @@ app.post('/update-available-flights', (req, res) => {
 app.post('/remove-flight-from-cart', (req, res) => {
     
     console.log("Booking Number time")
-    
+    console.log("Request Body: ", req.body);
     const { bookingNumber } = req.body;
     const flightCartJson = 'flightCart.json';
 
     console.log('Removing flight with booking number:', bookingNumber);
 
     fs.readFile(flightCartJson, 'utf-8', (err, data) => {
+        
+        console.log("Reading file");
+        
         if (err) {
             console.error('Error reading JSON file:', err);
             res.status(500).send('Error reading JSON file');
             return;
         }
 
+        console.log("Data read");
+
         const jsonData = JSON.parse(data);
 
-        // Find all of the flights with the booking number and remove them
-        const flightIndex = jsonData.flights.findIndex(flight => flight.bookingNumber === bookingNumber);
+        // Convert booking number from string to number
+        const bookingNum = parseInt(bookingNumber);
 
-        if (flightIndex === -1) {
+        // Find all of the flights with the booking number and remove them
+        // const flightIndex = jsonData.flights.findIndex(flight => flight.bookingNumber === bookingNum);
+
+        // console.log("Flight Index: ", flightIndex);
+
+        // if (flightIndex === -1) {
+        //     res.status(404).send('Flight not found in the cart');
+        //     return;
+        // }
+
+        // console.log("Moving forward");
+
+        // // Remove the flight from the array
+        // jsonData.flights.splice(flightIndex, 1);
+        // console.log("Flights after removal: ", jsonData.flights);
+
+        const flightsToKeep = jsonData.flights.filter(flight => flight.bookingNumber !== bookingNum);
+        if(flightsToKeep.length === jsonData.flights.length){
             res.status(404).send('Flight not found in the cart');
             return;
         }
 
-        // Remove the flight from the array
-        jsonData.flights.splice(flightIndex, 1);
+        console.log("Flights to keep: ", flightsToKeep);
+        
+        jsonData.flights = flightsToKeep;
 
         // Save the updated JSON
         fs.writeFile(flightCartJson, JSON.stringify(jsonData, null, 2), (writeErr) => {

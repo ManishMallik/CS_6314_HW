@@ -8,7 +8,7 @@
     <arrivaldate>2024-09-01</arrivaldate>
     <departuretime>08:00</departuretime>
     <arrivaltime>10:30</arrivaltime>
-    <availableseats>69</availableseats>
+    <availableseats>59</availableseats>
     <price>300</price>
   </flight>
   <flight>
@@ -19,7 +19,7 @@
     <arrivaldate>2024-09-05</arrivaldate>
     <departuretime>12:00</departuretime>
     <arrivaltime>14:30</arrivaltime>
-    <availableseats>100</availableseats>
+    <availableseats>90</availableseats>
     <price>350</price>
   </flight>
   <flight>
@@ -393,7 +393,7 @@
     <arrivaldate>2024-10-20</arrivaldate>
     <departuretime>12:00</departuretime>
     <arrivaltime>17:30</arrivaltime>
-    <availableseats>80</availableseats>
+    <availableseats>70</availableseats>
     <price>365</price>
   </flight>
   <flight>

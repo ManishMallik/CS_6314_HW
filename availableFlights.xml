@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<flights>
+  <flight>
+    <flightid>TX101</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-09-01</departuredate>
+    <arrivaldate>2024-09-01</arrivaldate>
+    <departuretime>08:00</departuretime>
+    <arrivaltime>10:30</arrivaltime>
+    <availableseats>67</availableseats>
+    <price>300</price>
+  </flight>
+  <flight>
+    <flightid>TX102</flightid>
+    <origin>Austin, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-09-05</departuredate>
+    <arrivaldate>2024-09-05</arrivaldate>
+    <departuretime>12:00</departuretime>
+    <arrivaltime>14:30</arrivaltime>
+    <availableseats>91</availableseats>
+    <price>350</price>
+  </flight>
+  <flight>
+    <flightid>TX103</flightid>
+    <origin>Houston, TX</origin>
+    <destination>San Diego, CA</destination>
+    <departuredate>2024-09-07</departuredate>
+    <arrivaldate>2024-09-07</arrivaldate>
+    <departuretime>15:00</departuretime>
+    <arrivaltime>17:30</arrivaltime>
+    <availableseats>55</availableseats>
+    <price>320</price>
+  </flight>
+  <flight>
+    <flightid>TX104</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>Oakland, CA</destination>
+    <departuredate>2024-09-10</departuredate>
+    <arrivaldate>2024-09-10</arrivaldate>
+    <departuretime>09:00</departuretime>
+    <arrivaltime>11:30</arrivaltime>
+    <availableseats>79</availableseats>
+    <price>310</price>
+  </flight>
+  <flight>
+    <flightid>TX105</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-09-13</departuredate>
+    <arrivaldate>2024-09-13</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>15:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>TX106</flightid>
+    <origin>Houston, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-09-17</departuredate>
+    <arrivaldate>2024-09-17</arrivaldate>
+    <departuretime>07:00</departuretime>
+    <arrivaltime>09:30</arrivaltime>
+    <availableseats>75</availableseats>
+    <price>350</price>
+  </flight>
+  <flight>
+    <flightid>TX107</flightid>
+    <origin>College Station, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-09-20</departuredate>
+    <arrivaldate>2024-09-20</arrivaldate>
+    <departuretime>10:00</departuretime>
+    <arrivaltime>12:30</arrivaltime>
+    <availableseats>65</availableseats>
+    <price>320</price>
+  </flight>
+  <flight>
+    <flightid>TX108</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-09-22</departuredate>
+    <arrivaldate>2024-09-22</arrivaldate>
+    <departuretime>06:30</departuretime>
+    <arrivaltime>09:00</arrivaltime>
+    <availableseats>50</availableseats>
+    <price>330</price>
+  </flight>
+  <flight>
+    <flightid>TX109</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-09-26</departuredate>
+    <arrivaldate>2024-09-26</arrivaldate>
+    <departuretime>18:30</departuretime>
+    <arrivaltime>21:00</arrivaltime>
+    <availableseats>85</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>TX110</flightid>
+    <origin>Houston, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-10-01</departuredate>
+    <arrivaldate>2024-10-01</arrivaldate>
+    <departuretime>08:00</departuretime>
+    <arrivaltime>10:30</arrivaltime>
+    <availableseats>95</availableseats>
+    <price>330</price>
+  </flight>
+  <flight>
+    <flightid>TX111</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>San Diego, CA</destination>
+    <departuredate>2024-10-07</departuredate>
+    <arrivaldate>2024-10-07</arrivaldate>
+    <departuretime>15:00</departuretime>
+    <arrivaltime>17:30</arrivaltime>
+    <availableseats>60</availableseats>
+    <price>320</price>
+  </flight>
+  <flight>
+    <flightid>TX112</flightid>
+    <origin>College Station, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-10-11</departuredate>
+    <arrivaldate>2024-10-11</arrivaldate>
+    <departuretime>07:30</departuretime>
+    <arrivaltime>10:00</arrivaltime>
+    <availableseats>70</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>TX113</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-10-15</departuredate>
+    <arrivaldate>2024-10-15</arrivaldate>
+    <departuretime>06:00</departuretime>
+    <arrivaltime>08:30</arrivaltime>
+    <availableseats>100</availableseats>
+    <price>350</price>
+  </flight>
+  <flight>
+    <flightid>TX114</flightid>
+    <origin>Houston, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-10-20</departuredate>
+    <arrivaldate>2024-10-20</arrivaldate>
+    <departuretime>12:00</departuretime>
+    <arrivaltime>14:30</arrivaltime>
+    <availableseats>80</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>TX115</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>San Diego, CA</destination>
+    <departuredate>2024-10-25</departuredate>
+    <arrivaldate>2024-10-25</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>15:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>330</price>
+  </flight>
+  <flight>
+    <flightid>TX116</flightid>
+    <origin>College Station, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-10-30</departuredate>
+    <arrivaldate>2024-10-30</arrivaldate>
+    <departuretime>15:00</departuretime>
+    <arrivaltime>17:30</arrivaltime>
+    <availableseats>55</availableseats>
+    <price>320</price>
+  </flight>
+  <flight>
+    <flightid>TX117</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-11-04</departuredate>
+    <arrivaldate>2024-11-04</arrivaldate>
+    <departuretime>09:00</departuretime>
+    <arrivaltime>11:30</arrivaltime>
+    <availableseats>65</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>TX118</flightid>
+    <origin>Houston, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-11-07</departuredate>
+    <arrivaldate>2024-11-07</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>15:30</arrivaltime>
+    <availableseats>75</availableseats>
+    <price>350</price>
+  </flight>
+  <flight>
+    <flightid>TX119</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>San Diego, CA</destination>
+    <departuredate>2024-11-10</departuredate>
+    <arrivaldate>2024-11-10</arrivaldate>
+    <departuretime>18:30</departuretime>
+    <arrivaltime>21:00</arrivaltime>
+    <availableseats>85</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>TX120</flightid>
+    <origin>College Station, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-11-15</departuredate>
+    <arrivaldate>2024-11-15</arrivaldate>
+    <departuretime>08:00</departuretime>
+    <arrivaltime>10:30</arrivaltime>
+    <availableseats>95</availableseats>
+    <price>370</price>
+  </flight>
+  <flight>
+    <flightid>TX121</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-11-20</departuredate>
+    <arrivaldate>2024-11-20</arrivaldate>
+    <departuretime>10:00</departuretime>
+    <arrivaltime>12:30</arrivaltime>
+    <availableseats>60</availableseats>
+    <price>350</price>
+  </flight>
+  <flight>
+    <flightid>TX122</flightid>
+    <origin>Houston, TX</origin>
+    <destination>San Francisco, CA</destination>
+    <departuredate>2024-11-25</departuredate>
+    <arrivaldate>2024-11-25</arrivaldate>
+    <departuretime>06:30</departuretime>
+    <arrivaltime>09:00</arrivaltime>
+    <availableseats>70</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>TX123</flightid>
+    <origin>San Antonio, TX</origin>
+    <destination>San Diego, CA</destination>
+    <departuredate>2024-11-26</departuredate>
+    <arrivaldate>2024-11-26</arrivaldate>
+    <departuretime>18:00</departuretime>
+    <arrivaltime>20:30</arrivaltime>
+    <availableseats>100</availableseats>
+    <price>370</price>
+  </flight>
+  <flight>
+    <flightid>TX124</flightid>
+    <origin>College Station, TX</origin>
+    <destination>San Jose, CA</destination>
+    <departuredate>2024-11-30</departuredate>
+    <arrivaldate>2024-11-30</arrivaldate>
+    <departuretime>08:30</departuretime>
+    <arrivaltime>11:00</arrivaltime>
+    <availableseats>80</availableseats>
+    <price>380</price>
+  </flight>
+  <flight>
+    <flightid>TX125</flightid>
+    <origin>Dallas, TX</origin>
+    <destination>Los Angeles, CA</destination>
+    <departuredate>2024-12-01</departuredate>
+    <arrivaldate>2024-12-01</arrivaldate>
+    <departuretime>12:00</departuretime>
+    <arrivaltime>14:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>CA201</flightid>
+    <origin>San Francisco, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-09-12</departuredate>
+    <arrivaldate>2024-09-12</arrivaldate>
+    <departuretime>09:00</departuretime>
+    <arrivaltime>14:30</arrivaltime>
+    <availableseats>80</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>CA202</flightid>
+    <origin>Los Angeles, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-09-15</departuredate>
+    <arrivaldate>2024-09-15</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>18:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>380</price>
+  </flight>
+  <flight>
+    <flightid>CA203</flightid>
+    <origin>San Diego, CA</origin>
+    <destination>Austin, TX</destination>
+    <departuredate>2024-09-17</departuredate>
+    <arrivaldate>2024-09-17</arrivaldate>
+    <departuretime>07:00</departuretime>
+    <arrivaltime>12:30</arrivaltime>
+    <availableseats>75</availableseats>
+    <price>345</price>
+  </flight>
+  <flight>
+    <flightid>CA204</flightid>
+    <origin>Oakland, CA</origin>
+    <destination>San Antonio, TX</destination>
+    <departuredate>2024-09-20</departuredate>
+    <arrivaldate>2024-09-20</arrivaldate>
+    <departuretime>10:00</departuretime>
+    <arrivaltime>15:45</arrivaltime>
+    <availableseats>65</availableseats>
+    <price>355</price>
+  </flight>
+  <flight>
+    <flightid>CA205</flightid>
+    <origin>San Jose, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-09-25</departuredate>
+    <arrivaldate>2024-09-25</arrivaldate>
+    <departuretime>06:30</departuretime>
+    <arrivaltime>12:00</arrivaltime>
+    <availableseats>50</availableseats>
+    <price>310</price>
+  </flight>
+  <flight>
+    <flightid>CA206</flightid>
+    <origin>Los Angeles, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-10-01</departuredate>
+    <arrivaldate>2024-10-01</arrivaldate>
+    <departuretime>18:30</departuretime>
+    <arrivaltime>23:59</arrivaltime>
+    <availableseats>85</availableseats>
+    <price>395</price>
+  </flight>
+  <flight>
+    <flightid>CA207</flightid>
+    <origin>San Francisco, CA</origin>
+    <destination>Austin, TX</destination>
+    <departuredate>2024-10-04</departuredate>
+    <arrivaldate>2024-10-04</arrivaldate>
+    <departuretime>08:00</departuretime>
+    <arrivaltime>13:00</arrivaltime>
+    <availableseats>95</availableseats>
+    <price>370</price>
+  </flight>
+  <flight>
+    <flightid>CA208</flightid>
+    <origin>San Diego, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-10-07</departuredate>
+    <arrivaldate>2024-10-07</arrivaldate>
+    <departuretime>15:00</departuretime>
+    <arrivaltime>20:15</arrivaltime>
+    <availableseats>60</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>CA209</flightid>
+    <origin>Oakland, CA</origin>
+    <destination>San Antonio, TX</destination>
+    <departuredate>2024-10-11</departuredate>
+    <arrivaldate>2024-10-11</arrivaldate>
+    <departuretime>07:30</departuretime>
+    <arrivaltime>13:15</arrivaltime>
+    <availableseats>70</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>CA210</flightid>
+    <origin>San Jose, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-10-15</departuredate>
+    <arrivaldate>2024-10-15</arrivaldate>
+    <departuretime>06:00</departuretime>
+    <arrivaltime>11:15</arrivaltime>
+    <availableseats>100</availableseats>
+    <price>380</price>
+  </flight>
+  <flight>
+    <flightid>CA211</flightid>
+    <origin>Los Angeles, CA</origin>
+    <destination>Austin, TX</destination>
+    <departuredate>2024-10-20</departuredate>
+    <arrivaldate>2024-10-20</arrivaldate>
+    <departuretime>12:00</departuretime>
+    <arrivaltime>17:30</arrivaltime>
+    <availableseats>71</availableseats>
+    <price>365</price>
+  </flight>
+  <flight>
+    <flightid>CA212</flightid>
+    <origin>San Francisco, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-10-25</departuredate>
+    <arrivaldate>2024-10-25</arrivaldate>
+    <departuretime>18:00</departuretime>
+    <arrivaltime>23:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>375</price>
+  </flight>
+  <flight>
+    <flightid>CA213</flightid>
+    <origin>San Diego, CA</origin>
+    <destination>San Antonio, TX</destination>
+    <departuredate>2024-10-30</departuredate>
+    <arrivaldate>2024-10-30</arrivaldate>
+    <departuretime>08:30</departuretime>
+    <arrivaltime>14:00</arrivaltime>
+    <availableseats>65</availableseats>
+    <price>355</price>
+  </flight>
+  <flight>
+    <flightid>CA214</flightid>
+    <origin>Oakland, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-11-04</departuredate>
+    <arrivaldate>2024-11-04</arrivaldate>
+    <departuretime>09:00</departuretime>
+    <arrivaltime>14:45</arrivaltime>
+    <availableseats>75</availableseats>
+    <price>365</price>
+  </flight>
+  <flight>
+    <flightid>CA215</flightid>
+    <origin>San Jose, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-11-07</departuredate>
+    <arrivaldate>2024-11-07</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>18:15</arrivaltime>
+    <availableseats>85</availableseats>
+    <price>345</price>
+  </flight>
+  <flight>
+    <flightid>CA216</flightid>
+    <origin>Los Angeles, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-11-10</departuredate>
+    <arrivaldate>2024-11-10</arrivaldate>
+    <departuretime>18:30</departuretime>
+    <arrivaltime>23:59</arrivaltime>
+    <availableseats>95</availableseats>
+    <price>395</price>
+  </flight>
+  <flight>
+    <flightid>CA217</flightid>
+    <origin>San Francisco, CA</origin>
+    <destination>Austin, TX</destination>
+    <departuredate>2024-11-12</departuredate>
+    <arrivaldate>2024-11-12</arrivaldate>
+    <departuretime>08:00</departuretime>
+    <arrivaltime>13:00</arrivaltime>
+    <availableseats>100</availableseats>
+    <price>370</price>
+  </flight>
+  <flight>
+    <flightid>CA218</flightid>
+    <origin>San Diego, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-11-13</departuredate>
+    <arrivaldate>2024-11-13</arrivaldate>
+    <departuretime>15:00</departuretime>
+    <arrivaltime>20:15</arrivaltime>
+    <availableseats>60</availableseats>
+    <price>340</price>
+  </flight>
+  <flight>
+    <flightid>CA219</flightid>
+    <origin>Oakland, CA</origin>
+    <destination>San Antonio, TX</destination>
+    <departuredate>2024-11-16</departuredate>
+    <arrivaldate>2024-11-25</arrivaldate>
+    <departuretime>18:30</departuretime>
+    <arrivaltime>23:45</arrivaltime>
+    <availableseats>70</availableseats>
+    <price>360</price>
+  </flight>
+  <flight>
+    <flightid>CA220</flightid>
+    <origin>San Jose, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-11-18</departuredate>
+    <arrivaldate>2024-11-18</arrivaldate>
+    <departuretime>06:00</departuretime>
+    <arrivaltime>11:15</arrivaltime>
+    <availableseats>80</availableseats>
+    <price>380</price>
+  </flight>
+  <flight>
+    <flightid>CA221</flightid>
+    <origin>Los Angeles, CA</origin>
+    <destination>Austin, TX</destination>
+    <departuredate>2024-11-22</departuredate>
+    <arrivaldate>2024-11-22</arrivaldate>
+    <departuretime>12:00</departuretime>
+    <arrivaltime>17:30</arrivaltime>
+    <availableseats>90</availableseats>
+    <price>365</price>
+  </flight>
+  <flight>
+    <flightid>CA222</flightid>
+    <origin>San Francisco, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-11-24</departuredate>
+    <arrivaldate>2024-11-24</arrivaldate>
+    <departuretime>10:00</departuretime>
+    <arrivaltime>15:30</arrivaltime>
+    <availableseats>60</availableseats>
+    <price>375</price>
+  </flight>
+  <flight>
+    <flightid>CA223</flightid>
+    <origin>San Diego, CA</origin>
+    <destination>San Antonio, TX</destination>
+    <departuredate>2024-11-24</departuredate>
+    <arrivaldate>2024-11-24</arrivaldate>
+    <departuretime>13:00</departuretime>
+    <arrivaltime>18:45</arrivaltime>
+    <availableseats>70</availableseats>
+    <price>355</price>
+  </flight>
+  <flight>
+    <flightid>CA224</flightid>
+    <origin>Oakland, CA</origin>
+    <destination>Houston, TX</destination>
+    <departuredate>2024-11-28</departuredate>
+    <arrivaldate>2024-11-28</arrivaldate>
+    <departuretime>08:30</departuretime>
+    <arrivaltime>13:15</arrivaltime>
+    <availableseats>85</availableseats>
+    <price>365</price>
+  </flight>
+  <flight>
+    <flightid>CA225</flightid>
+    <origin>San Jose, CA</origin>
+    <destination>Dallas, TX</destination>
+    <departuredate>2024-12-01</departuredate>
+    <arrivaldate>2024-12-01</arrivaldate>
+    <departuretime>06:00</departuretime>
+    <arrivaltime>11:15</arrivaltime>
+    <availableseats>95</availableseats>
+    <price>345</price>
+  </flight>
+</flights>

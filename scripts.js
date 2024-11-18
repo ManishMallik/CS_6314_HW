@@ -1476,9 +1476,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const price = flight.pricePerSeat;
                         const totalPrice = flight.totalPrice;
         
-                        // Calculate the total price for booking all available seats
-                        // const totalPrice = price * availableSeats;
-        
                         flightDetails += `
                             <strong>Flight ID:</strong> ${flightId}<br>
                             <strong>Origin:</strong> ${origin}<br>
@@ -1491,17 +1488,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong>Price per Seat:</strong> $${price}<br>
                             <strong>Total Price:</strong> $${totalPrice}<br><br>
                         `;
-
-                        // // Generate passenger input fields for each seat
-                        // for (let i = 0; i < seatsNeeded; i++) {
-                        //     flightDetails += `
-                        //         <strong>Passenger ${i + 1}:</strong><br>
-                        //         <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
-                        //         <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
-                        //         <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
-                        //         <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
-                        //     `;
-                        // }
                     });
                     // Generate passenger input fields for each seat
                     for (let i = 0; i <flights[0].seatsNeeded; i++) {

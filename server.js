@@ -517,6 +517,41 @@ app.post('/confirm-booking-flights', (req, res) => {
     });
 });
 
+const flightCartPath = 'flightCart.json';
+const bookedFlightsPath = 'bookedFlights.json';
+
+// Confirm booking with passenger information
+app.post('/confirm-booking-with-passengers', (req, res) => {
+    const bookings = req.body;
+
+    // Load existing booked flights
+    let bookedFlights = [];
+    if (fs.existsSync(bookedFlightsPath)) {
+        bookedFlights = JSON.parse(fs.readFileSync(bookedFlightsPath, 'utf-8'));
+    }
+
+    // Add new bookings with passenger information
+    bookings.forEach(booking => {
+        const { bookingNumber, flights, passengers } = booking;
+
+        flights.forEach(flight => {
+            const bookedFlight = {
+                bookingNumber,
+                ...flight,
+                passengers // Attach passenger details
+            };
+            bookedFlights.push(bookedFlight);
+        });
+    });
+
+    // Save updated booked flights
+    fs.writeFileSync(bookedFlightsPath, JSON.stringify(bookedFlights, null, 2), 'utf-8');
+
+    // Update available seats in XML file (if required)
+    // TODO: Implement seat update logic for XML file if needed
+
+    res.send("Bookings confirmed with passenger details.");
+});
 
 // Save XML content
 function saveXMLFile(filePath, content, res) {

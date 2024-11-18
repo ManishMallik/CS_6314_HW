@@ -1659,11 +1659,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const flights = data.flights;
 
                 // Check if the flightCart.json file is empty
-                if (flights.length == 0) {
+                if (flights.length === 0) {
                     flightDetailsElement.innerHTML = "No flights in cart";
                     return;
                 }
-                
+
                 const groupFlightsByBooking = {};
                 flights.forEach(flight => {
                     const bookingNumber = flight.bookingNumber;
@@ -1674,10 +1674,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 let flightDetails = "<h3>Selected Flights:</h3>";
-                
+
                 // Go through each group of flights
                 for (const [bookingNumber, flights] of Object.entries(groupFlightsByBooking)) {
-                    flightDetails += `<strong>Booking Number:</strong> ${bookingNumber}<br><br>`
+                    flightDetails += `<strong>Booking Number:</strong> ${bookingNumber}<br><br>`;
                     flights.forEach(flight => {
                         const flightId = flight.flightId;
                         const origin = flight.origin;
@@ -1689,10 +1689,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const seatsNeeded = flight.seatsNeeded;
                         const price = flight.pricePerSeat;
                         const totalPrice = flight.totalPrice;
-        
-                        // Calculate the total price for booking all available seats
-                        // const totalPrice = price * availableSeats;
-        
+
                         flightDetails += `
                             <strong>Flight ID:</strong> ${flightId}<br>
                             <strong>Origin:</strong> ${origin}<br>
@@ -1705,13 +1702,72 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong>Price per Seat:</strong> $${price}<br>
                             <strong>Total Price:</strong> $${totalPrice}<br><br>
                         `;
+
+                        // Generate passenger input fields for each seat
+                        for (let i = 0; i < seatsNeeded; i++) {
+                            flightDetails += `
+                                <strong>Passenger ${i + 1}:</strong><br>
+                                <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
+                                <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
+                                <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
+                                <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
+                            `;
+                        }
                     });
-                    // Add a button for each flight to remove that flight from cart
+
+                    // Add a button for each booking to remove it from the cart
                     flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
-                flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
+                flightDetails += "<button id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
+
+                // Handle "Book All Flights" button click
+                document.getElementById('bookAll').addEventListener('click', () => {
+                    const passengerData = [];
+
+                    // Collect passenger and flight data
+                    Object.entries(groupFlightsByBooking).forEach(([bookingNumber, flights]) => {
+                        const passengers = [];
+                        flights.forEach(flight => {
+                            for (let i = 0; i < flight.seatsNeeded; i++) {
+                                passengers.push({
+                                    firstName: document.querySelector(`[name="firstName-${bookingNumber}-${i}"]`).value,
+                                    lastName: document.querySelector(`[name="lastName-${bookingNumber}-${i}"]`).value,
+                                    dob: document.querySelector(`[name="dob-${bookingNumber}-${i}"]`).value,
+                                    ssn: document.querySelector(`[name="ssn-${bookingNumber}-${i}"]`).value
+                                });
+                            }
+                        });
+
+                        passengerData.push({
+                            bookingNumber,
+                            flights,
+                            passengers
+                        });
+                    });
+
+                    // Send data to the server
+                    fetch('/confirm-booking-with-passengers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(passengerData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to book flights');
+                            }
+                            return response.text();
+                        })
+                        .then(responseText => {
+                            alert("Flights booked successfully!");
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert("Error booking flights.");
+                        });
+                });
             })
             .catch(error => {
                 console.error('Error:', error);

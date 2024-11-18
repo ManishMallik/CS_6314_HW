@@ -276,7 +276,7 @@
       "hotelId": "H017",
       "name": "Hollywood Haven",
       "city": "Los Angeles, CA",
-      "availableRooms": 12,
+      "availableRooms": 11,
       "pricePerNight": 200,
       "availability": [
         {

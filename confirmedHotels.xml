@@ -104,4 +104,17 @@
     <pricePerNight>160</pricePerNight>
     <totalPrice>160</totalPrice>
   </hotel>
+  <hotel>
+    <hotelId>H017</hotelId>
+    <name>Hollywood Haven</name>
+    <city>Los Angeles, CA</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>1</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-10-15</checkIn>
+    <checkOut>2024-10-19</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>200</pricePerNight>
+    <totalPrice>800</totalPrice>
+  </hotel>
 </confirmedHotels>

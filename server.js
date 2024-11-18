@@ -439,6 +439,7 @@ app.post('/remove-flight-from-cart', (req, res) => {
         // jsonData.flights.splice(flightIndex, 1);
         // console.log("Flights after removal: ", jsonData.flights);
 
+        const flightsToRemove = jsonData.flights.filter(flight => flight.bookingNumber === bookingNum);
         const flightsToKeep = jsonData.flights.filter(flight => flight.bookingNumber !== bookingNum);
         if(flightsToKeep.length === jsonData.flights.length){
             res.status(404).send('Flight not found in the cart');
@@ -455,7 +456,7 @@ app.post('/remove-flight-from-cart', (req, res) => {
                 console.error('Error writing JSON file:', writeErr);
                 res.status(500).send('Error saving data');
             } else {
-                res.send('Flight removed from cart successfully');
+                res.json({response: 'Flight removed from cart successfully', flights: flightsToRemove});
             }
         });
     });

@@ -1498,12 +1498,64 @@ function removeFlightFromCart(bookingNumber) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.text();
+            return response.json();
         })
         .then(responseText => {
             console.log(responseText);
             alert("Flight removed successfully!");
-            window.location.reload();
+
+            const removedFlights = responseText.flights;
+            
+            // Update available seats in the `availableFlights.xml` file
+            fetch('./availableFlights.xml')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(data, "text/xml");
+                    const flights = xmlDoc.getElementsByTagName("flight");
+                    removedFlights.forEach(removedFlight => {
+                        let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === removedFlight.flightId);
+                        if (selectedFlight) {
+                            const availableSeatsElem = selectedFlight.getElementsByTagName("availableseats")[0];
+                            const currAvailableSeats = parseInt(availableSeatsElem.textContent);
+                            const seatsToAdd = parseInt(removedFlight.seatsNeeded);
+
+                            availableSeatsElem.textContent = (currAvailableSeats + seatsToAdd).toString();
+                            console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
+                        }
+                    });
+
+                    // Update the availableFlights.xml file
+                    const updatedData = new XMLSerializer().serializeToString(xmlDoc);
+                    fetch('/update-available-flights', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/xml'
+                        },
+                        body: updatedData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(responseText => {
+                        console.log(responseText);
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error updating flight data:', error);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         })
         .catch(error => {
             console.error('Error:', error);

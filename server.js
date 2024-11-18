@@ -8,25 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Initialize parser and builder for XML. Preserve the case of the tags. Do not make it all lowercase
-const parser = new xml2js.Parser(
-    // {
-    //     explicitArray: false,
-    //     mergeAttrs: true,
-    //     attrNameProcessors: [name => name],
-    //     tagNameProcessors: [name => name],
-    //     preserveChildrenOrder: true
-    // }
-);
-const builder = new xml2js.Builder(
-    // {
-    //     explicitArray: false,
-    //     mergeAttrs: true,
-    //     attrNameProcessors: [name => name],
-    //     tagNameProcessors: [name => name],
-    //     renderOpts: { pretty: true, indent: ' ', newline: '\n' },
-    //     headless: true,
-    // }
-);
+const parser = new xml2js.Parser();
+const builder = new xml2js.Builder();
 
 // Middleware to serve static files and parse form data
 app.use(express.static('.'));
@@ -41,8 +24,12 @@ app.use(bodyParser.xml({
     }
 }));
 
-// Navigating to home page
+// Navigating to home page. Redirect to index.html by doing a GET request to /index.html
 app.get('/', (req, res) => {
+    res.redirect('/index.html');
+});
+
+app.get('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -60,48 +47,7 @@ app.post('/submit-form', (req, res) => {
         comment
     };
 
-    const newContactXML = `
-    <contact>
-        <fname>${fname}</fname>
-        <lname>${lname}</lname>
-        <phone>${phone}</phone>
-        <email>${email}</email>
-        <gender>${gender}</gender>
-        <comment>${comment}</comment>
-    </contact>
-`;
-
     const xmlFilePath = 'contacts.xml';
-
-    // Read the existing XML file
-    // fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
-    //     if (err) {
-    //         console.error('Error reading XML file:', err);
-    //         res.status(500).send('Error reading XML file');
-    //         return;
-    //     }
-
-    //     // Find the closing </contacts> tag and insert the new contact before it
-    //     const insertPosition = data.lastIndexOf('</contacts>');
-    //     if (insertPosition === -1) {
-    //         console.error('Invalid XML structure: Missing </contacts> tag');
-    //         res.status(500).send('Invalid XML structure');
-    //         return;
-    //     }
-
-    //     // Construct the new XML content with the contact inserted
-    //     const updatedXML = data.slice(0, insertPosition) + newContactXML + data.slice(insertPosition);
-
-    //     // Write the updated XML back to the file
-    //     fs.writeFile(xmlFilePath, updatedXML, (writeErr) => {
-    //         if (writeErr) {
-    //             console.error('Error writing XML file:', writeErr);
-    //             res.status(500).send('Error saving data');
-    //         } else {
-    //             res.send('<response>Success: Data has been saved to contacts.xml</response>');
-    //         }
-    //     });
-    // });
 
     // Check if XML file exists
     fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
@@ -139,15 +85,6 @@ app.post('/submit-form', (req, res) => {
 });
 
 app.post('/book-hotel-to-cart', (req, res) => {
-
-    // In the cart page,
-    // you should display the information of the selected hotel (hotel-id, hotel name,
-    // city, number of guesses per category, check in date, check out date, number of
-    // rooms, and price per night for each room , and total price). If the user clicks the
-    // book button, you should store all information in the cart (hotel-id, city, hotel
-    // name, check in date, check out date, number of guesses per category, number
-    // of rooms, and price per night for each room , and total price) in a XML file and
-    // update available rooms in the available hotels JSON file .
     
     const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
 
@@ -288,6 +225,7 @@ app.post('/confirm-booking-hotel', (req, res) => {
             }
 
             const xmlContent = result;
+            console.log("XML Content: ", xmlContent);
 
             // Open up the confirmed hotels file and add all the hotels from the cart to it
             fs.readFile(confirmedHotelXML, 'utf-8', (err, data) => {
@@ -330,9 +268,9 @@ app.post('/confirm-booking-hotel', (req, res) => {
     fs.writeFile(hotelCartXML, '', (err) => {
         if (err) {
             console.error('Error writing to XML file:', err);
-            res.status(500).send('Error updating hotels data');
+            // res.status(500).send('Error updating hotels data');
         } else {
-            res.send('Hotels removed from cart successfully');
+            // res.send('Hotels removed from cart successfully');
         }
     });
 });
@@ -517,6 +455,41 @@ app.post('/confirm-booking-flights', (req, res) => {
     });
 });
 
+const flightCartPath = 'flightCart.json';
+// const bookedFlightsPath = 'bookedFlights.json';
+const bookedFlightsPath = 'confirmedFlights.json';
+
+// Confirm booking with passenger information
+app.post('/confirm-booking-with-passengers', (req, res) => {
+    const bookings = req.body;
+
+    // Load existing booked flights
+    let bookedData = { bookedFlights: [] };
+    if (fs.existsSync(bookedFlightsPath)) {
+        bookedData = JSON.parse(fs.readFileSync(bookedFlightsPath, 'utf-8'));
+    }
+
+    // Add new bookings with passenger information
+    bookings.forEach(booking => {
+        const { bookingNumber, flights, passengers } = booking;
+
+        flights.forEach(flight => {
+            const bookedFlight = {
+                bookingNumber,
+                ...flight,
+                passengers // Attach passenger details
+            };
+            bookedData.bookedFlights.push(bookedFlight);
+        });
+    });
+
+    // Save updated booked flights
+    fs.writeFileSync(bookedFlightsPath, JSON.stringify(bookedData, null, 2), 'utf-8');
+
+    // Empty the flight cart
+    fs.writeFileSync(flightCartPath, JSON.stringify({ flights: [] }, null, 2), 'utf-8');
+    res.send("Bookings confirmed with passenger details.");
+});
 
 // Save XML content
 function saveXMLFile(filePath, content, res) {

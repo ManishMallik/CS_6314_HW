@@ -1,0 +1,107 @@
+[
+  {
+    "bookingNumber": 5482,
+    "flightId": "TX102",
+    "origin": "Austin, TX",
+    "destination": "Los Angeles, CA",
+    "departureDate": "2024-09-05",
+    "arrivalDate": "2024-09-05",
+    "departureTime": "12:00",
+    "arrivalTime": "14:30",
+    "seatsNeeded": 4,
+    "pricePerSeat": 350,
+    "totalPrice": 1190,
+    "passengers": [
+      {
+        "firstName": "Sameer",
+        "lastName": "Islam",
+        "dob": "2004-02-03",
+        "ssn": "123-45-6789"
+      },
+      {
+        "firstName": "Rohit",
+        "lastName": "Ram",
+        "dob": "2005-04-07",
+        "ssn": "129-98-3940"
+      },
+      {
+        "firstName": "Pramith",
+        "lastName": "Prasanna",
+        "dob": "2000-09-09",
+        "ssn": "987-65-4321"
+      },
+      {
+        "firstName": "Om",
+        "lastName": "Hirpara",
+        "dob": "2007-05-06",
+        "ssn": "456-78-9012"
+      }
+    ]
+  },
+  {
+    "bookingNumber": 5482,
+    "flightId": "CA211",
+    "origin": "Los Angeles, CA",
+    "destination": "Austin, TX",
+    "departureDate": "2024-10-20",
+    "arrivalDate": "2024-10-20",
+    "departureTime": "12:00",
+    "arrivalTime": "17:30",
+    "seatsNeeded": 4,
+    "pricePerSeat": 365,
+    "totalPrice": 1241,
+    "passengers": [
+      {
+        "firstName": "Sameer",
+        "lastName": "Islam",
+        "dob": "2004-02-03",
+        "ssn": "123-45-6789"
+      },
+      {
+        "firstName": "Rohit",
+        "lastName": "Ram",
+        "dob": "2005-04-07",
+        "ssn": "129-98-3940"
+      },
+      {
+        "firstName": "Pramith",
+        "lastName": "Prasanna",
+        "dob": "2000-09-09",
+        "ssn": "987-65-4321"
+      },
+      {
+        "firstName": "Om",
+        "lastName": "Hirpara",
+        "dob": "2007-05-06",
+        "ssn": "456-78-9012"
+      }
+    ]
+  },
+  {
+    "bookingNumber": 6298,
+    "flightId": "TX104",
+    "origin": "San Antonio, TX",
+    "destination": "Oakland, CA",
+    "departureDate": "2024-09-10",
+    "arrivalDate": "2024-09-10",
+    "departureTime": "09:00",
+    "arrivalTime": "11:30",
+    "seatsNeeded": 2,
+    "pricePerSeat": 310,
+    "totalPrice": 310,
+    "passengers": [
+      {
+        "firstName": "Manish",
+        "lastName": "Mallik",
+        "dob": "2004-02-08",
+        "ssn": "754-98-3905"
+      },
+      {
+        "firstName": "Nikhil",
+        "lastName": "Manda",
+        "dob": "2000-09-20",
+        "ssn": "999-99-9999"
+      }
+    ]
+  }
+]

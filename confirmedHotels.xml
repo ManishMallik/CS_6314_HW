@@ -13,4 +13,56 @@
     <pricePerNight>120</pricePerNight>
     <totalPrice>360</totalPrice>
   </hotel>
+  <hotel>
+    <hotelId>H004</hotelId>
+    <name>Golden Gate Suites</name>
+    <city>San Francisco, CA</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>5</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-10-07</checkIn>
+    <checkOut>2024-10-10</checkOut>
+    <rooms>3</rooms>
+    <pricePerNight>220</pricePerNight>
+    <totalPrice>1980</totalPrice>
+  </hotel>
+  <hotel>
+    <hotelId>H014</hotelId>
+    <name>Austin Oasis</name>
+    <city>Austin, TX</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-15</checkIn>
+    <checkOut>2024-09-18</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>155</pricePerNight>
+    <totalPrice>465</totalPrice>
+  </hotel>
+  <hotel>
+    <hotelId>H003</hotelId>
+    <name>The San Francisco Lodge</name>
+    <city>San Francisco, CA</city>
+    <adultGuests>6</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-10-08</checkIn>
+    <checkOut>2024-10-15</checkOut>
+    <rooms>3</rooms>
+    <pricePerNight>200</pricePerNight>
+    <totalPrice>4200</totalPrice>
+  </hotel>
+  <hotel>
+    <hotelId>H001</hotelId>
+    <name>The Grand Austin</name>
+    <city>Austin, TX</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-01</checkIn>
+    <checkOut>2024-09-05</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>150</pricePerNight>
+    <totalPrice>600</totalPrice>
+  </hotel>
 </confirmedHotels>

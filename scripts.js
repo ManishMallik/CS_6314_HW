@@ -950,6 +950,7 @@ function bookAllHotelsFromCart(){
         .then(responseText => {
             console.log(responseText);
             alert("All hotels booked successfully!");
+            window.location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -1705,13 +1706,149 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong>Price per Seat:</strong> $${price}<br>
                             <strong>Total Price:</strong> $${totalPrice}<br><br>
                         `;
+
+                        // // Generate passenger input fields for each seat
+                        // for (let i = 0; i < seatsNeeded; i++) {
+                        //     flightDetails += `
+                        //         <strong>Passenger ${i + 1}:</strong><br>
+                        //         <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
+                        //         <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
+                        //         <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
+                        //         <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
+                        //     `;
+                        // }
                     });
+                    // Generate passenger input fields for each seat
+                    for (let i = 0; i <flights[0].seatsNeeded; i++) {
+                        flightDetails += `
+                            <strong>Passenger ${i + 1}:</strong><br>
+                            <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
+                            <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
+                            <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
+                            <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
+                        `;
+                    }
                     // Add a button for each flight to remove that flight from cart
                     flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
-                flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
+                // flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
+                flightDetails += "<button id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
+
+                // Handle "Book All Flights" button click
+                document.getElementById('bookAll').addEventListener('click', () => {
+                    const passengerData = [];
+                    let invalidInput = false;
+
+                    // Validate passenger input fields
+                    var alphabeticRegex = /^[a-zA-Z]+$/;
+                    var capitalizedRegex = /^[A-Z]/;
+                    var dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+                    var ssnRegex = /^\d{3}-\d{2}-\d{4}$/;
+
+                    // Collect passenger and flight data
+                    let alertMsg = "";
+                    Object.entries(groupFlightsByBooking).forEach(([bookingNumber, flights]) => {
+                        const passengers = [];
+                        flights.forEach(flight => {
+                            for (let i = 0; i < flight.seatsNeeded; i++) {
+                                const firstName = document.querySelector(`[name="firstName-${bookingNumber}-${i}"]`).value;
+                                const lastName = document.querySelector(`[name="lastName-${bookingNumber}-${i}"]`).value;
+                                const dob = document.querySelector(`[name="dob-${bookingNumber}-${i}"]`).value;
+                                const ssn = document.querySelector(`[name="ssn-${bookingNumber}-${i}"]`).value;
+
+                                // Test first if any input is empty
+                                if (firstName === "" || lastName === "" || dob === "" || ssn === "") {
+                                    alertMsg += "All fields must be filled.\n";
+                                }
+
+                                // Test if first name and last name are alphabetic
+                                if (!alphabeticRegex.test(firstName) || !alphabeticRegex.test(lastName)) {
+                                    alertMsg += "First name and last name must be alphabetic.\n";
+                                }
+
+                                // Test if first name and last name are capitalized
+                                if (!capitalizedRegex.test(firstName[0]) || !capitalizedRegex.test(lastName[0])) {
+                                    alertMsg += "First name and last name must be capitalized.\n";
+                                }
+
+                                // Test if date of birth is in the correct format
+                                if (!dobRegex.test(dob)) {
+                                    alertMsg += "Format for date of birth must be followed as shown in the input field, and it should be fully filled out.\n";
+                                }
+
+                                // Test if SSN is in the correct format
+                                if (!ssnRegex.test(ssn)) {
+                                    alertMsg += "Format for SSN must be XXX-XX-XXXX, where each X is a digit (any number between 0 and 9).\n";
+                                }
+
+                                if (alertMsg !== "") {
+                                    invalidInput = true;
+                                    break;
+                                }
+
+                                passengers.push({
+                                    firstName,
+                                    lastName,
+                                    dob,
+                                    ssn
+                                });
+                            }
+
+                            if (invalidInput) return;
+                        });
+
+                        if (invalidInput) return;
+
+                        passengerData.push({
+                            bookingNumber,
+                            flights,
+                            passengers
+                        });
+                    });
+
+                    if (invalidInput) {
+                        alert(alertMsg);
+                        return;
+                    }
+
+                    // If there are any exact duplicate objects in a flightID, remove them
+                    // Check by First Name, Last Name, DOB, and SSN
+                    passengerData.forEach(data => {
+                        let uniquePassengers = [];
+                        let uniquePassengerStrings = [];
+                        data.passengers.forEach(passenger => {
+                            const passengerString = `${passenger.firstName}${passenger.lastName}${passenger.dob}${passenger.ssn}`;
+                            if (!uniquePassengerStrings.includes(passengerString)) {
+                                uniquePassengerStrings.push(passengerString);
+                                uniquePassengers.push(passenger);
+                            }
+                        });
+                        data.passengers = uniquePassengers;
+                    });
+
+                    // Send data to the server
+                    fetch('/confirm-booking-with-passengers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(passengerData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to book flights');
+                            }
+                            return response.text();
+                        })
+                        .then(responseText => {
+                            alert("Flights booked successfully!");
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert("Error booking flights.");
+                        });
+                });
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -1757,7 +1894,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>Check-In Date:</strong> ${checkIn}<br>
                         <strong>Check-Out Date:</strong> ${checkOut}<br>
                         <strong>Rooms:</strong> ${rooms}<br>
-                        <strong>Price Per Night:</strong> $${pricePerNight}<br>
+                        <strong>Price Per Room Per Night:</strong> $${pricePerNight}<br>
                         <strong>Total Price:</strong> $${totalPrice}<br>
                     `;
 

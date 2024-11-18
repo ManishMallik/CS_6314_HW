@@ -525,10 +525,9 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                                     <strong>Available Seats:</strong> ${returnAvailableSeats}<br>
                                     <strong>Price Per Seat:</strong> $${returnPrice}<br>
                                     <strong>Total Price (Computed):</strong> $${totalReturnPrice}<br>
-                                    <button onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
+                                    <button type="submit" onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
                                     <br><br>
                                 `;
-                                // addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice)
                             });
                         });
                     } else {
@@ -558,7 +557,7 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                             <strong>Available Seats:</strong> ${availableSeats}<br>
                             <strong>Price Per Seat:</strong> $${price}<br>
                             <strong>Total Price (Computed):</strong> $${totalPrice}<br>
-                            <button onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
+                            <button type="submit" onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
                             <br><br>
                         `;
                     });
@@ -754,7 +753,7 @@ function validateAndSubmitStay(event) {
                         <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
                         <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
                     `;
-                    hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
+                    hotelDetails += `<button type="submit" onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
                     hotelDetails += "<br>";
                 });
             }

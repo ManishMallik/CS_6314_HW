@@ -4,7 +4,7 @@
       "hotelId": "H001",
       "name": "The Grand Austin",
       "city": "Austin, TX",
-      "availableRooms": 9,
+      "availableRooms": 6,
       "pricePerNight": 150,
       "availability": [
         {
@@ -174,7 +174,7 @@
       "hotelId": "H011",
       "name": "Bay City Hotel",
       "city": "Austin, TX",
-      "availableRooms": 9,
+      "availableRooms": 8,
       "pricePerNight": 160,
       "availability": [
         {

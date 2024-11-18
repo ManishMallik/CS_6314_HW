@@ -78,4 +78,30 @@
     <pricePerNight>150</pricePerNight>
     <totalPrice>300</totalPrice>
   </hotel>
+  <hotel>
+    <hotelId>H001</hotelId>
+    <name>The Grand Austin</name>
+    <city>Austin, TX</city>
+    <adultGuests>2</adultGuests>
+    <childGuests>3</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-10</checkIn>
+    <checkOut>2024-09-15</checkOut>
+    <rooms>3</rooms>
+    <pricePerNight>150</pricePerNight>
+    <totalPrice>2250</totalPrice>
+  </hotel>
+  <hotel>
+    <hotelId>H011</hotelId>
+    <name>Bay City Hotel</name>
+    <city>Austin, TX</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-09-16</checkIn>
+    <checkOut>2024-09-17</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>160</pricePerNight>
+    <totalPrice>160</totalPrice>
+  </hotel>
 </confirmedHotels>

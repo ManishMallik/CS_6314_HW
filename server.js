@@ -146,8 +146,6 @@ app.post('/book-hotel-to-cart', (req, res) => {
 app.post('/update-available-hotels', (req, res) => {
     console.log('Parsed Request Body:', req.body);
     const updatedData = req.body;
-    // console.log(updatedData);
-    // console.log(JSON.stringify(updatedData));
     fs.writeFile('./availableHotels.json', JSON.stringify(updatedData, null, 2), (err) => {
         if (err) {
             console.error('Error writing to JSON file:', err);
@@ -337,16 +335,10 @@ app.post('/update-available-flights', (req, res) => {
 
 app.post('/remove-flight-from-cart', (req, res) => {
     
-    console.log("Booking Number time")
-    console.log("Request Body: ", req.body);
     const { bookingNumber } = req.body;
     const flightCartJson = 'flightCart.json';
 
-    console.log('Removing flight with booking number:', bookingNumber);
-
     fs.readFile(flightCartJson, 'utf-8', (err, data) => {
-        
-        console.log("Reading file");
         
         if (err) {
             console.error('Error reading JSON file:', err);
@@ -354,37 +346,18 @@ app.post('/remove-flight-from-cart', (req, res) => {
             return;
         }
 
-        console.log("Data read");
-
         const jsonData = JSON.parse(data);
 
         // Convert booking number from string to number
         const bookingNum = parseInt(bookingNumber);
 
-        // Find all of the flights with the booking number and remove them
-        // const flightIndex = jsonData.flights.findIndex(flight => flight.bookingNumber === bookingNum);
-
-        // console.log("Flight Index: ", flightIndex);
-
-        // if (flightIndex === -1) {
-        //     res.status(404).send('Flight not found in the cart');
-        //     return;
-        // }
-
-        // console.log("Moving forward");
-
-        // // Remove the flight from the array
-        // jsonData.flights.splice(flightIndex, 1);
-        // console.log("Flights after removal: ", jsonData.flights);
-
+        // Find all of the flights with the booking number
         const flightsToRemove = jsonData.flights.filter(flight => flight.bookingNumber === bookingNum);
         const flightsToKeep = jsonData.flights.filter(flight => flight.bookingNumber !== bookingNum);
         if(flightsToKeep.length === jsonData.flights.length){
             res.status(404).send('Flight not found in the cart');
             return;
         }
-
-        console.log("Flights to keep: ", flightsToKeep);
         
         jsonData.flights = flightsToKeep;
 
@@ -456,7 +429,6 @@ app.post('/confirm-booking-flights', (req, res) => {
 });
 
 const flightCartPath = 'flightCart.json';
-// const bookedFlightsPath = 'bookedFlights.json';
 const bookedFlightsPath = 'confirmedFlights.json';
 
 // Confirm booking with passenger information

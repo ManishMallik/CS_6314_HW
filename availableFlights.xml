@@ -41,7 +41,7 @@
     <arrivaldate>2024-09-10</arrivaldate>
     <departuretime>09:00</departuretime>
     <arrivaltime>11:30</arrivaltime>
-    <availableseats>79</availableseats>
+    <availableseats>78</availableseats>
     <price>310</price>
   </flight>
   <flight>
@@ -316,7 +316,7 @@
     <arrivaldate>2024-09-20</arrivaldate>
     <departuretime>10:00</departuretime>
     <arrivaltime>15:45</arrivaltime>
-    <availableseats>65</availableseats>
+    <availableseats>64</availableseats>
     <price>355</price>
   </flight>
   <flight>

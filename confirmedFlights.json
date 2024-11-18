@@ -137,6 +137,48 @@
           "ssn": "184-92-4875"
         }
       ]
+    },
+    {
+      "bookingNumber": 5617,
+      "flightId": "TX104",
+      "origin": "San Antonio, TX",
+      "destination": "Oakland, CA",
+      "departureDate": "2024-09-10",
+      "arrivalDate": "2024-09-10",
+      "departureTime": "09:00",
+      "arrivalTime": "11:30",
+      "seatsNeeded": 1,
+      "pricePerSeat": 310,
+      "totalPrice": 310,
+      "passengers": [
+        {
+          "firstName": "Manish",
+          "lastName": "Mallik",
+          "dob": "2003-02-08",
+          "ssn": "394-38-2846"
+        }
+      ]
+    },
+    {
+      "bookingNumber": 5617,
+      "flightId": "CA204",
+      "origin": "Oakland, CA",
+      "destination": "San Antonio, TX",
+      "departureDate": "2024-09-20",
+      "arrivalDate": "2024-09-20",
+      "departureTime": "10:00",
+      "arrivalTime": "15:45",
+      "seatsNeeded": 1,
+      "pricePerSeat": 355,
+      "totalPrice": 355,
+      "passengers": [
+        {
+          "firstName": "Manish",
+          "lastName": "Mallik",
+          "dob": "2003-02-08",
+          "ssn": "394-38-2846"
+        }
+      ]
     }
   ]
 }

@@ -65,4 +65,17 @@
     <pricePerNight>150</pricePerNight>
     <totalPrice>600</totalPrice>
   </hotel>
+  <hotel>
+    <hotelId>H006</hotelId>
+    <name>Downtown LA Inn</name>
+    <city>Los Angeles, CA</city>
+    <adultGuests>1</adultGuests>
+    <childGuests>0</childGuests>
+    <infantGuests>0</infantGuests>
+    <checkIn>2024-11-25</checkIn>
+    <checkOut>2024-11-27</checkOut>
+    <rooms>1</rooms>
+    <pricePerNight>150</pricePerNight>
+    <totalPrice>300</totalPrice>
+  </hotel>
 </confirmedHotels>

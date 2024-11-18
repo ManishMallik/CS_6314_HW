@@ -4,7 +4,7 @@
       "hotelId": "H001",
       "name": "The Grand Austin",
       "city": "Austin, TX",
-      "availableRooms": 8,
+      "availableRooms": 9,
       "pricePerNight": 150,
       "availability": [
         {
@@ -38,7 +38,7 @@
       "hotelId": "H003",
       "name": "The San Francisco Lodge",
       "city": "San Francisco, CA",
-      "availableRooms": 17,
+      "availableRooms": 20,
       "pricePerNight": 200,
       "availability": [
         {
@@ -89,7 +89,7 @@
       "hotelId": "H006",
       "name": "Downtown LA Inn",
       "city": "Los Angeles, CA",
-      "availableRooms": 12,
+      "availableRooms": 11,
       "pricePerNight": 150,
       "availability": [
         {

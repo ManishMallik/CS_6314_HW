@@ -738,22 +738,26 @@ function validateAndSubmitStay(event) {
             }
 
             let hotelDetails = "<h3>Available Hotels:</h3>";
-            availableHotels.forEach(hotel => {
-                // calculate the number of days between check-in and check-out dates
-                const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
-                hotelDetails += `
-                    <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
-                    <strong>Name:</strong> ${hotel.name}<br>
-                    <strong>City:</strong> ${hotel.city}<br>
-                    <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
-                    <strong>Check-In Date:</strong> ${checkIn}<br>
-                    <strong>Check-Out Date:</strong> ${checkOut}<br>
-                    <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
-                    <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
-                `;
-                hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
-                hotelDetails += "<br>";
-            });
+            if (availableHotels.length === 0) {
+                hotelDetails += "<p>No hotels available matching your criteria.</p>";
+            } else {
+                availableHotels.forEach(hotel => {
+                    // calculate the number of days between check-in and check-out dates
+                    const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+                    hotelDetails += `
+                        <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
+                        <strong>Name:</strong> ${hotel.name}<br>
+                        <strong>City:</strong> ${hotel.city}<br>
+                        <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
+                        <strong>Check-In Date:</strong> ${checkIn}<br>
+                        <strong>Check-Out Date:</strong> ${checkOut}<br>
+                        <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
+                        <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
+                    `;
+                    hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
+                    hotelDetails += "<br>";
+                });
+            }
             document.getElementById('hotelDetails').innerHTML = hotelDetails;
             document.getElementById('hotelDetails').style.color = "green";
         })
@@ -1500,11 +1504,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         `;
                     }
                     // Add a button for each flight to remove that flight from cart
-                    flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
+                    flightDetails += `<button type="remove" onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
                 // flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
-                flightDetails += "<button id='bookAll'>Book All Flights</button>";
+                flightDetails += "<button type=\"submit\" id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
 
                 // Handle "Book All Flights" button click
@@ -1670,9 +1674,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
 
                     // Add a button for each hotel to remove that hotel from cart
-                    hotelDetails += `<button onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
+                    hotelDetails += `<button type="remove" onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
                 }
-                hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
+                hotelDetails += "<button type=\"submit\" onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
                 hotelDetailsElement.innerHTML = hotelDetails;
             })
             .catch(error => {

@@ -525,10 +525,9 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                                     <strong>Available Seats:</strong> ${returnAvailableSeats}<br>
                                     <strong>Price Per Seat:</strong> $${returnPrice}<br>
                                     <strong>Total Price (Computed):</strong> $${totalReturnPrice}<br>
-                                    <button onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
+                                    <button type="submit" onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
                                     <br><br>
                                 `;
-                                // addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice)
                             });
                         });
                     } else {
@@ -558,7 +557,7 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                             <strong>Available Seats:</strong> ${availableSeats}<br>
                             <strong>Price Per Seat:</strong> $${price}<br>
                             <strong>Total Price (Computed):</strong> $${totalPrice}<br>
-                            <button onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
+                            <button type="submit" onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
                             <br><br>
                         `;
                     });
@@ -738,22 +737,26 @@ function validateAndSubmitStay(event) {
             }
 
             let hotelDetails = "<h3>Available Hotels:</h3>";
-            availableHotels.forEach(hotel => {
-                // calculate the number of days between check-in and check-out dates
-                const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
-                hotelDetails += `
-                    <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
-                    <strong>Name:</strong> ${hotel.name}<br>
-                    <strong>City:</strong> ${hotel.city}<br>
-                    <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
-                    <strong>Check-In Date:</strong> ${checkIn}<br>
-                    <strong>Check-Out Date:</strong> ${checkOut}<br>
-                    <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
-                    <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
-                `;
-                hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
-                hotelDetails += "<br>";
-            });
+            if (availableHotels.length === 0) {
+                hotelDetails += "<p>No hotels available matching your criteria.</p>";
+            } else {
+                availableHotels.forEach(hotel => {
+                    // calculate the number of days between check-in and check-out dates
+                    const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+                    hotelDetails += `
+                        <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
+                        <strong>Name:</strong> ${hotel.name}<br>
+                        <strong>City:</strong> ${hotel.city}<br>
+                        <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
+                        <strong>Check-In Date:</strong> ${checkIn}<br>
+                        <strong>Check-Out Date:</strong> ${checkOut}<br>
+                        <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
+                        <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
+                    `;
+                    hotelDetails += `<button type="submit" onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
+                    hotelDetails += "<br>";
+                });
+            }
             document.getElementById('hotelDetails').innerHTML = hotelDetails;
             document.getElementById('hotelDetails').style.color = "green";
         })
@@ -1476,9 +1479,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const price = flight.pricePerSeat;
                         const totalPrice = flight.totalPrice;
         
-                        // Calculate the total price for booking all available seats
-                        // const totalPrice = price * availableSeats;
-        
                         flightDetails += `
                             <strong>Flight ID:</strong> ${flightId}<br>
                             <strong>Origin:</strong> ${origin}<br>
@@ -1491,17 +1491,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             <strong>Price per Seat:</strong> $${price}<br>
                             <strong>Total Price:</strong> $${totalPrice}<br><br>
                         `;
-
-                        // // Generate passenger input fields for each seat
-                        // for (let i = 0; i < seatsNeeded; i++) {
-                        //     flightDetails += `
-                        //         <strong>Passenger ${i + 1}:</strong><br>
-                        //         <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
-                        //         <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
-                        //         <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
-                        //         <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
-                        //     `;
-                        // }
                     });
                     // Generate passenger input fields for each seat
                     for (let i = 0; i <flights[0].seatsNeeded; i++) {
@@ -1514,11 +1503,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         `;
                     }
                     // Add a button for each flight to remove that flight from cart
-                    flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
+                    flightDetails += `<button type="remove" onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
                 // flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
-                flightDetails += "<button id='bookAll'>Book All Flights</button>";
+                flightDetails += "<button type=\"submit\" id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
 
                 // Handle "Book All Flights" button click
@@ -1684,9 +1673,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
 
                     // Add a button for each hotel to remove that hotel from cart
-                    hotelDetails += `<button onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
+                    hotelDetails += `<button type="remove" onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
                 }
-                hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
+                hotelDetails += "<button type=\"submit\" onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
                 hotelDetailsElement.innerHTML = hotelDetails;
             })
             .catch(error => {

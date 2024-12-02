@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <contacts>
   <contact>
-    <fname>John</fname>
-    <lname>Doe</lname>
-    <phone>555-555-5555</phone>
-    <email>johndoe@gmail.com</email>
-    <gender>Male</gender>
-    <comment>John is a great guy!</comment>
-  </contact>
-  <contact>
-    <fname>Jane</fname>
-    <lname>Doe</lname>
-    <phone>555-555-5555</phone>
-    <email>janedoe@gmail.com</email>
-    <gender>Female</gender>
-    <comment>Jane is a great gal!</comment>
-  </contact>
-  <contact>
     <fname>Manish</fname>
     <lname>Mallik</lname>
-    <phone>(469) 798-1208</phone>
-    <email>manish03mallik@gmail.com</email>
+    <phone>(469) 235-4567</phone>
+    <email>mkm200004@utdallas.edu</email>
     <gender>Male</gender>
     <comment>This is a test</comment>
   </contact>
@@ -30,14 +14,6 @@
     <phone>(469) 798-1208</phone>
     <email>manish03mallik@gmail.com</email>
     <gender>Male</gender>
-    <comment>Manish Mallik</comment>
-  </contact>
-  <contact>
-    <fname>Manish</fname>
-    <lname>Mallik</lname>
-    <phone>(469) 235-4567</phone>
-    <email>manish03mallik@gmail.com</email>
-    <gender>Male</gender>
-    <comment>This comment does work</comment>
+    <comment>This is a test 2</comment>
   </contact>
 </contacts>

@@ -525,10 +525,9 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                                     <strong>Available Seats:</strong> ${returnAvailableSeats}<br>
                                     <strong>Price Per Seat:</strong> $${returnPrice}<br>
                                     <strong>Total Price (Computed):</strong> $${totalReturnPrice}<br>
-                                    <button onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
+                                    <button type="submit" onclick="addRoundTripToCart('${flightId}', '${returnFlightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${totalPrice}, '${returnDepartureDate}', '${returnArrivalDate}', '${returnDepartureTime}', '${returnArrivalTime}', ${seatsNeeded}, ${price}, ${returnPrice}, ${totalReturnPrice})">Add to Cart</button>
                                     <br><br>
                                 `;
-                                // addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice)
                             });
                         });
                     } else {
@@ -558,7 +557,7 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                             <strong>Available Seats:</strong> ${availableSeats}<br>
                             <strong>Price Per Seat:</strong> $${price}<br>
                             <strong>Total Price (Computed):</strong> $${totalPrice}<br>
-                            <button onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
+                            <button type="submit" onclick="addFlightToCart('${flightId}', '${origin}', '${destination}', '${departureDate}', '${arrivalDate}', '${departureTime}', '${arrivalTime}', ${seatsNeeded}, ${price}, ${totalPrice})">Add to Cart</button>
                             <br><br>
                         `;
                     });
@@ -738,30 +737,26 @@ function validateAndSubmitStay(event) {
             }
 
             let hotelDetails = "<h3>Available Hotels:</h3>";
-            availableHotels.forEach(hotel => {
-                // calculate the number of days between check-in and check-out dates
-                const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
-                hotelDetails += `
-                    <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
-                    <strong>Name:</strong> ${hotel.name}<br>
-                    <strong>City:</strong> ${hotel.city}<br>
-                    <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
-                    <strong>Check-In Date:</strong> ${checkIn}<br>
-                    <strong>Check-Out Date:</strong> ${checkOut}<br>
-                    <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
-                    <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
-                `;
-                // <strong>Availability Dates for this Hotel:</strong><br>
-                // hotel.availability.forEach(availability => {
-                //     hotelDetails += `
-                //         <strong>Open Date:</strong> ${availability.startDate}<br>
-                //         <strong>Close Date:</strong> ${availability.endDate}<br>
-                //     `;
-                // });
-                // Add a button to book the hotel on that date
-                hotelDetails += `<button onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
-                hotelDetails += "<br>";
-            });
+            if (availableHotels.length === 0) {
+                hotelDetails += "<p>No hotels available matching your criteria.</p>";
+            } else {
+                availableHotels.forEach(hotel => {
+                    // calculate the number of days between check-in and check-out dates
+                    const diffTime = Math.abs(new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+                    hotelDetails += `
+                        <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
+                        <strong>Name:</strong> ${hotel.name}<br>
+                        <strong>City:</strong> ${hotel.city}<br>
+                        <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
+                        <strong>Check-In Date:</strong> ${checkIn}<br>
+                        <strong>Check-Out Date:</strong> ${checkOut}<br>
+                        <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
+                        <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
+                    `;
+                    hotelDetails += `<button type="submit" onclick="addHotelToCart('${hotel.hotelId}', '${hotel.name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.pricePerNight}, ${hotel.pricePerNight * diffTime * roomsNeeded})">Add to Cart</button>`;
+                    hotelDetails += "<br>";
+                });
+            }
             document.getElementById('hotelDetails').innerHTML = hotelDetails;
             document.getElementById('hotelDetails').style.color = "green";
         })
@@ -950,6 +945,7 @@ function bookAllHotelsFromCart(){
         .then(responseText => {
             console.log(responseText);
             alert("All hotels booked successfully!");
+            window.location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -1273,215 +1269,8 @@ function generateBookingNumber() {
     return bookingNumber;
 }
 
-// Added the new add flight to cart code here
-// You had a bunch of things inside of a single function that were async this lead to race conditions
-// in general make a scripts/ folder and then have multiple *.js files for different things 
-// so like have a flights.js that handles adding and removing all the filghts just makes the code nicer
-// function confirmTripType() {
-//     const tripType = document.getElementById('tripdropdown').value;
-
-//     // Display relevant fields based on trip type
-//     document.getElementById('origin-label').style.display = 'block';
-//     document.getElementById('origin').style.display = 'block';
-//     document.getElementById('destination-label').style.display = 'block';
-//     document.getElementById('destination').style.display = 'block';
-//     document.getElementById('departure-label').style.display = 'block';
-//     document.getElementById('departure').style.display = 'block';
-
-//     if (tripType === 'round-trip') {
-//         document.getElementById('arriving-label').style.display = 'block';
-//         document.getElementById('arriving').style.display = 'block';
-//     } else {
-//         document.getElementById('arriving-label').style.display = 'none';
-//         document.getElementById('arriving').style.display = 'none';
-//     }
-
-//     document.getElementById('searchButton').style.display = 'block';
-// }
-
-// function showPassengerForm() {
-//     document.getElementById('passengerForm').style.display = 'block';
-// }
-
-// function validateAndSubmit(event) {
-//     event.preventDefault();
-
-//     const form = document.getElementById('flightForm');
-//     const flightId = generateFlightId();  // Assuming there's a function to generate a unique flight ID
-//     const origin = form.origin.value;
-//     const destination = form.destination.value;
-//     const departureDate = form.departure.value;
-//     const arrivalDate = form.arriving ? form.arriving.value : '';
-//     const seatsNeeded = parseInt(form.adults.value) + parseInt(form.children.value) + parseInt(form.infants.value);
-//     const pricePerSeat = calculatePricePerSeat();  // Assuming there's a function to calculate price per seat
-//     const totalPrice = pricePerSeat * seatsNeeded;
-
-//     const departureTime = "09:00"; // Hardcoded for simplicity, you can modify as needed
-//     const arrivalTime = "12:00"; // Hardcoded for simplicity, you can modify as needed
-
-//     addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice);
-// }
-
-// function addFlightToCart(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
-//     const flightData = confirmFlightDetails(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice);
-//     if (flightData) {
-//         bookFlight(flightData)
-//             .then(() => alert("Flight booked successfully!"))
-//             .catch(error => {
-//                 console.error('Error:', error);
-//                 alert("Error booking flight!");
-//             });
-//     }
-// }
-
-// function addRoundTripToCart(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
-//     if (confirmRoundTripDetails(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice)) {
-//         bookFlight({ flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice })
-//             .then(() => {
-//                 alert("Departure flight booked successfully!");
-//                 return bookFlight({ flightId: returnFlightId, origin: destination, destination: origin, departureDate: returnDepartureDate, arrivalDate: returnArrivalDate, departureTime: returnDepartureTime, arrivalTime: returnArrivalTime, seatsNeeded, pricePerSeat: pricePerSeatReturn, totalPrice: returnTotalPrice });
-//             })
-//             .then(() => alert("Return flight booked successfully!"))
-//             .catch(error => {
-//                 console.error('Error:', error);
-//                 alert("Error booking flight!");
-//             });
-//     }
-// }
-
-// function confirmRoundTripDetails(flightId, returnFlightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, totalPrice, returnDepartureDate, returnArrivalDate, returnDepartureTime, returnArrivalTime, seatsNeeded, pricePerSeat, pricePerSeatReturn, returnTotalPrice) {
-//     return confirm("Are you sure you want to book this round trip with the following details:\n" +
-//         "Departure Flight Details:" +
-//         "\nFlight ID: " + flightId +
-//         "\nOrigin: " + origin +
-//         "\nDestination: " + destination +
-//         "\nDeparture Date: " + departureDate +
-//         "\nArrival Date: " + arrivalDate +
-//         "\nDeparture Time: " + departureTime +
-//         "\nArrival Time: " + arrivalTime +
-//         "\nSeats Needed: " + seatsNeeded +
-//         "\nPrice Per Seat: $" + pricePerSeat +
-//         "\nTotal Price: $" + totalPrice +
-//         "\n\nReturn Flight Details:" +
-//         "\nFlight ID: " + returnFlightId +
-//         "\nOrigin: " + origin +
-//         "\nDestination: " + destination +
-//         "\nDeparture Date: " + returnDepartureDate +
-//         "\nArrival Date: " + returnArrivalDate +
-//         "\nDeparture Time: " + returnDepartureTime +
-//         "\nArrival Time: " + returnArrivalTime +
-//         "\nSeats Needed: " + seatsNeeded +
-//         "\nPrice Per Seat: $" + pricePerSeatReturn +
-//         "\nTotal Price: $" + returnTotalPrice +
-//         "\n\nPress OK to confirm.");
-// }
-
-// function confirmFlightDetails(flightId, origin, destination, departureDate, arrivalDate, departureTime, arrivalTime, seatsNeeded, pricePerSeat, totalPrice) {
-//     if (confirm("Are you sure you want to book this flight with the following details:\n" +
-//         "Flight ID: " + flightId +
-//         "\nOrigin: " + origin +
-//         "\nDestination: " + destination +
-//         "\nDeparture Date: " + departureDate +
-//         "\nArrival Date: " + arrivalDate +
-//         "\nDeparture Time: " + departureTime +
-//         "\nArrival Time: " + arrivalTime +
-//         "\nSeats Needed: " + seatsNeeded +
-//         "\nPrice Per Seat: $" + pricePerSeat +
-//         "\nTotal Price: $" + totalPrice +
-//         "\n\nPress OK to confirm.")) {
-//         const data = {
-//             flightId: flightId,
-//             origin: origin,
-//             destination: destination,
-//             departureDate: departureDate,
-//             arrivalDate: arrivalDate,
-//             departureTime: departureTime,
-//             arrivalTime: arrivalTime,
-//             seatsNeeded: seatsNeeded,
-//             pricePerSeat: pricePerSeat,
-//             totalPrice: totalPrice
-//         };
-//         return data;
-//     } else {
-//         return null;
-//     }
-// }
-
-// function bookFlight(data) {
-//     fetch('/book-flight-to-cart', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(data)
-//     })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.text();
-//         })
-//         .then(responseText => {
-//             console.log(responseText);
-//             alert("The flight is booked successfully!");
-//             updateAvailableSeats(data.flightId, data.seatsNeeded);
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert("Error booking flight!");
-//         });
-// }
-
-function updateAvailableSeats(flightId, seatsNeeded) {
-    fetch('./availableFlights.xml')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data, "text/xml");
-            const flights = xmlDoc.getElementsByTagName("flight");
-            let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
-            if (selectedFlight) {
-                const availableSeatsElem = selectedFlight.getElementsByTagName("availableseats")[0];
-                let availableSeats = parseInt(availableSeatsElem.textContent);
-                availableSeatsElem.textContent = availableSeats - seatsNeeded;
-                console.log(`Updated seats: ${availableSeatsElem.textContent}`);
-            }
-
-            const updatedData = new XMLSerializer().serializeToString(xmlDoc);
-            fetch('/update-available-flights', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/xml'
-                },
-                body: updatedData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(responseText => {
-                    console.log(responseText);
-                })
-                .catch(error => {
-                    console.error('Error updating flight data:', error);
-                });
-        });
-}
-
 function removeFlightFromCart(bookingNumber) {
     if (confirm("Are you sure you want to remove this booking from your cart?")) {
-        
-        // Store it in JSON format
-        // const data = {
-        //     bookingNumber: bookingNumber
-        // }
 
         const data = new URLSearchParams();
         data.append("bookingNumber", bookingNumber);
@@ -1586,14 +1375,40 @@ function bookAllFlightsFromCart() {
     }
 }
 
+async function getUserSession(){
+    try{
+        const response = await fetch('get_user_session.php');
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        if(data.loggedIn){
+            console.log("User is logged in");
+            console.log(data.firstName);
+            console.log(data.lastName);
+        } else {
+            console.log("User is not logged in");
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
 // DOM Method to load and build the cars.html page
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Add footer text dynamically
-    if(!window.location.pathname.includes('cruises.html')){
+    getUserSession()
+    .then(data => {
+        // Add footer text dynamically
+    if(!window.location.pathname.includes('cruises.html') && !window.location.pathname.includes('login.html')){
         // Dynamically create navigation links
         if(!window.location.pathname.includes('index.html') && !window.location.pathname.includes('contact-us.html')){
-            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
+            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
             const navList = document.getElementById('nav-list');
 
             pages.forEach(page => {
@@ -1689,7 +1504,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const seatsNeeded = flight.seatsNeeded;
                         const price = flight.pricePerSeat;
                         const totalPrice = flight.totalPrice;
-
+        
                         flightDetails += `
                             <strong>Flight ID:</strong> ${flightId}<br>
                             <strong>Origin:</strong> ${origin}<br>
@@ -1714,37 +1529,114 @@ document.addEventListener('DOMContentLoaded', () => {
                             `;
                         }
                     });
-
-                    // Add a button for each booking to remove it from the cart
-                    flightDetails += `<button onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
+                    // Generate passenger input fields for each seat
+                    for (let i = 0; i <flights[0].seatsNeeded; i++) {
+                        flightDetails += `
+                            <strong>Passenger ${i + 1}:</strong><br>
+                            <label>First Name: <input type="text" name="firstName-${bookingNumber}-${i}" required></label><br>
+                            <label>Last Name: <input type="text" name="lastName-${bookingNumber}-${i}" required></label><br>
+                            <label>Date of Birth: <input type="date" name="dob-${bookingNumber}-${i}" required></label><br>
+                            <label>SSN: <input type="text" name="ssn-${bookingNumber}-${i}" required></label><br><br>
+                        `;
+                    }
+                    // Add a button for each flight to remove that flight from cart
+                    flightDetails += `<button type="remove" onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
-                flightDetails += "<button id='bookAll'>Book All Flights</button>";
+                // flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
+                flightDetails += "<button type=\"submit\" id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
 
                 // Handle "Book All Flights" button click
                 document.getElementById('bookAll').addEventListener('click', () => {
                     const passengerData = [];
+                    let invalidInput = false;
+
+                    // Validate passenger input fields
+                    var alphabeticRegex = /^[a-zA-Z]+$/;
+                    var capitalizedRegex = /^[A-Z]/;
+                    var dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+                    var ssnRegex = /^\d{3}-\d{2}-\d{4}$/;
 
                     // Collect passenger and flight data
+                    let alertMsg = "";
                     Object.entries(groupFlightsByBooking).forEach(([bookingNumber, flights]) => {
                         const passengers = [];
                         flights.forEach(flight => {
                             for (let i = 0; i < flight.seatsNeeded; i++) {
+                                const firstName = document.querySelector(`[name="firstName-${bookingNumber}-${i}"]`).value;
+                                const lastName = document.querySelector(`[name="lastName-${bookingNumber}-${i}"]`).value;
+                                const dob = document.querySelector(`[name="dob-${bookingNumber}-${i}"]`).value;
+                                const ssn = document.querySelector(`[name="ssn-${bookingNumber}-${i}"]`).value;
+
+                                // Test first if any input is empty
+                                if (firstName === "" || lastName === "" || dob === "" || ssn === "") {
+                                    alertMsg += "All fields must be filled.\n";
+                                }
+
+                                // Test if first name and last name are alphabetic
+                                if (!alphabeticRegex.test(firstName) || !alphabeticRegex.test(lastName)) {
+                                    alertMsg += "First name and last name must be alphabetic.\n";
+                                }
+
+                                // Test if first name and last name are capitalized
+                                if (!capitalizedRegex.test(firstName[0]) || !capitalizedRegex.test(lastName[0])) {
+                                    alertMsg += "First name and last name must be capitalized.\n";
+                                }
+
+                                // Test if date of birth is in the correct format
+                                if (!dobRegex.test(dob)) {
+                                    alertMsg += "Format for date of birth must be followed as shown in the input field, and it should be fully filled out.\n";
+                                }
+
+                                // Test if SSN is in the correct format
+                                if (!ssnRegex.test(ssn)) {
+                                    alertMsg += "Format for SSN must be XXX-XX-XXXX, where each X is a digit (any number between 0 and 9).\n";
+                                }
+
+                                if (alertMsg !== "") {
+                                    invalidInput = true;
+                                    break;
+                                }
+
                                 passengers.push({
-                                    firstName: document.querySelector(`[name="firstName-${bookingNumber}-${i}"]`).value,
-                                    lastName: document.querySelector(`[name="lastName-${bookingNumber}-${i}"]`).value,
-                                    dob: document.querySelector(`[name="dob-${bookingNumber}-${i}"]`).value,
-                                    ssn: document.querySelector(`[name="ssn-${bookingNumber}-${i}"]`).value
+                                    firstName,
+                                    lastName,
+                                    dob,
+                                    ssn
                                 });
                             }
+
+                            if (invalidInput) return;
                         });
+
+                        if (invalidInput) return;
 
                         passengerData.push({
                             bookingNumber,
                             flights,
                             passengers
                         });
+                    });
+
+                    if (invalidInput) {
+                        alert(alertMsg);
+                        return;
+                    }
+
+                    // If there are any exact duplicate objects in a flightID, remove them
+                    // Check by First Name, Last Name, DOB, and SSN
+                    passengerData.forEach(data => {
+                        let uniquePassengers = [];
+                        let uniquePassengerStrings = [];
+                        data.passengers.forEach(passenger => {
+                            const passengerString = `${passenger.firstName}${passenger.lastName}${passenger.dob}${passenger.ssn}`;
+                            if (!uniquePassengerStrings.includes(passengerString)) {
+                                uniquePassengerStrings.push(passengerString);
+                                uniquePassengers.push(passenger);
+                            }
+                        });
+                        data.passengers = uniquePassengers;
                     });
 
                     // Send data to the server
@@ -1813,14 +1705,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <strong>Check-In Date:</strong> ${checkIn}<br>
                         <strong>Check-Out Date:</strong> ${checkOut}<br>
                         <strong>Rooms:</strong> ${rooms}<br>
-                        <strong>Price Per Night:</strong> $${pricePerNight}<br>
+                        <strong>Price Per Room Per Night:</strong> $${pricePerNight}<br>
                         <strong>Total Price:</strong> $${totalPrice}<br>
                     `;
 
                     // Add a button for each hotel to remove that hotel from cart
-                    hotelDetails += `<button onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
+                    hotelDetails += `<button type="remove" onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
                 }
-                hotelDetails += "<button onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
+                hotelDetails += "<button type=\"submit\" onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
                 hotelDetailsElement.innerHTML = hotelDetails;
             })
             .catch(error => {
@@ -1973,129 +1865,544 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    if (window.location.pathname.includes('register.html')) {
+        const header = document.getElementById('header-title');
+        header.textContent = "Register";
+
+        const registerForm = document.getElementById('registerForm');
+        const output = document.getElementById('output');
+
+        // Add a register web page to your web application to register users. You should
+        // ask each user to enter Phone number, Password , FirstName, LastName, Date
+        // of birth, Email, and Gender (as radio button) . Before registering each user,
+        // you should validate the user’s inputs as following
+        // • User must enter Phone number, Password , FirstName, LastName, Date
+        // of birth, and Email. Gender is not a required user input.
+        // • Phone number is a unique number. User can not use a phone number
+        // that already has been used by another user.
+        // • Phone number must be formatted as ddd-ddd-dddd
+        // • User must enter the same Password two times.
+        // • The Password must be at least 8 characters.
+        // • Date of birth must have 2 digits for month, 2 digits fore day, and four digits for year
+        // • Email must contain @ and .com
+
+        // Phone label and input field
+        const phoneLabel = document.createElement('label');
+        phoneLabel.setAttribute('for', 'phone');
+        phoneLabel.textContent = "Phone Number:";
+        const phoneInput = document.createElement('input');
+        phoneInput.setAttribute('type', 'tel');
+        phoneInput.setAttribute('id', 'phone');
+        phoneInput.setAttribute('name', 'phone');
+        phoneInput.setAttribute('pattern', "[0-9]{3}-[0-9]{3}-[0-9]{4}");
+        phoneInput.setAttribute('required', true);
+
+        // Password label and input field
+        const passwordLabel = document.createElement('label');
+        passwordLabel.setAttribute('for', 'password');
+        passwordLabel.textContent = "Password:";
+        const passwordInput = document.createElement('input');
+        passwordInput.setAttribute('type', 'password');
+        passwordInput.setAttribute('id', 'password');
+        passwordInput.setAttribute('name', 'password');
+        passwordInput.setAttribute('required', true);
+
+        // Confirm password label and input field
+        const confirmPasswordLabel = document.createElement('label');
+        confirmPasswordLabel.setAttribute('for', 'confirmPassword');
+        confirmPasswordLabel.textContent = "Confirm Password:";
+        const confirmPasswordInput = document.createElement('input');
+        confirmPasswordInput.setAttribute('type', 'password');
+        confirmPasswordInput.setAttribute('id', 'confirmPassword');
+        confirmPasswordInput.setAttribute('name', 'confirmPassword');
+        confirmPasswordInput.setAttribute('required', true);
+
+        // First name label and input field
+        const firstNameLabel = document.createElement('label');
+        firstNameLabel.setAttribute('for', 'firstName');
+        firstNameLabel.textContent = "First Name:";
+        const firstNameInput = document.createElement('input');
+        firstNameInput.setAttribute('type', 'text');
+        firstNameInput.setAttribute('id', 'firstName');
+        firstNameInput.setAttribute('name', 'firstName');
+        firstNameInput.setAttribute('required', true);
+
+        // Last name label and input field
+        const lastNameLabel = document.createElement('label');
+        lastNameLabel.setAttribute('for', 'lastName');
+        lastNameLabel.textContent = "Last Name:";
+        const lastNameInput = document.createElement('input');
+        lastNameInput.setAttribute('type', 'text');
+        lastNameInput.setAttribute('id', 'lastName');
+        lastNameInput.setAttribute('name', 'lastName');
+        lastNameInput.setAttribute('required', true);
+        
+        // Date of birth label and input field
+        const dobLabel = document.createElement('label');
+        dobLabel.setAttribute('for', 'dob');
+        dobLabel.textContent = "Date of Birth:";
+        const dobInput = document.createElement('input');
+        dobInput.setAttribute('type', 'date');
+        dobInput.setAttribute('id', 'dob');
+        dobInput.setAttribute('name', 'dob');
+        dobInput.setAttribute('required', true);
+
+        // Email label and input field
+        const emailLabel = document.createElement('label');
+        emailLabel.setAttribute('for', 'email');
+        emailLabel.textContent = "Email:";
+        const emailInput = document.createElement('input');
+        emailInput.setAttribute('type', 'email');
+        emailInput.setAttribute('id', 'email');
+        emailInput.setAttribute('name', 'email');
+        emailInput.setAttribute('required', true);
+
+        // Gender label and radio buttons
+        const genderLabel = document.createElement('label');
+        genderLabel.textContent = "Gender:";
+        const maleLabel = document.createElement('input');
+        const femaleLabel = document.createElement('input');
+        maleLabel.setAttribute('type', 'radio');
+        femaleLabel.setAttribute('type', 'radio');
+        maleLabel.setAttribute('name', 'gender');
+        femaleLabel.setAttribute('name', 'gender');
+        maleLabel.setAttribute('value', 'Male');
+        femaleLabel.setAttribute('value', 'Female');
+
+        const maleText = document.createElement('label')
+        maleText.textContent = "Male";
+
+        const femaleText = document.createElement('label')
+        femaleText.textContent = "Female";
+
+        // Submit button
+        const submitButton = document.createElement('input');
+        submitButton.setAttribute('type', 'submit');
+        submitButton.setAttribute('value', 'Submit');
+
+        // Append elements to the form
+        registerForm.appendChild(phoneLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(phoneInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(passwordLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(passwordInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(confirmPasswordLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(confirmPasswordInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(firstNameLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(firstNameInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(lastNameLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(lastNameInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(dobLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(dobInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(emailLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(emailInput);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(genderLabel);
+        registerForm.appendChild(document.createElement('br'));
+        registerForm.appendChild(maleLabel);
+        registerForm.appendChild(maleText);
+        registerForm.appendChild(femaleLabel);
+        registerForm.appendChild(femaleText);
+        registerForm.appendChild(document.createElement('br'));
+
+        registerForm.appendChild(submitButton);
+
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Retrieve user input values
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const dob = document.getElementById('dob').value;
+            const email = document.getElementById('email').value.trim();
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+
+            // Validation rules
+            // Phone number must be unique and formatted as ddd-ddd-dddd
+            // Password must be at least 8 characters
+            // Date of birth must have 2 digits for month, 2 digits for day, and four digits for year
+            // Email must contain @ and .com
+            const phoneRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+            const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            let errors = [];
+
+            // Validate phone number
+            if (phone.length == 0) {
+                errors.push("Phone number is required.");
+            } else if (!phoneRegex.test(phone)) {
+                errors.push("Phone number must be formatted as ddd-ddd-dddd.");
+            }
+
+            // Validate password
+            if (password.length == 0) {
+                errors.push("Password is required.");
+            } else if (password.length < 8) {
+                errors.push("Password must be at least 8 characters.");
+            }
+
+            // Validate confirm password
+            if (confirmPassword.length == 0) {
+                errors.push("Confirm password is required.");
+            } else if (password != confirmPassword) {
+                errors.push("Passwords do not match.");
+            }
+
+            // Validate first name
+            if (firstName.length == 0) {
+                errors.push("First name is required.");
+            }
+
+            // Validate last name
+            if (lastName.length == 0) {
+                errors.push("Last name is required.");
+            }
+
+            // Validate date of birth
+            if (dob.length == 0) {
+                errors.push("Date of birth is required.");
+            } else if (!dobRegex.test(dob)) {
+                errors.push("Date of birth must have the format YYYY-MM-DD.");
+            }
+
+            // Validate email
+            if (email.length == 0) {
+                errors.push("Email is required.");
+            } else if (!emailRegex.test(email)) {
+                errors.push("Email must be in the format");
+            }
+
+            // Check if gender is selected
+            if (!gender) {
+                errors.push("Please select a gender");
+            }
+
+            // Output validation results and submit to registers.php
+            if (errors.length > 0) {
+                output.innerHTML = "Your input has some errors to address:<br>" + errors.join('<br>');
+                output.style.color = "red";
+            } else {
+                output.innerHTML = "Your input is valid. Registering user...";
+                output.style.color = "green";
+
+                // registerForm.action = "register.php";
+                // registerForm.method = "POST";
+                // registerForm.submit();
+
+                // Submit form data to register.php
+                fetch('register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    // body: `phone=${phone}&password=${password}&firstName=${firstName}&lastName=${lastName}&dob=${dob}&email=${email}&gender=${gender}`
+                    body: new URLSearchParams({
+                        phone: phone,
+                        password: password,
+                        firstName: firstName,
+                        lastName: lastName,
+                        dob: dob,
+                        email: email,
+                        gender: gender
+                    })    
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    console.log(responseText);
+                    output.innerHTML = "User registered successfully!";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    output.innerHTML = "Error registering user.";
+                });
+            }
+
+        });
+
+    }
+    });
 });
 
 //Method that uses jQuery to load and build the cruise.html page
 $(document).ready(function(){
 
-    if (window.location.pathname.includes('cruises.html')) {
+    getUserSession()
+    .then(data => {
+        if (window.location.pathname.includes('cruises.html')) {
 
-        $('#header-title').text("Cruises");
-
-        const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
-        const actions = ["Change Font Size", "Change Background Color"];
-        
-        pages.forEach(page => {
-            const li = $('<li></li>');
-            if (page == "Home") {
-                const a = $('<a></a>').attr('href', 'index.html').text(page);
-                li.append(a);
+            $('#header-title').text("Cruises");
+    
+            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
+            const actions = ["Change Font Size", "Change Background Color"];
+            
+            pages.forEach(page => {
+                const li = $('<li></li>');
+                if (page == "Home") {
+                    const a = $('<a></a>').attr('href', 'index.html').text(page);
+                    li.append(a);
+                } else {
+                    const a = $('<a></a>').attr('href', `${page.toLowerCase().replace(" ", "-")}.html`).text(page);
+                    li.append(a);
+                }
+                $('#nav-list').append(li);
+            });
+    
+            const sidebarHeader = $('<h2></h2>').text("Change font size and/or background color of the webpage");
+            $('#sidebar').append(sidebarHeader);
+    
+            actions.forEach(action => {
+                const button = $('<button></button>').text(action);
+                if (action == "Change Font Size") {
+                    button.click(changeFontSize);
+                }
+                else if (action == "Change Background Color") {
+                    button.click(changeBackgroundColor);
+                }
+                $('#sidebar').append(button);
+                $('#sidebar').append('<br>');
+            });
+    
+            // Dynamically generate the cruise booking form
+            const form = `
+            <form id="cruiseForm">
+                <label for="destination">Destination:</label>
+                <select id="destination" name="destination" required>
+                    <option value="">Select Destination</option>
+                    <option value="Alaska">Alaska</option>
+                    <option value="Bahamas">Bahamas</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Mexico">Mexico</option>
+                </select><br>
+    
+                <label for="departBetween">Departing Between (Sep 1, 2024 - Dec 1, 2024):</label>
+                <input type="date" id="departBetween" name="departBetween" required><br>
+    
+                <label for="minDuration">Minimum Duration (3-10 days):</label>
+                <input type="number" id="minDuration" name="minDuration" min="3" max="10" value="3" required><br>
+    
+                <label for="maxDuration">Maximum Duration (3-10 days):</label>
+                <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" value="10" required><br>
+    
+                <label for="adults">Number of Adults Total:</label>
+                <input type="number" id="adults" name="adults" min="1" value="1" required><br>
+    
+                <label for="children">Number of Children Total:</label>
+                <input type="number" id="children" name="children" min="0" value="0" required><br>
+    
+                <label for="infants">Number of Infants:</label>
+                <input type="number" id="infants" name="infants" min="0" value="0" required><br>
+    
+                <input type="submit" value="Submit">
+            </form>`;
+    
+            // Append the form to the form container
+            $('#formContainer').html(form);
+    
+            // Add footer text dynamically
+            updateFooterJQuery();
+            setInterval(updateFooterJQuery, 1000);
+    
+            $('#cruiseForm').submit(function(event){
+                event.preventDefault();
+    
+                const destination = $('#destination').val();
+                const departBetween = $('#departBetween').val();
+                const minDuration = parseInt($('#minDuration').val());
+                const maxDuration = parseInt($('#maxDuration').val());
+                const adults = parseInt($('#adults').val());
+                const children = parseInt($('#children').val());
+                const infants = parseInt($('#infants').val());
+    
+                var alertMessage = "";
+                var departDate = new Date(departBetween);
+                var minDate = new Date("2024-09-01");
+                var maxDate = new Date("2024-12-01");
+    
+                if(departDate < minDate || departDate > maxDate){
+                    alertMessage += "Departure date must be between Sep 1, 2024 and Dec 1, 2024.\n";
+                }
+    
+                // Validate min and max duration
+                if(minDuration < 3 || minDuration > 10 || maxDuration < 3 || maxDuration > 10){
+                    alertMessage += "Duration must be between 3 and 10 days.\n";
+                }
+                else if(minDuration > maxDuration){
+                    alertMessage += "Minimum duration cannot be greater than maximum duration.\n";
+                }
+    
+                const rooms = calculateRooms(adults, children);
+    
+                if(alertMessage != ""){
+                    $('#output').html("Your input has some errors:<br>" + alertMessage);
+                    $('#output').css('color', 'red');
+                } else {
+                    $('#output').html("<h3>Cruise Details:</h3>" + 
+                        "<strong>Destination:</strong> " + destination + 
+                        "<br><strong>Departure Date:</strong> " + departBetween + 
+                        "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 
+                        " days<br><strong>Adults:</strong> " + adults + 
+                        "<br><strong>Children:</strong> " + children +
+                        "<br><strong>Infants:</strong> " + infants +
+                        "<br><strong>Rooms Needed:</strong> " + rooms);
+                    $('#output').css('color', 'green');
+                }
+            });
+        }
+    
+        if (window.location.pathname.includes('login.html')) {
+            // The User should be able to log in to your web application
+            // using her/his Phone number and the password. Phone number for the admin
+            // should be 222-222-2222. 
+            
+            // const form = document.getElementById('loginForm');
+            // form.addEventListener('submit', validateLogin);
+    
+            $('#header-title').text("Log In");
+    
+            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
+            const actions = ["Change Font Size", "Change Background Color"];
+            
+            pages.forEach(page => {
+                const li = $('<li></li>');
+                if (page == "Home") {
+                    const a = $('<a></a>').attr('href', 'index.html').text(page);
+                    li.append(a);
+                } else {
+                    const a = $('<a></a>').attr('href', `${page.toLowerCase().replace(" ", "-")}.html`).text(page);
+                    li.append(a);
+                }
+                $('#nav-list').append(li);
+            });
+    
+            const sidebarHeader = $('<h2></h2>').text("Change font size and/or background color of the webpage");
+            $('#sidebar').append(sidebarHeader);
+    
+            actions.forEach(action => {
+                const button = $('<button></button>').text(action);
+                if (action == "Change Font Size") {
+                    button.click(changeFontSize);
+                }
+                else if (action == "Change Background Color") {
+                    button.click(changeBackgroundColor);
+                }
+                $('#sidebar').append(button);
+                $('#sidebar').append('<br>');
+            });
+    
+            const loginForm = `<form id="loginForm">
+                    <label for="phone">Phone Number:</label><br>
+                    <input type="tel" id="phone" name="phone" placeholder="xxx-xxx-xxxx" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                    <button type="submit" value="Submit">Submit</button>
+                </form>`;
+            
+            const logOutDisplay = `<form id="logoutForm">
+                <h3>Logged In</h3>
+                <button type="submit" value="Submit">Log Out</button>
+                </form>`;
+            if(data.loggedIn){
+                $('#formContainer').html(logOutDisplay);
             } else {
-                const a = $('<a></a>').attr('href', `${page.toLowerCase().replace(" ", "-")}.html`).text(page);
-                li.append(a);
+                $('#formContainer').html(loginForm);
             }
-            $('#nav-list').append(li);
-        });
-
-        const sidebarHeader = $('<h2></h2>').text("Change font size and/or background color of the webpage");
-        $('#sidebar').append(sidebarHeader);
-
-        actions.forEach(action => {
-            const button = $('<button></button>').text(action);
-            if (action == "Change Font Size") {
-                button.click(changeFontSize);
-            }
-            else if (action == "Change Background Color") {
-                button.click(changeBackgroundColor);
-            }
-            $('#sidebar').append(button);
-            $('#sidebar').append('<br>');
-        });
-
-        // Dynamically generate the cruise booking form
-        const form = `
-        <form id="cruiseForm">
-            <label for="destination">Destination:</label>
-            <select id="destination" name="destination" required>
-                <option value="">Select Destination</option>
-                <option value="Alaska">Alaska</option>
-                <option value="Bahamas">Bahamas</option>
-                <option value="Europe">Europe</option>
-                <option value="Mexico">Mexico</option>
-            </select><br>
-
-            <label for="departBetween">Departing Between (Sep 1, 2024 - Dec 1, 2024):</label>
-            <input type="date" id="departBetween" name="departBetween" required><br>
-
-            <label for="minDuration">Minimum Duration (3-10 days):</label>
-            <input type="number" id="minDuration" name="minDuration" min="3" max="10" value="3" required><br>
-
-            <label for="maxDuration">Maximum Duration (3-10 days):</label>
-            <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" value="10" required><br>
-
-            <label for="adults">Number of Adults Total:</label>
-            <input type="number" id="adults" name="adults" min="1" value="1" required><br>
-
-            <label for="children">Number of Children Total:</label>
-            <input type="number" id="children" name="children" min="0" value="0" required><br>
-
-            <label for="infants">Number of Infants:</label>
-            <input type="number" id="infants" name="infants" min="0" value="0" required><br>
-
-            <input type="submit" value="Submit">
-        </form>`;
-
-        // Append the form to the form container
-        $('#formContainer').html(form);
-
-        // Add footer text dynamically
-        updateFooterJQuery();
-        setInterval(updateFooterJQuery, 1000);
-
-        $('#cruiseForm').submit(function(event){
-            event.preventDefault();
-
-            const destination = $('#destination').val();
-            const departBetween = $('#departBetween').val();
-            const minDuration = parseInt($('#minDuration').val());
-            const maxDuration = parseInt($('#maxDuration').val());
-            const adults = parseInt($('#adults').val());
-            const children = parseInt($('#children').val());
-            const infants = parseInt($('#infants').val());
-
-            var alertMessage = "";
-            var departDate = new Date(departBetween);
-            var minDate = new Date("2024-09-01");
-            var maxDate = new Date("2024-12-01");
-
-            if(departDate < minDate || departDate > maxDate){
-                alertMessage += "Departure date must be between Sep 1, 2024 and Dec 1, 2024.\n";
-            }
-
-            // Validate min and max duration
-            if(minDuration < 3 || minDuration > 10 || maxDuration < 3 || maxDuration > 10){
-                alertMessage += "Duration must be between 3 and 10 days.\n";
-            }
-            else if(minDuration > maxDuration){
-                alertMessage += "Minimum duration cannot be greater than maximum duration.\n";
-            }
-
-            const rooms = calculateRooms(adults, children);
-
-            if(alertMessage != ""){
-                $('#output').html("Your input has some errors:<br>" + alertMessage);
-                $('#output').css('color', 'red');
-            } else {
-                $('#output').html("<h3>Cruise Details:</h3>" + 
-                    "<strong>Destination:</strong> " + destination + 
-                    "<br><strong>Departure Date:</strong> " + departBetween + 
-                    "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 
-                    " days<br><strong>Adults:</strong> " + adults + 
-                    "<br><strong>Children:</strong> " + children +
-                    "<br><strong>Infants:</strong> " + infants +
-                    "<br><strong>Rooms Needed:</strong> " + rooms);
+    
+            updateFooterJQuery();
+            setInterval(updateFooterJQuery, 1000);
+    
+            $('#loginForm').submit(function(event){
+                event.preventDefault();
+    
+                const phone = $('#phone').val();
+                const password = $('#password').val();
+    
+                $('#output').html("<h3>Login Details:</h3>" +
+                    "<strong>Phone:</strong> " + phone + "<br>" +
+                    "<strong>Password:</strong> " + password);
                 $('#output').css('color', 'green');
-            }
-        });
-    }
+                
+                // connect to login.php
+                fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        phone: phone,
+                        password: password
+                    })    
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    console.log(responseText);
+                    $('#output').html("Login successful!");
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    $('#output').html("Error logging in.");
+                });
+    
+            });
+    
+            $('#logoutForm').submit(function(event){
+                event.preventDefault();
+    
+                fetch('logout.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(responseText => {
+                    console.log(responseText);
+                    $('#output').html("Logged out successfully!");
+                    $('#output').css('color', 'green');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    $('#output').html("Error logging out.");
+                });
+            });
+        }
+    });
 });

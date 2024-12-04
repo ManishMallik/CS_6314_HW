@@ -8,25 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Initialize parser and builder for XML. Preserve the case of the tags. Do not make it all lowercase
-const parser = new xml2js.Parser(
-    // {
-    //     explicitArray: false,
-    //     mergeAttrs: true,
-    //     attrNameProcessors: [name => name],
-    //     tagNameProcessors: [name => name],
-    //     preserveChildrenOrder: true
-    // }
-);
-const builder = new xml2js.Builder(
-    // {
-    //     explicitArray: false,
-    //     mergeAttrs: true,
-    //     attrNameProcessors: [name => name],
-    //     tagNameProcessors: [name => name],
-    //     renderOpts: { pretty: true, indent: ' ', newline: '\n' },
-    //     headless: true,
-    // }
-);
+const parser = new xml2js.Parser();
+const builder = new xml2js.Builder();
 
 // Middleware to serve static files and parse form data
 app.use(express.static('.'));
@@ -41,8 +24,12 @@ app.use(bodyParser.xml({
     }
 }));
 
-// Navigating to home page
+// Navigating to home page. Redirect to index.html by doing a GET request to /index.html
 app.get('/', (req, res) => {
+    res.redirect('/index.html');
+});
+
+app.get('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -60,48 +47,7 @@ app.post('/submit-form', (req, res) => {
         comment
     };
 
-    const newContactXML = `
-    <contact>
-        <fname>${fname}</fname>
-        <lname>${lname}</lname>
-        <phone>${phone}</phone>
-        <email>${email}</email>
-        <gender>${gender}</gender>
-        <comment>${comment}</comment>
-    </contact>
-`;
-
     const xmlFilePath = 'contacts.xml';
-
-    // Read the existing XML file
-    // fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
-    //     if (err) {
-    //         console.error('Error reading XML file:', err);
-    //         res.status(500).send('Error reading XML file');
-    //         return;
-    //     }
-
-    //     // Find the closing </contacts> tag and insert the new contact before it
-    //     const insertPosition = data.lastIndexOf('</contacts>');
-    //     if (insertPosition === -1) {
-    //         console.error('Invalid XML structure: Missing </contacts> tag');
-    //         res.status(500).send('Invalid XML structure');
-    //         return;
-    //     }
-
-    //     // Construct the new XML content with the contact inserted
-    //     const updatedXML = data.slice(0, insertPosition) + newContactXML + data.slice(insertPosition);
-
-    //     // Write the updated XML back to the file
-    //     fs.writeFile(xmlFilePath, updatedXML, (writeErr) => {
-    //         if (writeErr) {
-    //             console.error('Error writing XML file:', writeErr);
-    //             res.status(500).send('Error saving data');
-    //         } else {
-    //             res.send('<response>Success: Data has been saved to contacts.xml</response>');
-    //         }
-    //     });
-    // });
 
     // Check if XML file exists
     fs.readFile(xmlFilePath, 'utf-8', (err, data) => {
@@ -139,15 +85,6 @@ app.post('/submit-form', (req, res) => {
 });
 
 app.post('/book-hotel-to-cart', (req, res) => {
-
-    // In the cart page,
-    // you should display the information of the selected hotel (hotel-id, hotel name,
-    // city, number of guesses per category, check in date, check out date, number of
-    // rooms, and price per night for each room , and total price). If the user clicks the
-    // book button, you should store all information in the cart (hotel-id, city, hotel
-    // name, check in date, check out date, number of guesses per category, number
-    // of rooms, and price per night for each room , and total price) in a XML file and
-    // update available rooms in the available hotels JSON file .
     
     const { hotelId, name, city, adultGuests, childGuests, infantGuests, checkIn, checkOut, rooms, pricePerNight, totalPrice } = req.body;
 
@@ -209,8 +146,6 @@ app.post('/book-hotel-to-cart', (req, res) => {
 app.post('/update-available-hotels', (req, res) => {
     console.log('Parsed Request Body:', req.body);
     const updatedData = req.body;
-    // console.log(updatedData);
-    // console.log(JSON.stringify(updatedData));
     fs.writeFile('./availableHotels.json', JSON.stringify(updatedData, null, 2), (err) => {
         if (err) {
             console.error('Error writing to JSON file:', err);
@@ -288,6 +223,7 @@ app.post('/confirm-booking-hotel', (req, res) => {
             }
 
             const xmlContent = result;
+            console.log("XML Content: ", xmlContent);
 
             // Open up the confirmed hotels file and add all the hotels from the cart to it
             fs.readFile(confirmedHotelXML, 'utf-8', (err, data) => {
@@ -330,9 +266,9 @@ app.post('/confirm-booking-hotel', (req, res) => {
     fs.writeFile(hotelCartXML, '', (err) => {
         if (err) {
             console.error('Error writing to XML file:', err);
-            res.status(500).send('Error updating hotels data');
+            // res.status(500).send('Error updating hotels data');
         } else {
-            res.send('Hotels removed from cart successfully');
+            // res.send('Hotels removed from cart successfully');
         }
     });
 });
@@ -399,16 +335,10 @@ app.post('/update-available-flights', (req, res) => {
 
 app.post('/remove-flight-from-cart', (req, res) => {
     
-    console.log("Booking Number time")
-    console.log("Request Body: ", req.body);
     const { bookingNumber } = req.body;
     const flightCartJson = 'flightCart.json';
 
-    console.log('Removing flight with booking number:', bookingNumber);
-
     fs.readFile(flightCartJson, 'utf-8', (err, data) => {
-        
-        console.log("Reading file");
         
         if (err) {
             console.error('Error reading JSON file:', err);
@@ -416,37 +346,18 @@ app.post('/remove-flight-from-cart', (req, res) => {
             return;
         }
 
-        console.log("Data read");
-
         const jsonData = JSON.parse(data);
 
         // Convert booking number from string to number
         const bookingNum = parseInt(bookingNumber);
 
-        // Find all of the flights with the booking number and remove them
-        // const flightIndex = jsonData.flights.findIndex(flight => flight.bookingNumber === bookingNum);
-
-        // console.log("Flight Index: ", flightIndex);
-
-        // if (flightIndex === -1) {
-        //     res.status(404).send('Flight not found in the cart');
-        //     return;
-        // }
-
-        // console.log("Moving forward");
-
-        // // Remove the flight from the array
-        // jsonData.flights.splice(flightIndex, 1);
-        // console.log("Flights after removal: ", jsonData.flights);
-
+        // Find all of the flights with the booking number
         const flightsToRemove = jsonData.flights.filter(flight => flight.bookingNumber === bookingNum);
         const flightsToKeep = jsonData.flights.filter(flight => flight.bookingNumber !== bookingNum);
         if(flightsToKeep.length === jsonData.flights.length){
             res.status(404).send('Flight not found in the cart');
             return;
         }
-
-        console.log("Flights to keep: ", flightsToKeep);
         
         jsonData.flights = flightsToKeep;
 
@@ -518,16 +429,16 @@ app.post('/confirm-booking-flights', (req, res) => {
 });
 
 const flightCartPath = 'flightCart.json';
-const bookedFlightsPath = 'bookedFlights.json';
+const bookedFlightsPath = 'confirmedFlights.json';
 
 // Confirm booking with passenger information
 app.post('/confirm-booking-with-passengers', (req, res) => {
     const bookings = req.body;
 
     // Load existing booked flights
-    let bookedFlights = [];
+    let bookedData = { bookedFlights: [] };
     if (fs.existsSync(bookedFlightsPath)) {
-        bookedFlights = JSON.parse(fs.readFileSync(bookedFlightsPath, 'utf-8'));
+        bookedData = JSON.parse(fs.readFileSync(bookedFlightsPath, 'utf-8'));
     }
 
     // Add new bookings with passenger information
@@ -540,16 +451,15 @@ app.post('/confirm-booking-with-passengers', (req, res) => {
                 ...flight,
                 passengers // Attach passenger details
             };
-            bookedFlights.push(bookedFlight);
+            bookedData.bookedFlights.push(bookedFlight);
         });
     });
 
     // Save updated booked flights
-    fs.writeFileSync(bookedFlightsPath, JSON.stringify(bookedFlights, null, 2), 'utf-8');
+    fs.writeFileSync(bookedFlightsPath, JSON.stringify(bookedData, null, 2), 'utf-8');
 
-    // Update available seats in XML file (if required)
-    // TODO: Implement seat update logic for XML file if needed
-
+    // Empty the flight cart
+    fs.writeFileSync(flightCartPath, JSON.stringify({ flights: [] }, null, 2), 'utf-8');
     res.send("Bookings confirmed with passenger details.");
 });
 

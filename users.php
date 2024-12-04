@@ -16,19 +16,27 @@ if ($conn->connect_error) {
 // should prompt the user.
 
 $sql = "CREATE TABLE IF NOT EXISTS Users (
-    phoneNumber VARCHAR(30) PRIMARY KEY NOT NULL,
-    passwd VARCHAR(30) NOT NULL,
-    firstName VARCHAR(30) NOT NULL,
-    lastName VARCHAR(30) NOT NULL,
-    dateOfBirth VARCHAR(30) NOT NULL,
-    gender VARCHAR(30) NOT NULL,
-    email VARCHAR(30) NOT NULL
+    phoneNumber VARCHAR(15) PRIMARY KEY NOT NULL,
+    passwd VARCHAR(255) NOT NULL,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    dateOfBirth DATE NOT NULL,
+    gender ENUM('Male', 'Female') DEFAULT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
 )";
 if ($conn->query($sql) === TRUE) {
     echo "Users Table successfully";
 } else {
     echo "Error creating database: " . $conn->error;
 }
+
+// $sql = "INSERT INTO Users (phoneNumber, passwd, firstName, lastName, dateOfBirth, gender, email) VALUES ('123-456-7890', 'password', 'John', 'Doe', '01/01/2001', 'Male', 'doe@gmail.com')";
+
+// if ($conn->query($sql) === TRUE) {
+//     echo "New record created successfully";
+// } else {
+//     echo "Error: " . $sql . "<br>" . $conn->error;
+// }
 
 $conn->close();
 ?>

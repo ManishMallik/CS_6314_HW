@@ -1,3 +1,5 @@
+let loggedInUser = null;
+
 function changeFontSize() {
     //Change font size back and forth
     var body = document.getElementsByTagName('body')[0];
@@ -79,74 +81,80 @@ function updateFooterJQuery() {
 }
 
 function contactSubmit(){
-    const fname = document.getElementById("fname").value;
-    const lname = document.getElementById("lname").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const gender = document.querySelector('input[name=gender]:checked').value;
+
+    if(!loggedInUser.loggedIn){
+        document.getElementById("contact-output").innerHTML = "Please login to submit a contact form.";
+        document.getElementById("contact-output").style.color = "red";
+        return;
+    }
+    // const fname = document.getElementById("fname").value;
+    // const lname = document.getElementById("lname").value;
+    // const phone = document.getElementById("phone").value;
+    // const email = document.getElementById("email").value;
+    // const gender = document.querySelector('input[name=gender]:checked').value;
     const comment = document.getElementById("comment").value;
 
     var alertMessage = "";
-    var alphabeticRegex = /^[a-zA-Z]+$/;
-    var capitalizedRegex = /^[A-Z]/;
-    var phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+    // var alphabeticRegex = /^[a-zA-Z]+$/;
+    // var capitalizedRegex = /^[A-Z]/;
+    // var phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
     var commentRegex = /^.{10,}$/;
 
-    // email address must contain @ and . They cannot be starting or ending characters. use regex for this
-    var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+    // // email address must contain @ and . They cannot be starting or ending characters. use regex for this
+    // var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
 
-    // check if first name is empty
-    if(fname == ""){
-        alertMessage += "First name is required.<br>";
-    }
-    // check if first name is not alphabetic only
-    else if(!alphabeticRegex.test(fname)){
-        alertMessage += "First name must be alphabetic only.<br>";
-    }
-    // check if first letter of first name is capitalized
-    else if(!capitalizedRegex.test(fname[0])){
-        alertMessage += "First name must be capitalized.<br>";
-    }
+    // // check if first name is empty
+    // if(fname == ""){
+    //     alertMessage += "First name is required.<br>";
+    // }
+    // // check if first name is not alphabetic only
+    // else if(!alphabeticRegex.test(fname)){
+    //     alertMessage += "First name must be alphabetic only.<br>";
+    // }
+    // // check if first letter of first name is capitalized
+    // else if(!capitalizedRegex.test(fname[0])){
+    //     alertMessage += "First name must be capitalized.<br>";
+    // }
 
-    // check if last name is empty
-    if(lname == ""){
-        alertMessage += "Last name is required.<br>";
-    }
-    // check if last name is not alphabetic only
-    else if(!alphabeticRegex.test(lname)){
-        alertMessage += "Last name must be alphabetic only.<br>";
-    }
-    // check if first letter of last name is capitalized
-    else if(!capitalizedRegex.test(lname[0])){
-        alertMessage += "Last name must be capitalized.<br>";
-    }
+    // // check if last name is empty
+    // if(lname == ""){
+    //     alertMessage += "Last name is required.<br>";
+    // }
+    // // check if last name is not alphabetic only
+    // else if(!alphabeticRegex.test(lname)){
+    //     alertMessage += "Last name must be alphabetic only.<br>";
+    // }
+    // // check if first letter of last name is capitalized
+    // else if(!capitalizedRegex.test(lname[0])){
+    //     alertMessage += "Last name must be capitalized.<br>";
+    // }
 
-    // check if first name and last name are the same (ignore case)
-    if(fname.toLowerCase() == lname.toLowerCase()){
-        alertMessage += "First name and last name cannot be the same.<br>";
-    }
+    // // check if first name and last name are the same (ignore case)
+    // if(fname.toLowerCase() == lname.toLowerCase()){
+    //     alertMessage += "First name and last name cannot be the same.<br>";
+    // }
 
-    // check if phone number is empty
-    if(phone == ""){
-        alertMessage += "Phone number is required.<br>";
-    }
-    // check if phone number is in the correct format
-    else if(!phoneRegex.test(phone)){
-        alertMessage += "Phone number must be in the format (xxx) xxx-xxxx. Note that there is a space between ) and x. Each x must be a single digit.<br>";
-    }
+    // // check if phone number is empty
+    // if(phone == ""){
+    //     alertMessage += "Phone number is required.<br>";
+    // }
+    // // check if phone number is in the correct format
+    // else if(!phoneRegex.test(phone)){
+    //     alertMessage += "Phone number must be in the format (xxx) xxx-xxxx. Note that there is a space between ) and x. Each x must be a single digit.<br>";
+    // }
 
-    // check if email is empty
-    if(email == ""){
-        alertMessage += "Email is required.<br>";
-    }
-    // check if email is in the correct format
-    else if(!emailRegex.test(email)){
-        alertMessage += "Email must be in correct format. Make sure you have an \"@\" and \".\" in your input (neither as first nor last characters).<br>";
-    }
+    // // check if email is empty
+    // if(email == ""){
+    //     alertMessage += "Email is required.<br>";
+    // }
+    // // check if email is in the correct format
+    // else if(!emailRegex.test(email)){
+    //     alertMessage += "Email must be in correct format. Make sure you have an \"@\" and \".\" in your input (neither as first nor last characters).<br>";
+    // }
 
-    if(gender == undefined){
-        alertMessage += "Gender is required.<br>";
-    }
+    // if(gender == undefined){
+    //     alertMessage += "Gender is required.<br>";
+    // }
 
     // check if comments are empty
     if(comment == ""){
@@ -161,10 +169,18 @@ function contactSubmit(){
         document.getElementById("contact-output").innerHTML = "Your input has some errors:<br>" + alertMessage;
         document.getElementById("contact-output").style.color = "red";
     } else {
+
+        const fname = loggedInUser.firstName;
+        const lname = loggedInUser.lastName;
+        const phone = loggedInUser.phone;
+        const email = loggedInUser.email;
+        const dob = loggedInUser.dob;
+        const gender = loggedInUser.gender;
         document.getElementById("contact-output").innerHTML = "<h3>Thank you for your submission! Here are your submission details:</h3>" + 
         "<strong>First Name:</strong> " + fname + 
         "<br><strong>Last Name:</strong> " + lname + 
         "<br><strong>Phone:</strong> " + phone + 
+        "<br><strong>DOB:</strong> " + dob +
         "<br><strong>Email:</strong> " + email + 
         "<br><strong>Gender:</strong> " + gender + 
         "<br><strong>Comment:</strong> " + comment;
@@ -174,11 +190,12 @@ function contactSubmit(){
         data.append("fname", fname);
         data.append("lname", lname);
         data.append("phone", phone);
+        data.append("dob", dob);
         data.append("email", email);
         data.append("gender", gender);
         data.append("comment", comment);
 
-        fetch('/submit-form', {
+        fetch('submit-contact.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -187,8 +204,13 @@ function contactSubmit(){
         })
         .then(response => response.text())
         .then(responseText => {
-            document.getElementById("contact-output").innerHTML += "<br>" + responseText;
-            document.getElementById("contact-output").style.color = "green";
+            if(responseText == "success"){
+                document.getElementById("contact-output").innerHTML += "<br>Inserted Successfully!";
+                document.getElementById("contact-output").style.color = "green";
+            } else {
+                document.getElementById("contact-output").innerHTML += "<br>Error submitting form";
+                document.getElementById("contact-output").style.color = "red";
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -299,6 +321,12 @@ function isValidPassengerCount(adults, children, infants) {
 // Validate user inputs and display entered information
 function validateAndSubmit(event) {
     event.preventDefault(); // Prevent form submission
+
+    if(!loggedInUser.loggedIn){
+        document.getElementById('tripDetails').innerHTML = "Please login to book a trip.";
+        document.getElementById('tripDetails').style.color = "red";
+        return;
+    }
 
     // Retrieve form values
     let origin = document.getElementById('origin').value.trim();
@@ -647,6 +675,12 @@ function calculateRooms(adults, children) {
 // Validate user inputs and display entered information
 function validateAndSubmitStay(event) {
     event.preventDefault();
+
+    if(!loggedInUser.loggedIn){
+        document.getElementById('stayDetails').innerHTML = "Please login to book a stay.";
+        document.getElementById('stayDetails').style.color = "red";
+        return;
+    }
 
     let city = document.getElementById('city').value;
     let checkIn = document.getElementById('checkIn').value;
@@ -1393,6 +1427,7 @@ async function getUserSession(){
             console.log("User is not logged in");
         }
 
+        loggedInUser = data;
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);

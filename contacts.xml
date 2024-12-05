@@ -1,19 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <contacts>
-  <contact>
-    <fname>Manish</fname>
-    <lname>Mallik</lname>
-    <phone>(469) 235-4567</phone>
-    <email>mkm200004@utdallas.edu</email>
+  <contact contactId="675109267abc4">
+    <phone>222-222-2222</phone>
+    <fname>Admin</fname>
+    <lname>User</lname>
+    <dob>2002-02-02</dob>
+    <email>admin@gmail.com</email>
     <gender>Male</gender>
-    <comment>This is a test</comment>
-  </contact>
-  <contact>
-    <fname>Manish</fname>
-    <lname>Mallik</lname>
-    <phone>(469) 798-1208</phone>
-    <email>manish03mallik@gmail.com</email>
-    <gender>Male</gender>
-    <comment>This is a test 2</comment>
+    <comment>eeeeeeeeeeeeeeeeee</comment>
   </contact>
 </contacts>

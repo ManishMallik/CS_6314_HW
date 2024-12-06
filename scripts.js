@@ -1,5 +1,3 @@
-// const { response } = require("express");
-
 let loggedInUser = null;
 
 function changeFontSize() {
@@ -89,74 +87,10 @@ function contactSubmit(){
         document.getElementById("contact-output").style.color = "red";
         return;
     }
-    // const fname = document.getElementById("fname").value;
-    // const lname = document.getElementById("lname").value;
-    // const phone = document.getElementById("phone").value;
-    // const email = document.getElementById("email").value;
-    // const gender = document.querySelector('input[name=gender]:checked').value;
     const comment = document.getElementById("comment").value;
 
     var alertMessage = "";
-    // var alphabeticRegex = /^[a-zA-Z]+$/;
-    // var capitalizedRegex = /^[A-Z]/;
-    // var phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
     var commentRegex = /^.{10,}$/;
-
-    // // email address must contain @ and . They cannot be starting or ending characters. use regex for this
-    // var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-
-    // // check if first name is empty
-    // if(fname == ""){
-    //     alertMessage += "First name is required.<br>";
-    // }
-    // // check if first name is not alphabetic only
-    // else if(!alphabeticRegex.test(fname)){
-    //     alertMessage += "First name must be alphabetic only.<br>";
-    // }
-    // // check if first letter of first name is capitalized
-    // else if(!capitalizedRegex.test(fname[0])){
-    //     alertMessage += "First name must be capitalized.<br>";
-    // }
-
-    // // check if last name is empty
-    // if(lname == ""){
-    //     alertMessage += "Last name is required.<br>";
-    // }
-    // // check if last name is not alphabetic only
-    // else if(!alphabeticRegex.test(lname)){
-    //     alertMessage += "Last name must be alphabetic only.<br>";
-    // }
-    // // check if first letter of last name is capitalized
-    // else if(!capitalizedRegex.test(lname[0])){
-    //     alertMessage += "Last name must be capitalized.<br>";
-    // }
-
-    // // check if first name and last name are the same (ignore case)
-    // if(fname.toLowerCase() == lname.toLowerCase()){
-    //     alertMessage += "First name and last name cannot be the same.<br>";
-    // }
-
-    // // check if phone number is empty
-    // if(phone == ""){
-    //     alertMessage += "Phone number is required.<br>";
-    // }
-    // // check if phone number is in the correct format
-    // else if(!phoneRegex.test(phone)){
-    //     alertMessage += "Phone number must be in the format (xxx) xxx-xxxx. Note that there is a space between ) and x. Each x must be a single digit.<br>";
-    // }
-
-    // // check if email is empty
-    // if(email == ""){
-    //     alertMessage += "Email is required.<br>";
-    // }
-    // // check if email is in the correct format
-    // else if(!emailRegex.test(email)){
-    //     alertMessage += "Email must be in correct format. Make sure you have an \"@\" and \".\" in your input (neither as first nor last characters).<br>";
-    // }
-
-    // if(gender == undefined){
-    //     alertMessage += "Gender is required.<br>";
-    // }
 
     // check if comments are empty
     if(comment == ""){
@@ -206,13 +140,8 @@ function contactSubmit(){
         })
         .then(response => response.text())
         .then(responseText => {
-            if(responseText == "success"){
-                document.getElementById("contact-output").innerHTML += "<br>Inserted Successfully!";
-                document.getElementById("contact-output").style.color = "green";
-            } else {
-                document.getElementById("contact-output").innerHTML += "<br>Error submitting form";
-                document.getElementById("contact-output").style.color = "red";
-            }
+            document.getElementById("contact-output").innerHTML += "<br>Inserted Successfully!";
+            document.getElementById("contact-output").style.color = "green";
         })
         .catch(error => {
             console.error('Error:', error);
@@ -401,13 +330,6 @@ function validateAndSubmit(event) {
     searchAvailableFlights(origin, destination, departure, arrival, parseInt(adults) + parseInt(children) + parseInt(infants), adults, children, infants);
 }
 function searchAvailableFlights(origin, destination, departureDate, returnDate = null, seatsNeeded, adults, children, infants) {
-    // fetch('./availableFlights.xml')
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.text();
-    //     })
     console.log(returnDate);
     fetch('flights.php', {
         method: 'POST',
@@ -428,108 +350,16 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
             }
             return response.json();
         })
-        // .then(text => {
-        //     console.log(text); // Log the raw response to identify the issue
-        //     return JSON.parse(text); // Parse the JSON if it's valid
-        // })
         .then(data => {
-            // const parser = new DOMParser();
-            // const xmlDoc = parser.parseFromString(data, "text/xml");
-            // const flights = xmlDoc.getElementsByTagName("flight");
-            // const availableFlightsExact = Array.from(flights).filter(flight => {
-            //     // Make sure the origin, destination, and available seats match the user's input
-            //     const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
-            //     const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-            //     const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-            //     const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
-            //     const inputDepartureDateObj = new Date(departureDate);
-            //     // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
-
-            //     return (
-            //         flightOrigin === origin &&
-            //         flightDestination === destination &&
-            //         flightSeats >= seatsNeeded &&
-            //         departureDateObj.getTime() === inputDepartureDateObj.getTime() //&&
-            //         // (!returnDate || returnDateObj.getTime() === returnDate.getTime())
-            //     );
-
-            // });
 
             let availableFlights = data.departureFlights;
             console.log(data);
-
-            // If no exact match is found, consider 1, 2, or 3 days before and/or after the departure date
-            // if (availableFlights.length === 0) {
-            //     const departureDateObj = new Date(departureDate);
-            //     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-            //     const twoDays = 2 * oneDay;
-            //     const threeDays = 3 * oneDay;
-            //     const possibleDates = [departureDateObj, new Date(departureDateObj.getTime() + oneDay), new Date(departureDateObj.getTime() + twoDays), new Date(departureDateObj.getTime() + threeDays), new Date(departureDateObj.getTime() - oneDay), new Date(departureDateObj.getTime() - twoDays), new Date(departureDateObj.getTime() - threeDays)];
-            //     const availableFlightsClose = Array.from(flights).filter(flight => {
-            //         const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
-            //         const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-            //         const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-            //         const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
-            //         const inputDepartureDateObj = new Date(departureDate);
-            //         // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
-
-            //         return (
-            //             flightOrigin === origin &&
-            //             flightDestination === destination &&
-            //             flightSeats >= seatsNeeded &&
-            //             possibleDates.some(date => date.getTime() === departureDateObj.getTime()) //&&
-            //             // (!returnDate || returnDateObj.getTime() === returnDate.getTime())
-            //         );
-            //     });
-            //     availableFlights = availableFlightsClose;
-            // }
 
             let availableReturnFlights = [];
             
             // If there is a return date, check if there are flights available for the return date. Destination becomes origin and vice versa
             if (returnDate) {
-                // const availableReturn = Array.from(flights).filter(flight => {
-                //     const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
-                //     const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                //     const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-                //     const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
-                //     const inputDepartureDateObj = new Date(returnDate);
-                //     // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
-
-                //     return (
-                //         flightOrigin === destination &&
-                //         flightDestination === origin &&
-                //         flightSeats >= seatsNeeded &&
-                //         departureDateObj.getTime() === inputDepartureDateObj.getTime() //&&
-                //         // (!returnDate || returnDateObj.getTime() === returnDate.getTime())
-                //     );
-                // });
                 availableReturnFlights = data.returnFlights;
-
-                // if (availableReturnFlights.length === 0) {
-                //     const departureDateObj = new Date(returnDate);
-                //     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-                //     const twoDays = 2 * oneDay;
-                //     const threeDays = 3 * oneDay;
-                //     const possibleDates = [departureDateObj, new Date(departureDateObj.getTime() + oneDay), new Date(departureDateObj.getTime() + twoDays), new Date(departureDateObj.getTime() + threeDays), new Date(departureDateObj.getTime() - oneDay), new Date(departureDateObj.getTime() - twoDays), new Date(departureDateObj.getTime() - threeDays)];
-                //     const availableReturnClose = Array.from(flights).filter(flight => {
-                //         const flightOrigin = flight.getElementsByTagName("origin")[0].textContent;
-                //         const flightDestination = flight.getElementsByTagName("destination")[0].textContent;
-                //         const flightSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-                //         const departureDateObj = new Date(flight.getElementsByTagName("departuredate")[0].textContent);
-                //         const inputDepartureDateObj = new Date(returnDate);
-                //         // const returnDateObj = returnDate ? new Date(flight.getElementsByTagName("returnDate")[0].textContent) : null;
-
-                //         return (
-                //             flightOrigin === destination &&
-                //             flightDestination === origin &&
-                //             flightSeats >= seatsNeeded &&
-                //             possibleDates.some(date => date.getTime() === departureDateObj.getTime()) //&&
-                //             // (!returnDate || returnDateObj.getTime() === returnDate.getTime())
-                //         );
-                //     });
-                //     availableReturnFlights = availableReturnClose;
-                // }
             }
 
             let flightDetails = "<h3>Available Flights:</h3>";
@@ -538,23 +368,7 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                     if(availableReturnFlights.length > 0){
                         availableFlights.forEach(flight => {
                             availableReturnFlights.forEach(returnFlight => {
-                                // const flightId = flight.getElementsByTagName("flightid")[0].textContent;
-                                // const origin = flight.getElementsByTagName("origin")[0].textContent;
-                                // const destination = flight.getElementsByTagName("destination")[0].textContent;
-                                // const departureDate = flight.getElementsByTagName("departuredate")[0].textContent;
-                                // const arrivalDate = flight.getElementsByTagName("arrivaldate")[0].textContent;
-                                // const departureTime = flight.getElementsByTagName("departuretime")[0].textContent;
-                                // const arrivalTime = flight.getElementsByTagName("arrivaltime")[0].textContent;
-                                // const availableSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-                                // const price = parseFloat(flight.getElementsByTagName("price")[0].textContent);
-                                // const totalPrice = price * adults + price * 0.7 * children + price * 0.1 * infants;
-                                // const returnFlightId = returnFlight.getElementsByTagName("flightid")[0].textContent;
-                                // const returnDepartureDate = returnFlight.getElementsByTagName("departuredate")[0].textContent;
-                                // const returnArrivalDate = returnFlight.getElementsByTagName("arrivaldate")[0].textContent;
-                                // const returnDepartureTime = returnFlight.getElementsByTagName("departuretime")[0].textContent;
-                                // const returnArrivalTime = returnFlight.getElementsByTagName("arrivaltime")[0].textContent;
-                                // const returnAvailableSeats = parseInt(returnFlight.getElementsByTagName("availableseats")[0].textContent);
-                                // const returnPrice = parseFloat(returnFlight.getElementsByTagName("price")[0].textContent);
+                                
                                 const flightId = flight.flight_id;
                                 const origin = flight.origin;
                                 const destination = flight.destination;
@@ -607,16 +421,6 @@ function searchAvailableFlights(origin, destination, departureDate, returnDate =
                 }
                 else{
                     availableFlights.forEach(flight => {
-                        // const flightId = flight.getElementsByTagName("flightid")[0].textContent;
-                        // const origin = flight.getElementsByTagName("origin")[0].textContent;
-                        // const destination = flight.getElementsByTagName("destination")[0].textContent;
-                        // const departureDate = flight.getElementsByTagName("departuredate")[0].textContent;
-                        // const arrivalDate = flight.getElementsByTagName("arrivaldate")[0].textContent;
-                        // const departureTime = flight.getElementsByTagName("departuretime")[0].textContent;
-                        // const arrivalTime = flight.getElementsByTagName("arrivaltime")[0].textContent;
-                        // const availableSeats = parseInt(flight.getElementsByTagName("availableseats")[0].textContent);
-                        // const price = parseFloat(flight.getElementsByTagName("price")[0].textContent);
-                        // const totalPrice = price * adults + price * 0.7 * children + price * 0.1 * infants;
                         const flightId = flight.flight_id;
                         const origin = flight.origin;
                         const destination = flight.destination;
@@ -749,10 +553,6 @@ function validateAndSubmitStay(event) {
         errors += "Please fill in all of the fields.<br>";
     }
 
-    // if (!city || adults < 1) {
-    //     errors += "Please fill in all of the fields.<br>";
-    // }
-
     // Check if city is in the correct format and is trimmed
     let trimmedCity = isValidStayCityPt1(city);
     if (trimmedCity == "invalid") {
@@ -799,14 +599,6 @@ function validateAndSubmitStay(event) {
     document.getElementById('stayDetails').innerHTML = stayDetails;
     document.getElementById('stayDetails').style.color = "green";
 
-    // Read from the availableHotels.json file
-    // fetch('./availableHotels.json')
-    //     .then(response =>  {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     })
     fetch('stays.php', {
         method: 'POST',
         headers: {
@@ -822,31 +614,10 @@ function validateAndSubmitStay(event) {
         }
         return response.json();
     })
-    // .then(text => {
-    //     console.log(text); // Log the raw response to identify the issue
-    //     return JSON.parse(text); // Parse the JSON if it's valid
-    // })
         .then(data => {
             const availableHotels = data.hotels;
             console.log(data);
             console.log(availableHotels);
-            // let availableHotels = hotels.filter(hotel => hotel.city == city);
-
-            // If available hotels is not empty, then filter by availability, checking if any of the dates are within range
-            // if (availableHotels.length > 0) {
-            //     availableHotels = availableHotels.filter(hotel => {
-            //         if(hotel.availableRooms >= roomsNeeded)
-            //         {
-            //             return hotel.availability.some(availability => {
-            //                 const startDate = new Date(availability.startDate);
-            //                 const endDate = new Date(availability.endDate);
-            //                 const checkInDate = new Date(checkIn);
-            //                 const checkOutDate = new Date(checkOut);
-            //                 return checkInDate >= startDate && checkOutDate <= endDate;
-            //             });
-            //         }
-            //     });
-            // }
 
             let hotelDetails = "<h3>Available Hotels:</h3>";
             if (availableHotels.length === 0) {
@@ -864,16 +635,7 @@ function validateAndSubmitStay(event) {
                         <strong>Price Per Night For Each Room:</strong> $${hotel.price}<br>
                         <strong>Total Price (Computed):</strong> $${hotel.price * diffTime * roomsNeeded}<br>
                     `;
-                    // hotelDetails += `
-                    //     <strong>Hotel ID:</strong> ${hotel.hotelId}<br>
-                    //     <strong>Name:</strong> ${hotel.name}<br>
-                    //     <strong>City:</strong> ${hotel.city}<br>
-                    //     <strong>Rooms Available:</strong> ${hotel.availableRooms}<br>
-                    //     <strong>Check-In Date:</strong> ${checkIn}<br>
-                    //     <strong>Check-Out Date:</strong> ${checkOut}<br>
-                    //     <strong>Price Per Night For Each Room:</strong> $${hotel.pricePerNight}<br>
-                    //     <strong>Total Price (Computed):</strong> $${hotel.pricePerNight * diffTime * roomsNeeded}<br>
-                    // `;
+                    
                     hotelDetails += `<button type="submit" onclick="addHotelToCart('${hotel.hotel_id}', '${hotel.hotel_name}', '${hotel.city}', ${adults}, ${children}, ${infants}, '${checkIn}', '${checkOut}', ${roomsNeeded}, ${hotel.price}, ${hotel.price * diffTime * roomsNeeded})">Add to Cart</button>`;
                     hotelDetails += "<br>";
                 });
@@ -927,49 +689,6 @@ function addHotelToCart(hotelId, name, city, adultGuests, childGuests, infantGue
                 console.error('Error:', error);
                 alert("Error booking flight!");
             });
-        
-        // Update the available rooms in the availableHotels.json file
-        // fetch('./availableHotels.json')
-        //     .then(response =>  {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         const hotels = data.hotels;
-        //         let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelId);
-        //         availableHotels[0].availableRooms -= rooms;
-        //         console.log(availableHotels[0].availableRooms);
-                
-        //         // Update the availableHotels.json file
-        //         const updatedData = { hotels: hotels };
-        //         console.log(updatedData);
-        //         console.log(JSON.stringify(updatedData));
-        //         fetch('/update-available-hotels', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify(updatedData)
-        //         })
-        //             .then(response => {
-        //                 if (!response.ok) {
-        //                     throw new Error('Network response was not ok');
-        //                 }
-        //                 return response.text();
-        //             })
-        //             .then(responseText => {
-        //                 console.log(responseText);
-        //                 window.location.reload();
-        //             })
-        //             .catch(error => {
-        //                 console.error('Error:', error);
-        //             });
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error);
-        //     });
     }
 }
 
@@ -1010,70 +729,6 @@ function removeHotelFromCart(hotelId, name, city, adultGuests, childGuests, infa
                 console.error('Error:', error);
                 alert("Error removing hotel!");
             });
-        
-
-        // Update the available rooms in the availableHotels.json file
-        // fetch('./availableHotels.json')
-        //     .then(response =>  {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-        //         const hotels = data.hotels;
-        //         let availableHotels = hotels.filter(hotel => hotel.hotelId == hotelId);
-        //         availableHotels[0].availableRooms += rooms;
-        //         console.log(availableHotels[0].availableRooms);
-                
-        //         // Update the availableHotels.json file
-        //         const updatedData = { hotels: hotels };
-        //         console.log(updatedData);
-        //         console.log(JSON.stringify(updatedData));
-        //         fetch('/update-available-hotels', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify(updatedData)
-        //         })
-        //             .then(response => {
-        //                 if (!response.ok) {
-        //                     throw new Error('Network response was not ok');
-        //                 }
-        //                 return response.text();
-        //             })
-        //             .then(responseText => {
-        //                 console.log(responseText);
-        //                 window.location.reload();
-        //             })
-        //             .catch(error => {
-        //                 console.error('Error:', error);
-        //             });
-        //     })
-    }
-}
-
-function bookAllHotelsFromCart(){
-    if (confirm("Are you sure you want to book all hotels in your cart?")) {
-        fetch('/confirm-booking-hotel', {
-            method: 'POST'
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(responseText => {
-            console.log(responseText);
-            alert("All hotels booked successfully!");
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Error booking hotels!");
-        });
     }
 }
 
@@ -1196,102 +851,6 @@ function addRoundTripToCart(flightId, returnFlightId, origin, destination, depar
                 console.error('Error:', error);
                 alert("Error booking departure flight!");
             });
-
-        // fetch('/book-flight-to-cart', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data)
-        // })
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.text();
-        //     })
-        //     .then(responseText => {
-        //         console.log(responseText);
-        //         alert("Departure flight booked successfully!");
-        //         // Book the return flight
-        //         fetch('/book-flight-to-cart', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify(returnData)
-        //         })
-        //             .then(response => {
-        //                 if (!response.ok) {
-        //                     throw new Error('Network response was not ok');
-        //                 }
-        //                 return response.text();
-        //             })
-        //             .then(responseText => {
-        //                 console.log(responseText);
-        //                 alert("Return flight booked successfully!");
-        //                 // Update available seats in the `availableFlights.xml` file
-        //                 fetch('./availableFlights.xml')
-        //                     .then(response => {
-        //                         if (!response.ok) {
-        //                             throw new Error('Network response was not ok');
-        //                         }
-        //                         return response.text();
-        //                     })
-        //                     .then(data => {
-        //                         const parser = new DOMParser();
-        //                         const xmlDoc = parser.parseFromString(data, "text/xml");
-        //                         const flights = xmlDoc.getElementsByTagName("flight");
-        //                         let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
-        //                         if (selectedFlight) {
-        //                             selectedFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
-        //                             console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
-        //                         }
-                                
-        //                         let selectedReturnFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === returnFlightId);
-        //                         if (selectedReturnFlight) {
-        //                             selectedReturnFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
-        //                             console.log(`Updated seats: ${selectedReturnFlight.getElementsByTagName("availableseats")[0].textContent}`);
-        //                         }
-
-        //                         // Update the availableFlights.xml file
-        //                         const updatedData = new XMLSerializer().serializeToString(xmlDoc);
-        //                         fetch('/update-available-flights', {
-        //                             method: 'POST',
-        //                             headers: {
-        //                                 'Content-Type': 'application/xml'
-        //                                 // 'Content-Type': 'application/x-www-form-urlencoded'
-        //                             },
-        //                             body: updatedData
-        //                         })
-        //                         .then(response => {
-        //                             if (!response.ok) {
-        //                                 throw new Error('Network response was not ok');
-        //                             }
-        //                             return response.text();
-        //                         })
-        //                         .then(responseText => {
-        //                             console.log(responseText);
-        //                             window.location.reload();
-        //                         })
-        //                         .catch(error => {
-        //                             console.error('Error updating flight data:', error);
-        //                         });
-        //                     })
-        //                     .catch(error => {
-        //                         console.error('Error:', error);
-        //                     });
-
-        //             })
-        //             .catch(error => {
-        //                 console.error('Error:', error);
-        //                 alert("Error booking return flight!");
-        //             });
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error);
-        //         alert("Error booking departure flight!");
-        //     });
     }
 }
 
@@ -1358,49 +917,6 @@ function addFlightToCart(flightId, origin, destination, departureDate, arrivalDa
             alert("Error booking flight!");
         });
 
-        // Update available seats in the `availableFlights.xml` file
-        // fetch('./availableFlights.xml')
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw new Error('Network response was not ok');
-        //         }
-        //         return response.text();
-        //     })
-        //     .then(data => {
-        //         const parser = new DOMParser();
-        //         const xmlDoc = parser.parseFromString(data, "text/xml");
-        //         const flights = xmlDoc.getElementsByTagName("flight");
-        //         let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === flightId);
-        //         if (selectedFlight) {
-        //             selectedFlight.getElementsByTagName("availableseats")[0].textContent -= seatsNeeded;
-        //             console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
-        //         }
-
-        //         // Update the availableFlights.xml file
-        //         const updatedData = new XMLSerializer().serializeToString(xmlDoc);
-        //         fetch('/update-available-flights', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/xml'
-        //                 // 'Content-Type': 'application/x-www-form-urlencoded'
-        //             },
-        //             body: updatedData
-        //         })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.text();
-        //         })
-        //         .then(responseText => {
-        //             console.log(responseText);
-        //             window.location.reload();
-        //         })
-        //         .catch(error => {
-        //             console.error('Error updating flight data:', error);
-        //         });
-        //     });
-
     }
 }
 
@@ -1425,23 +941,6 @@ function generateBookingNumber() {
         .catch(error => {
             console.error('Error:', error);
         });
-
-    // Read from confirmedFlights.json
-    fetch('./confirmedFlights.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const flights = data.bookedFlights;
-            const existingBookNumbers = flights.map(flight => flight.bookingNumber);
-            existingBookingNumbers = existingBookingNumbers.concat(existingBookNumbers);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
     
         while (existingBookingNumbers.includes(bookingNumber)) {
             // Check if the booking number already exists in the cart
@@ -1449,6 +948,33 @@ function generateBookingNumber() {
             // If it doesn't, add the flight to the cart
             bookingNumber = Math.floor(Math.random() * 9000) + 1000;
         }
+    
+    console.log("First generated booking number: " + bookingNumber);
+
+    fetch('./current_flight_booking_ids.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            flight_booking_id: bookingNumber
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const generatedBookingNumbers = data.bookingNumber;
+            bookingNumber = generatedBookingNumbers;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    
+    console.log("Final generated booking number: " + bookingNumber);
     
     return bookingNumber;
 }
@@ -1477,58 +1003,6 @@ function removeFlightFromCart(bookingNumber) {
             console.log(responseText);
             alert("Flight(s) with the booking number removed successfully!");
             window.location.reload();
-            // const removedFlights = responseText.flights;
-            
-            // // Update available seats in the `availableFlights.xml` file
-            // fetch('./availableFlights.xml')
-            //     .then(response => {
-            //         if (!response.ok) {
-            //             throw new Error('Network response was not ok');
-            //         }
-            //         return response.text();
-            //     })
-            //     .then(data => {
-            //         const parser = new DOMParser();
-            //         const xmlDoc = parser.parseFromString(data, "text/xml");
-            //         const flights = xmlDoc.getElementsByTagName("flight");
-            //         removedFlights.forEach(removedFlight => {
-            //             let selectedFlight = Array.from(flights).find(flight => flight.getElementsByTagName("flightid")[0].textContent === removedFlight.flightId);
-            //             if (selectedFlight) {
-            //                 const availableSeatsElem = selectedFlight.getElementsByTagName("availableseats")[0];
-            //                 const currAvailableSeats = parseInt(availableSeatsElem.textContent);
-            //                 const seatsToAdd = parseInt(removedFlight.seatsNeeded);
-
-            //                 availableSeatsElem.textContent = (currAvailableSeats + seatsToAdd).toString();
-            //                 console.log(`Updated seats: ${selectedFlight.getElementsByTagName("availableseats")[0].textContent}`);
-            //             }
-            //         });
-
-            //         // Update the availableFlights.xml file
-            //         const updatedData = new XMLSerializer().serializeToString(xmlDoc);
-            //         fetch('/update-available-flights', {
-            //             method: 'POST',
-            //             headers: {
-            //                 'Content-Type': 'application/xml'
-            //             },
-            //             body: updatedData
-            //         })
-            //         .then(response => {
-            //             if (!response.ok) {
-            //                 throw new Error('Network response was not ok');
-            //             }
-            //             return response.text();
-            //         })
-            //         .then(responseText => {
-            //             console.log(responseText);
-            //             window.location.reload();
-            //         })
-            //         .catch(error => {
-            //             console.error('Error updating flight data:', error);
-            //         });
-            //     })
-            //     .catch(error => {
-            //         console.error('Error:', error);
-            //     });
         })
         .catch(error => {
             // console.error('Error:', error);
@@ -1540,28 +1014,6 @@ function removeFlightFromCart(bookingNumber) {
             } else {
                 alert("Error removing flight!");
             }
-        });
-    }
-}
-
-function bookAllFlightsFromCart() {
-    if (confirm("Are you sure you want to book all flights in your cart?")) {
-        fetch('/confirm-booking-flights', {
-            method: 'POST'
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(responseText => {
-            console.log(responseText);
-            alert("All flights booked successfully!");
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Error booking flights!");
         });
     }
 }
@@ -1602,15 +1054,6 @@ function makeRequest(action, params, callback) {
         },
         body: data
     })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //     }
-    //     return response.json();
-    // })
-    // .then(responseText => {
-    //     console.log(responseText);
-    // })
     .then(response => response.text()) // Use .text() to inspect the raw response
     .then(rawText => {
         console.log("Raw response:", rawText);
@@ -1621,7 +1064,15 @@ function makeRequest(action, params, callback) {
         callback(data);
     })
     .catch(error => {
-        console.error('Error:', error);
+        if (error.toString().startsWith("SyntaxError")) {
+            if(action == "loadFlights"){
+                document.getElementById("output").innerText = "Flights loaded successfully!";
+            } else if (action == "loadHotels"){
+                document.getElementById("output").innerText = "Hotels loaded successfully!";
+            }
+        } else {
+            console.log("Error:", error);
+        }
     });
 }
 
@@ -1632,7 +1083,29 @@ function retrieveBookedFlights() {
 
     makeRequest("retrieveBookedFlightsAndHotels", { flightBookingId, hotelBookingId }, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+        const flights = data.flights;
+        const hotels = data.hotels;
+
+        let formattedOutput = "";
+
+        if (flights.length === 0) {
+            formattedOutput += "No booked flights found.\n";
+        } else {
+            formattedOutput += "Booked Flights:\n";
+            flights.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+
+        if (hotels.length === 0) {
+            formattedOutput += "No booked hotels found.\n";
+        } else {
+            formattedOutput += "\nBooked Hotels:\n";
+            hotels.forEach(hotel => {
+                formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1644,14 +1117,19 @@ function retrievePassengerInfo() {
      * [{"ssn":"111-11-1111","first_name":"Om","last_name":"Hirpara","dob":"2020-09-08","category":"infant"},{"ssn":"112-49-9876","first_name":"Rohit","last_name":"Parkar","dob":"2015-04-21","category":"child"},{"ssn":"123-45-6789","first_name":"Manish","last_name":"Mallik","dob":"2003-02-08","category":"adult"},{"ssn":"222-22-2222","first_name":"John","last_name":"Cena","dob":"2023-09-09","category":"infant"},{"ssn":"894-85-3984","first_name":"Sandeep","last_name":"Mishra","dob":"2013-11-05","category":"child"},{"ssn":"987-65-4321","first_name":"Sameer","last_name":"Islam","dob":"2003-04-05","category":"adult"}]
      */
 
-    let formattedOutput = "Passenger Information:\n";
-    data.forEach(passenger => {
-        formattedOutput += `SSN: ${passenger.ssn}\nFirst Name: ${passenger.first_name}\nLast Name: ${passenger.last_name}\nDate of Birth: ${passenger.dob}\nCategory: ${passenger.category}\n\n`;
-    });
-
     makeRequest("retrievePassengers", { flightBookingId }, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+        let formattedOutput = "";
+
+        if(data.length === 0) {
+            formattedOutput += "No passengers found for this flight.\n";
+        } else {
+            formattedOutput += "Passenger Information:\n";
+            data.forEach(passenger => {
+                formattedOutput += `SSN: ${passenger.ssn}\nFirst Name: ${passenger.first_name}\nLast Name: ${passenger.last_name}\nDate of Birth: ${passenger.dob}\nCategory: ${passenger.category}\n\n`;
+            });
+        }   
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1667,15 +1145,25 @@ function retrieveAllForMonth() {
         const flights = data.flights;
         const hotels = data.hotels;
 
-        let formattedOutput = "Booked Flights:\n";
-        flights.forEach(flight => {
-            formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
-        });
+        let formattedOutput = "";
 
-        formattedOutput += "\nBooked Hotels:\n";
-        hotels.forEach(hotel => {
-            formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
-        });
+        if (flights.length === 0) {
+            formattedOutput += "No booked flights found.\n";
+        } else {
+            formattedOutput += "Booked Flights:\n";
+            flights.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+
+        if (hotels.length === 0) {
+            formattedOutput += "No booked hotels found.\n";
+        } else {
+            formattedOutput += "\nBooked Hotels:\n";
+            hotels.forEach(hotel => {
+                formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
+            });
+        }
 
         document.getElementById("output").innerText = formattedOutput;
     });
@@ -1691,10 +1179,16 @@ function retrieveBySSN() {
          * [{"price":"365.00","flight_id":"CA211","flight_booking_id":"5873","ticket_id":"631210","ssn":"123-45-6789","total_price":"1314.00","origin":"Los Angeles, CA","destination":"Austin, TX","departure_date":"2024-10-20","arrival_date":"2024-10-20","departure_time":"12:00:00","arrival_time":"17:30:00","available_seats":"73"},{"price":"350.00","flight_id":"TX102","flight_booking_id":"5873","ticket_id":"968336","ssn":"123-45-6789","total_price":"1260.00","origin":"Austin, TX","destination":"Los Angeles, CA","departure_date":"2024-09-05","arrival_date":"2024-09-05","departure_time":"12:00:00","arrival_time":"14:30:00","available_seats":"88"}]
          */
 
-        let formattedOutput = "Booked Flights for this specific passenger:\n";
-        data.forEach(flight => {
-            formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
-        });
+        let formattedOutput = "";
+
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found for this person.\n";
+        } else {
+            formattedOutput += "Booked Flights for this specific passenger:\n"
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
 
         document.getElementById("output").innerText = formattedOutput;
     });
@@ -1704,7 +1198,18 @@ function retrieveBySSN() {
 function retrieveTexasFlights() {
     makeRequest("retrieveTexasFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found departing from Texas between September and October 2024.\n";
+        } else {
+            formattedOutput += "Booked Flights departing from Texas:\n";
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1712,7 +1217,17 @@ function retrieveTexasFlights() {
 function retrieveTexasHotels() {
     makeRequest("retrieveTexasHotels", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked hotels found in Texas between September and October 2024.\n";
+        } else {
+            formattedOutput += "Booked Hotels in Texas:\n";
+            data.forEach(hotel => {
+                formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1720,7 +1235,17 @@ function retrieveTexasHotels() {
 function retrieveExpensiveHotels() {
     makeRequest("retrieveExpensiveHotels", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked hotels found.\n";
+        } else {
+            formattedOutput += "Most Expensive Booked Hotels:\n";
+            data.forEach(hotel => {
+                formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1728,15 +1253,35 @@ function retrieveExpensiveHotels() {
 function retrieveInfantFlights() {
     makeRequest("retrieveInfantFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found with at least one infant passenger.\n";
+        } else {
+            formattedOutput += "Booked Flights with at least one infant passenger:\n";
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
-// 9. Retrieve all booked flights with at least one infant and five children
+// 9. Retrieve all booked flights with at least one infant and two children
 function retrieveInfantAndChildrenFlights() {
     makeRequest("retrieveInfantAndChildrenFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found with at least one infant and two children.\n";
+        } else {
+            formattedOutput += "Booked Flights with at least one infant and two children:\n";
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1744,7 +1289,17 @@ function retrieveInfantAndChildrenFlights() {
 function retrieveExpensiveFlights() {
     makeRequest("retrieveExpensiveFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found.\n";
+        } else {
+            formattedOutput += "Most Expensive Booked Flights:\n";
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1752,7 +1307,17 @@ function retrieveExpensiveFlights() {
 function retrieveNoInfantFlights() {
     makeRequest("retrieveNoInfantFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+
+        let formattedOutput = "";
+        if (data.length === 0) {
+            formattedOutput += "No booked flights found departing from Texas without infant passengers.\n";
+        } else {
+            formattedOutput += "Booked Flights departing from Texas without infant passengers:\n";
+            data.forEach(flight => {
+                formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+            });
+        }
+        document.getElementById("output").innerText = formattedOutput;
     });
 }
 
@@ -1760,7 +1325,7 @@ function retrieveNoInfantFlights() {
 function countCaliforniaFlights() {
     makeRequest("countCaliforniaFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = `Number of flights: ${data.count}`;
+        document.getElementById("output").innerText = `Number of flights arriving in California: ${data.count}`;
     });
 }
 
@@ -1768,7 +1333,10 @@ function countCaliforniaFlights() {
 function loadFlights() {
     makeRequest("loadFlights", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = "Flights loaded successfully!";
+        if(data.success)
+            document.getElementById("output").innerText = "Flights loaded successfully!";
+        else
+            document.getElementById("output").innerText = "Error loading flights!";
     });
 }
 
@@ -1776,11 +1344,14 @@ function loadFlights() {
 function loadHotels() {
     makeRequest("loadHotels", {}, (data) => {
         console.log(data);
-        document.getElementById("output").innerText = "Hotels loaded successfully!";
+        if(data.success)
+            document.getElementById("output").innerText = "Hotels loaded successfully!";
+        else
+            document.getElementById("output").innerText = "Error loading hotels!";
     });
 }
 
-// DOM Method to load and build the cars.html page
+// DOM Method to load and build html pages
 document.addEventListener('DOMContentLoaded', () => {
 
     getUserSession()
@@ -1793,7 +1364,7 @@ document.addEventListener('DOMContentLoaded', () => {
             welcome.textContent = `Hello, Guest!`;
         }
         // Add footer text dynamically
-    if(!window.location.pathname.includes('cruises.html') && !window.location.pathname.includes('login.html')){
+    if(!window.location.pathname.includes('login.html')){
         // Dynamically create navigation links
         if(!window.location.pathname.includes('index.html') && !window.location.pathname.includes('contact-us.html')){
             const pages = ["Home", "Register", "Login", "Stays", "Flights", "Contact Us", "Cart", "My Account"];
@@ -1995,7 +1566,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     flightDetails += `<button type="remove" onclick="removeFlightFromCart('${bookingNumber}')">Remove Booking From Cart</button><br><br>`;
                 }
 
-                // flightDetails += "<button onclick='bookAllFlightsFromCart()'>Book All Flights</button>";
                 flightDetails += "<button type=\"submit\" id='bookAll'>Book All Flights</button>";
                 flightDetailsElement.innerHTML = flightDetails;
 
@@ -2145,7 +1715,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             return response.text();
                         })
                         .then(response => {
-                            alert("Flights booked successfully!");
+                            let information = "";
+                            passengerData.forEach(data => {
+                                information += `Booking Number: ${data.bookingNumber}\n`;
+                                data.flights.forEach(flight => {
+                                    information += `Flight ID: ${flight.flightId}\n`;
+                                    information += `Origin: ${flight.origin}\n`;
+                                    information += `Destination: ${flight.destination}\n`;
+                                    information += `Departure Date: ${flight.departureDate}\n`;
+                                    information += `Arrival Date: ${flight.arrivalDate}\n`;
+                                    information += `Departure Time: ${flight.departureTime}\n`;
+                                    information += `Arrival Time: ${flight.arrivalTime}\n`;
+                                    information += `Seats Needed: ${flight.seatsNeeded}\n`;
+                                    information += `Price per Seat: $${flight.pricePerSeat}\n`;
+                                    information += `Total Price: $${flight.totalPrice}\n`;
+                                    information += `Adults: ${flight.adults}\n`;
+                                    information += `Children: ${flight.children}\n`;
+                                    information += `Infants: ${flight.infants}\n`;
+                                });
+                                data.passengers.forEach(passenger => {
+                                    information += `Passenger: ${passenger.firstName} ${passenger.lastName}, DOB: ${passenger.dob}, SSN: ${passenger.ssn}\n`;
+                                });
+                            });
+                            alert("You booked the following data successfully:\n" + information);
                             window.location.reload();
                         })
                         .catch(error => {
@@ -2247,7 +1839,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Add a button for each hotel to remove that hotel from cart
                     hotelDetails += `<button type="remove" onclick="removeHotelFromCart('${hotelId}', '${name}', '${city}', ${adultGuests}, ${childGuests}, ${infantGuests}, '${checkIn}', '${checkOut}', ${rooms}, ${pricePerNight}, ${totalPrice})">Remove from Cart</button><br><br>`;
                 }
-                // hotelDetails += "<button type=\"submit\" onclick='bookAllHotelsFromCart()'>Book All Hotels</button>";
                 hotelDetails += "<button type=\"submit\" id='bookAllHotels'>Book All Hotels</button>";
                 hotelDetailsElement.innerHTML = hotelDetails;
 
@@ -2374,7 +1965,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             return response.text();
                         })
                         .then(response => {
-                            alert("Hotels booked successfully!");
+                            let information = "";
+                            hotelData.forEach(data => {
+                                information += `Hotel ID: ${data.hotelId}\n`;
+                                information += `Name: ${data.name}\n`;
+                                information += `City: ${data.city}\n`;
+                                information += `Check-In Date: ${data.checkIn}\n`;
+                                information += `Check-Out Date: ${data.checkOut}\n`;
+                                information += `Rooms: ${data.rooms}\n`;
+                                information += `Price Per Room Per Night: $${data.pricePerNight}\n`;
+                                information += `Total Price: $${data.totalPrice}\n`;
+                                data.guests.forEach(guest => {
+                                    information += `Guest: ${guest.firstName} ${guest.lastName}, DOB: ${guest.dob}, SSN: ${guest.ssn}\n`;
+                                });
+                            });
+                            alert("Hotels and following details booked successfully!\n" + information);
                             window.location.reload();
                         })
                         .catch(error => {
@@ -2391,171 +1996,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Apply this only to the cars.html page
-    if (window.location.pathname.includes('cars.html')) {
-
-        const header = document.getElementById('header-title');
-        header.textContent = "Cars";
-
-        // Validate and handle form submission
-        const carForm = document.getElementById('carForm');
-        const output = document.getElementById('output');
-
-        // Create city label and input field
-        const cityLabel = document.createElement('label');
-        cityLabel.setAttribute('for', 'city');
-        cityLabel.textContent = "City (make sure to follow the format as shown in the below example):";
-        const cityInput = document.createElement('input');
-        cityInput.setAttribute('type', 'text');
-        cityInput.setAttribute('id', 'city');
-        cityInput.setAttribute('name', 'city');
-        cityInput.setAttribute('placeholder', 'Format: Dallas, TX');
-        cityInput.setAttribute('required', true);
-
-        // Create car type label and select field
-        const carTypeLabel = document.createElement('label');
-        carTypeLabel.setAttribute('for', 'carType');
-        carTypeLabel.textContent = "Type of Car:";
-        const carTypeSelect = document.createElement('select');
-        carTypeSelect.setAttribute('id', 'carType');
-        carTypeSelect.setAttribute('name', 'car');
-        carTypeSelect.setAttribute('required', true);
-
-        // Add options to car type select
-        const carTypes = ["Select Car Type", "Economy", "SUV", "Compact", "Midsize"];
-        carTypes.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type == "Select Car Type" ? "" : type;
-            option.textContent = type;
-            carTypeSelect.appendChild(option);
-        });
-
-        // Create check-in and check-out date inputs
-        const checkInLabel = document.createElement('label');
-        checkInLabel.setAttribute('for', 'checkIn');
-        checkInLabel.textContent = "Check In Date:";
-        const checkInInput = document.createElement('input');
-        checkInInput.setAttribute('type', 'date');
-        checkInInput.setAttribute('id', 'checkIn');
-        checkInInput.setAttribute('name', 'checkIn');
-        checkInInput.setAttribute('required', true);
-
-        const checkOutLabel = document.createElement('label');
-        checkOutLabel.setAttribute('for', 'checkOut');
-        checkOutLabel.textContent = "Check Out Date:";
-        const checkOutInput = document.createElement('input');
-        checkOutInput.setAttribute('type', 'date');
-        checkOutInput.setAttribute('id', 'checkOut');
-        checkOutInput.setAttribute('name', 'checkOut');
-        checkOutInput.setAttribute('required', true);
-
-        // Append elements to the form
-        carForm.appendChild(cityLabel);
-        carForm.appendChild(document.createElement('br'));
-        carForm.appendChild(cityInput);
-        carForm.appendChild(document.createElement('br'));
-
-        carForm.appendChild(carTypeLabel);
-        carForm.appendChild(document.createElement('br'));
-        carForm.appendChild(carTypeSelect);
-        carForm.appendChild(document.createElement('br'));
-
-        carForm.appendChild(checkInLabel);
-        carForm.appendChild(document.createElement('br'));
-        carForm.appendChild(checkInInput);
-        carForm.appendChild(document.createElement('br'));
-
-        carForm.appendChild(checkOutLabel);
-        carForm.appendChild(document.createElement('br'));
-        carForm.appendChild(checkOutInput);
-        carForm.appendChild(document.createElement('br'));
-
-        // Add submit button
-        const submitButton = document.createElement('input');
-        submitButton.setAttribute('type', 'submit');
-        submitButton.setAttribute('value', 'Submit');
-        carForm.appendChild(submitButton);
-
-        carForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Retrieve user input values
-            const city = document.getElementById('city').value.trim();
-            const carType = document.getElementById('carType').value;
-            const checkIn = document.getElementById('checkIn').value;
-            const checkOut = document.getElementById('checkOut').value;
-
-            // Validation rules
-            // City must be alphabetic, can contain a space or dash, must end with a comma followed by a space and 2-letter state code that is capitalized
-            const cityRegex = /^[A-Z0-9][a-zA-Z0-9\s.'-]*[a-zA-Z0-9],\s[A-Z]{2}$/;
-            const validCarTypes = ["Economy", "SUV", "Compact", "Midsize"];
-            const minDate = new Date("2024-09-01");
-            const maxDate = new Date("2024-12-01");
-
-            let errors = [];
-
-            // Validate city
-            if (city.length == 0) {
-                errors.push("City is required.");
-            } else if (!cityRegex.test(city)) {
-                errors.push("Make sure the city name (the name before the comma) is alphanumeric (can contain a space, period, apostrophes, or dash/hyphens), at least 2 characters long, has first character be an uppercase letter or number, has last character be a number or a letter of any case, and is followed by a comma, one space character, and 2-letter state code that is capitalized.");
-            } else if (city.slice(-2) != "TX" && city.slice(-2) != "CA") {
-                errors.push("City must either be from Texas (TX) or California (CA).");
-            }
-
-            // Validate car type
-            if (!validCarTypes.includes(carType)) {
-                errors.push("Car type must be economy, SUV, compact, or midsize.");
-            }
-
-            // Validate check-in and check-out dates
-            if (new Date(checkIn) < minDate || new Date(checkIn) > maxDate) {
-                errors.push("Check-in date must be between Sep 1, 2024 and Dec 1, 2024.");
-            }
-            if (new Date(checkOut) < minDate || new Date(checkOut) > maxDate) {
-                errors.push("Check-out date must be between Sep 1, 2024 and Dec 1, 2024.");
-            }
-            if (new Date(checkIn) >= new Date(checkOut)) {
-                errors.push("Check-in date must be before the check-out date.");
-            }
-
-            // Output validation results or form data
-            if (errors.length > 0) {
-                output.innerHTML = "Your input has some errors:<br>" + errors.join('<br>');
-                output.style.color = "red";
-            } else {
-                output.innerHTML = `
-                    <h3>Car Details:</h3>
-                    <strong>City:</strong> ${city} <br>
-                    <strong>Car Type:</strong> ${carType} <br>
-                    <strong>Check In:</strong> ${checkIn} <br>
-                    <strong>Check Out:</strong> ${checkOut} <br>
-                `;
-                output.style.color = "green";
-            }
-        });
-    }
-
     if (window.location.pathname.includes('register.html')) {
         const header = document.getElementById('header-title');
         header.textContent = "Register";
 
         const registerForm = document.getElementById('registerForm');
         const output = document.getElementById('output');
-
-        // Add a register web page to your web application to register users. You should
-        // ask each user to enter Phone number, Password , FirstName, LastName, Date
-        // of birth, Email, and Gender (as radio button) . Before registering each user,
-        // you should validate the user’s inputs as following
-        // • User must enter Phone number, Password , FirstName, LastName, Date
-        // of birth, and Email. Gender is not a required user input.
-        // • Phone number is a unique number. User can not use a phone number
-        // that already has been used by another user.
-        // • Phone number must be formatted as ddd-ddd-dddd
-        // • User must enter the same Password two times.
-        // • The Password must be at least 8 characters.
-        // • Date of birth must have 2 digits for month, 2 digits fore day, and four digits for year
-        // • Email must contain @ and .com
 
         // Phone label and input field
         const phoneLabel = document.createElement('label');
@@ -2808,7 +2254,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(responseText => {
                     console.log(responseText);
-                    output.innerHTML = "User registered successfully!";
+                    output.innerHTML = "";
+                    alert("User registered successfully!");
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -2827,126 +2275,6 @@ $(document).ready(function(){
 
     getUserSession()
     .then(data => {
-        if (window.location.pathname.includes('cruises.html')) {
-
-            $('#header-title').text("Cruises");
-    
-            const pages = ["Home", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart"];
-            const actions = ["Change Font Size", "Change Background Color"];
-            
-            pages.forEach(page => {
-                const li = $('<li></li>');
-                if (page == "Home") {
-                    const a = $('<a></a>').attr('href', 'index.html').text(page);
-                    li.append(a);
-                } else {
-                    const a = $('<a></a>').attr('href', `${page.toLowerCase().replace(" ", "-")}.html`).text(page);
-                    li.append(a);
-                }
-                $('#nav-list').append(li);
-            });
-    
-            const sidebarHeader = $('<h2></h2>').text("Change font size and/or background color of the webpage");
-            $('#sidebar').append(sidebarHeader);
-    
-            actions.forEach(action => {
-                const button = $('<button></button>').text(action);
-                if (action == "Change Font Size") {
-                    button.click(changeFontSize);
-                }
-                else if (action == "Change Background Color") {
-                    button.click(changeBackgroundColor);
-                }
-                $('#sidebar').append(button);
-                $('#sidebar').append('<br>');
-            });
-    
-            // Dynamically generate the cruise booking form
-            const form = `
-            <form id="cruiseForm">
-                <label for="destination">Destination:</label>
-                <select id="destination" name="destination" required>
-                    <option value="">Select Destination</option>
-                    <option value="Alaska">Alaska</option>
-                    <option value="Bahamas">Bahamas</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Mexico">Mexico</option>
-                </select><br>
-    
-                <label for="departBetween">Departing Between (Sep 1, 2024 - Dec 1, 2024):</label>
-                <input type="date" id="departBetween" name="departBetween" required><br>
-    
-                <label for="minDuration">Minimum Duration (3-10 days):</label>
-                <input type="number" id="minDuration" name="minDuration" min="3" max="10" value="3" required><br>
-    
-                <label for="maxDuration">Maximum Duration (3-10 days):</label>
-                <input type="number" id="maxDuration" name="maxDuration" min="3" max="10" value="10" required><br>
-    
-                <label for="adults">Number of Adults Total:</label>
-                <input type="number" id="adults" name="adults" min="1" value="1" required><br>
-    
-                <label for="children">Number of Children Total:</label>
-                <input type="number" id="children" name="children" min="0" value="0" required><br>
-    
-                <label for="infants">Number of Infants:</label>
-                <input type="number" id="infants" name="infants" min="0" value="0" required><br>
-    
-                <input type="submit" value="Submit">
-            </form>`;
-    
-            // Append the form to the form container
-            $('#formContainer').html(form);
-    
-            // Add footer text dynamically
-            updateFooterJQuery();
-            setInterval(updateFooterJQuery, 1000);
-    
-            $('#cruiseForm').submit(function(event){
-                event.preventDefault();
-    
-                const destination = $('#destination').val();
-                const departBetween = $('#departBetween').val();
-                const minDuration = parseInt($('#minDuration').val());
-                const maxDuration = parseInt($('#maxDuration').val());
-                const adults = parseInt($('#adults').val());
-                const children = parseInt($('#children').val());
-                const infants = parseInt($('#infants').val());
-    
-                var alertMessage = "";
-                var departDate = new Date(departBetween);
-                var minDate = new Date("2024-09-01");
-                var maxDate = new Date("2024-12-01");
-    
-                if(departDate < minDate || departDate > maxDate){
-                    alertMessage += "Departure date must be between Sep 1, 2024 and Dec 1, 2024.\n";
-                }
-    
-                // Validate min and max duration
-                if(minDuration < 3 || minDuration > 10 || maxDuration < 3 || maxDuration > 10){
-                    alertMessage += "Duration must be between 3 and 10 days.\n";
-                }
-                else if(minDuration > maxDuration){
-                    alertMessage += "Minimum duration cannot be greater than maximum duration.\n";
-                }
-    
-                const rooms = calculateRooms(adults, children);
-    
-                if(alertMessage != ""){
-                    $('#output').html("Your input has some errors:<br>" + alertMessage);
-                    $('#output').css('color', 'red');
-                } else {
-                    $('#output').html("<h3>Cruise Details:</h3>" + 
-                        "<strong>Destination:</strong> " + destination + 
-                        "<br><strong>Departure Date:</strong> " + departBetween + 
-                        "<br><strong>Duration:</strong> " + (minDuration == maxDuration ? minDuration : minDuration + " - " + maxDuration) + 
-                        " days<br><strong>Adults:</strong> " + adults + 
-                        "<br><strong>Children:</strong> " + children +
-                        "<br><strong>Infants:</strong> " + infants +
-                        "<br><strong>Rooms Needed:</strong> " + rooms);
-                    $('#output').css('color', 'green');
-                }
-            });
-        }
     
         if (window.location.pathname.includes('login.html')) {
             // The User should be able to log in to your web application
@@ -3014,11 +2342,6 @@ $(document).ready(function(){
     
                 const phone = $('#phone').val();
                 const password = $('#password').val();
-    
-                $('#output').html("<h3>Login Details:</h3>" +
-                    "<strong>Phone:</strong> " + phone + "<br>" +
-                    "<strong>Password:</strong> " + password);
-                $('#output').css('color', 'green');
                 
                 // connect to login.php
                 fetch('login.php', {
@@ -3039,7 +2362,6 @@ $(document).ready(function(){
                 })
                 .then(responseText => {
                     console.log(responseText);
-                    $('#output').html("Login successful!");
                     alert("Login successful!");
                     window.location.reload();
                 })
@@ -3067,8 +2389,6 @@ $(document).ready(function(){
                 })
                 .then(responseText => {
                     console.log(responseText);
-                    $('#output').html("Logged out successfully!");
-                    $('#output').css('color', 'green');
                     alert("Logged out successfully!");
                     window.location.reload();
                 })

@@ -1,36 +1,3 @@
 {
-    "flights": [
-        {
-            "bookingNumber": 5873,
-            "flightId": "TX102",
-            "origin": "Austin, TX",
-            "destination": "Los Angeles, CA",
-            "departureDate": "2024-09-05",
-            "arrivalDate": "2024-09-05",
-            "departureTime": "12:00:00",
-            "arrivalTime": "14:30:00",
-            "seatsNeeded": 6,
-            "pricePerSeat": 350,
-            "totalPrice": 1260,
-            "adults": 2,
-            "children": 2,
-            "infants": 2
-        },
-        {
-            "bookingNumber": 5873,
-            "flightId": "CA211",
-            "origin": "Los Angeles, CA",
-            "destination": "Austin, TX",
-            "departureDate": "2024-10-20",
-            "arrivalDate": "2024-10-20",
-            "departureTime": "12:00:00",
-            "arrivalTime": "17:30:00",
-            "seatsNeeded": 6,
-            "pricePerSeat": 365,
-            "totalPrice": 1314,
-            "adults": 2,
-            "children": 2,
-            "infants": 2
-        }
-    ]
+    "flights": []
 }

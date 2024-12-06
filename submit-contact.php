@@ -5,10 +5,14 @@ $xmlFile = "contacts.xml";
 // Check if file exists or if it is empty
 if (!file_exists($xmlFile) || filesize($xmlFile) == 0) {
     $xml = new DOMDocument("1.0", "UTF-8");
+    $xml->formatOutput = true;
+    $xml->preserveWhiteSpace = false;
     $contactRoot = $xml->createElement("contacts");
     $xml->appendChild($contactRoot);
 } else {
     $xml = new DOMDocument("1.0", "UTF-8");
+    $xml->formatOutput = true;
+    $xml->preserveWhiteSpace = false;
     $xml->load($xmlFile);
     if($xml->getElementsByTagName("contacts")->length == 0){
         $contactRoot = $xml->createElement("contacts");
@@ -33,8 +37,8 @@ $comment = $_POST["comment"];
 
 // Create new contact
 $contact = $xml->createElement("contact");
-$contact->setAttribute("contactId", $contactId);
 
+$contact->appendChild($xml->createElement("contactId", $contactId));
 $contact->appendChild($xml->createElement("phone", $phone));
 $contact->appendChild($xml->createElement("fname", $fname));
 $contact->appendChild($xml->createElement("lname", $lname));

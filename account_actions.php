@@ -47,7 +47,7 @@ switch ($action) {
 
     case "retrieveBySSN":
         $ssn = $_POST['ssn'];
-        $query = "SELECT * FROM Tickets NATURAL JOIN Flight_Bookings NATURAL JOIN Flights WHERE ssn = '$ssn'";
+        $query = "SELECT DISTINCT Flight_Bookings.flight_booking_id, Flights.flight_id, origin, destination, departure_date, arrival_date, departure_time, arrival_time, available_seats, Flights.price, total_price FROM Tickets NATURAL JOIN Flight_Bookings JOIN Flights on Flights.flight_id = Flight_Bookings.flight_id WHERE ssn = '$ssn'";
         $results = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
         echo json_encode($results);
         break;
@@ -131,7 +131,7 @@ switch ($action) {
         echo json_encode($results);
         break;
     
-    case "loadFlights":
+    case "loadHotels":
         // Load from availableHotels.json
         $hotelsJson = file_get_contents("availableHotels.json");
         $hotels = json_decode($hotelsJson, true);
@@ -156,7 +156,7 @@ switch ($action) {
         }
         break;
     
-    case "loadHotels":
+    case "loadFlights":
         // Read availableFlights.xml and insert data into Flights table
         $xml = new DOMDocument("1.0", "UTF-8");
         $xml->formatOutput = true;

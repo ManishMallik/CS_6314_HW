@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>My Account</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <h1 id="header-title">My Account</h1>
+    </header>
+    <nav>
+        <ul id="nav-list">
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="main-content">
+            <h1 id="welcome"></h1>
+            <h2>My Account Page</h2>
+            <div id="buttonContainer">
+                <!-- Buttons for Users -->
+                <p>Retrieve information for all booked flights and hotels using flight-booking-id and hotel-booking-id</p>
+                <input type="text" id="flight-booking-id" placeholder="Enter Flight Booking ID" required>
+                <input type="text" id="hotel-booking-id" placeholder="Enter Hotel Booking ID" required>
+                <button class="user-button" onclick="retrieveBookedFlights()">Retrieve Booked Flights and Hotels</button>
+                
+                <p>Retrieve all passengers in a booked flight using flight-booking-id</p>
+                <input type="text" id="flight-booking-id-passenger" placeholder="Enter Flight Booking ID" required>
+                <button class="user-button" onclick="retrievePassengerInfo()">Retrieve Passenger Information</button>
+
+                <p>Retrieve all booked flights and hotels for September 2024</p>
+                <button class="user-button" onclick="retrieveAllForMonth()">Retrieve Booked Flights/Hotels for September 2024</button>
+
+                <p>Retrieve all booked flights for a specific person using SSN</p>
+                <input type="text" id="ssn" placeholder="Enter SSN" required pattern="\d{3}-\d{2}-\d{4}" title="Format: XXX-XX-XXXX (e.g., 123-45-6789)">
+                <button class="user-button" onclick="retrieveBySSN()">Retrieve Booked Flights by SSN</button>
+
+                <!-- Buttons for Admins Only -->
+                <div id="admin-buttons" style="display: none;">
+                    <p>Load the XML file into the flights table</p>
+                    <button onclick="loadFlights()">Load Flights</button>
+
+                    <p>Load the JSON file into the hotels table</p>
+                    <button onclick="loadHotels()">Load Hotels</button>
+
+                    <p>Retrieve all booked flights departing from Texas between Sep and Oct 2024</p>
+                    <button onclick="retrieveTexasFlights()">Retrieve Booked Flights (Texas, Sep-Oct 2024)</button>
+
+                    <p>Retrieve all booked hotels in Texas between Sep and Oct 2024</p>
+                    <button onclick="retrieveTexasHotels()">Retrieve Booked Hotels (Texas, Sep-Oct 2024)</button>
+
+                    <p>Retrieve information on the most expensive booked hotels</p>
+                    <button onclick="retrieveExpensiveHotels()">Retrieve Most Expensive Booked Hotels</button>
+
+                    <p>Retrieve all booked flights with at least one infant passenger</p>
+                    <button onclick="retrieveInfantFlights()">Retrieve Flights with Infant Passengers</button>
+
+                    <p>Retrieve all flights with at least one infant passenger and two children</p>
+                    <button onclick="retrieveInfantAndChildrenFlights()">Retrieve Flights with Infant + Children</button>
+
+                    <p>Retrieve all booked flights sorted by the most expensive first</p>
+                    <button onclick="retrieveExpensiveFlights()">Retrieve Most Expensive Flights</button>
+
+                    <p>Retrieve all booked flights departing from Texas with no infant passengers</p>
+                    <button onclick="retrieveNoInfantFlights()">Retrieve Flights without Infants</button>
+
+                    <p>Retrieve the number of booked flights arriving in California between Sep and Oct 2024</p>
+                    <button onclick="countCaliforniaFlights()">Count Flights Arriving in California (Sep-Oct 2024)</button>
+                </div>
+            </div>
+            <p id="output"></p>
+        </div>
+    </div>
+    <footer></footer>
+</body>
+</html>

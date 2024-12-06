@@ -25,12 +25,13 @@ box), email address, and comment.
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
                 <li><a href="stays.html">Stays</a></li>
                 <li><a href="flights.html">Flights</a></li>
-                <li><a href="cars.html">Cars</a></li>
-                <li><a href="cruises.html">Cruises</a></li>
                 <li><a href="contact-us.html">Contact Us</a></li>
                 <li><a href="cart.html">Cart</a></li>
+                <li><a href="my-account.html">My Account</a></li>
             </ul>
         </nav>
         <div class="container">
@@ -40,8 +41,9 @@ box), email address, and comment.
                 <button onclick="changeBackgroundColor()">Change Background Color</button>
             </div>
             <div class="main-content">
+                <h1 id="welcome"></h1>
                 <h2>Contact Us Form:</h2>
-                <label for="fname">First Name:</label><br>
+                <!-- <label for="fname">First Name:</label><br>
                 <input type="text" id="fname" name="fname" required><br>
                 <label for="lname">Last Name:</label><br>
                 <input type="text" id="lname" name="lname" required><br>
@@ -53,7 +55,7 @@ box), email address, and comment.
                 <input type="radio" name="gender" value="Male" checked>
                 <label>Male</label>
                 <input type="radio" name="gender" value="Female">
-                <label>Female</label><br>
+                <label>Female</label><br> -->
                 <label for="comment">Comment:</label><br>
                 <textarea id="comment" name="comment" required></textarea><br>
                 <button type="submit" value="Submit" onclick="contactSubmit()">Submit</button>

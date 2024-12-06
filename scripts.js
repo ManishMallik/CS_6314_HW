@@ -1,3 +1,5 @@
+// const { response } = require("express");
+
 let loggedInUser = null;
 
 function changeFontSize() {
@@ -1589,16 +1591,212 @@ async function getUserSession(){
     }
 }
 
+function makeRequest(action, params, callback) {
+    const data = new URLSearchParams(params);
+    data.append("action", action);
+
+    fetch("account_actions.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data
+    })
+    // .then(response => {
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok');
+    //     }
+    //     return response.json();
+    // })
+    // .then(responseText => {
+    //     console.log(responseText);
+    // })
+    .then(response => response.text()) // Use .text() to inspect the raw response
+    .then(rawText => {
+        console.log("Raw response:", rawText);
+        return JSON.parse(rawText); // Attempt to parse JSON after inspecting
+    })
+    .then(data => {
+        // console.log("Parsed response:", data);
+        callback(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// 1. Retrieve information about booked flights and hotels using booking IDs
+function retrieveBookedFlights() {
+    const flightBookingId = document.getElementById("flight-booking-id").value;
+    const hotelBookingId = document.getElementById("hotel-booking-id").value;
+
+    makeRequest("retrieveBookedFlightsAndHotels", { flightBookingId, hotelBookingId }, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 2. Retrieve all passengers in a booked flight using the flight booking ID
+function retrievePassengerInfo() {
+    const flightBookingId = document.getElementById("flight-booking-id-passenger").value;
+
+    /**
+     * [{"ssn":"111-11-1111","first_name":"Om","last_name":"Hirpara","dob":"2020-09-08","category":"infant"},{"ssn":"112-49-9876","first_name":"Rohit","last_name":"Parkar","dob":"2015-04-21","category":"child"},{"ssn":"123-45-6789","first_name":"Manish","last_name":"Mallik","dob":"2003-02-08","category":"adult"},{"ssn":"222-22-2222","first_name":"John","last_name":"Cena","dob":"2023-09-09","category":"infant"},{"ssn":"894-85-3984","first_name":"Sandeep","last_name":"Mishra","dob":"2013-11-05","category":"child"},{"ssn":"987-65-4321","first_name":"Sameer","last_name":"Islam","dob":"2003-04-05","category":"adult"}]
+     */
+
+    let formattedOutput = "Passenger Information:\n";
+    data.forEach(passenger => {
+        formattedOutput += `SSN: ${passenger.ssn}\nFirst Name: ${passenger.first_name}\nLast Name: ${passenger.last_name}\nDate of Birth: ${passenger.dob}\nCategory: ${passenger.category}\n\n`;
+    });
+
+    makeRequest("retrievePassengers", { flightBookingId }, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 3. Retrieve all booked flights and hotels for September 2024
+function retrieveAllForMonth() {
+    makeRequest("retrieveForMonth", {}, (data) => {
+        console.log(data);
+        // Format the output to a string
+        /*
+        * JSON Output{"flights":[{"flight_id":"TX102","origin":"Austin, TX","destination":"Los Angeles, CA","departure_date":"2024-09-05","arrival_date":"2024-09-05","departure_time":"12:00:00","arrival_time":"14:30:00","available_seats":"88","price":"350.00","flight_booking_id":"5873","total_price":"1260.00"}],"hotels":[{"hotel_id":"H002","hotel_booking_id":"7836","check_in":"2024-09-06","check_out":"2024-09-10","totalRooms":"1","pricePerNight":"120.00","total_price":"480.00","hotel_name":"Austin City Inn","city":"Austin, TX","price":"120.00"}]}
+        */
+        
+        const flights = data.flights;
+        const hotels = data.hotels;
+
+        let formattedOutput = "Booked Flights:\n";
+        flights.forEach(flight => {
+            formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+        });
+
+        formattedOutput += "\nBooked Hotels:\n";
+        hotels.forEach(hotel => {
+            formattedOutput += `Hotel ID: ${hotel.hotel_id}\nHotel Booking ID: ${hotel.hotel_booking_id}\nCheck-In: ${hotel.check_in}\nCheck-Out: ${hotel.check_out}\nTotal Rooms: ${hotel.totalRooms}\nPrice Per Night: $${hotel.pricePerNight}\nTotal Price: $${hotel.total_price}\nHotel Name: ${hotel.hotel_name}\nCity: ${hotel.city}\n\n`;
+        });
+
+        document.getElementById("output").innerText = formattedOutput;
+    });
+}
+
+// 4. Retrieve all booked flights for a specific person using SSN
+function retrieveBySSN() {
+    const ssn = document.getElementById("ssn").value;
+    makeRequest("retrieveBySSN", { ssn }, (data) => {
+        console.log(data);
+
+        /**
+         * [{"price":"365.00","flight_id":"CA211","flight_booking_id":"5873","ticket_id":"631210","ssn":"123-45-6789","total_price":"1314.00","origin":"Los Angeles, CA","destination":"Austin, TX","departure_date":"2024-10-20","arrival_date":"2024-10-20","departure_time":"12:00:00","arrival_time":"17:30:00","available_seats":"73"},{"price":"350.00","flight_id":"TX102","flight_booking_id":"5873","ticket_id":"968336","ssn":"123-45-6789","total_price":"1260.00","origin":"Austin, TX","destination":"Los Angeles, CA","departure_date":"2024-09-05","arrival_date":"2024-09-05","departure_time":"12:00:00","arrival_time":"14:30:00","available_seats":"88"}]
+         */
+
+        let formattedOutput = "Booked Flights for this specific passenger:\n";
+        data.forEach(flight => {
+            formattedOutput += `Flight ID: ${flight.flight_id}\nOrigin: ${flight.origin}\nDestination: ${flight.destination}\nDeparture Date: ${flight.departure_date}\nArrival Date: ${flight.arrival_date}\nDeparture Time: ${flight.departure_time}\nArrival Time: ${flight.arrival_time}\nAvailable Seats: ${flight.available_seats}\nPrice: $${flight.price}\nFlight Booking ID: ${flight.flight_booking_id}\nTotal Price: $${flight.total_price}\n\n`;
+        });
+
+        document.getElementById("output").innerText = formattedOutput;
+    });
+}
+
+// 5. Retrieve all booked flights departing from Texas between September and October 2024
+function retrieveTexasFlights() {
+    makeRequest("retrieveTexasFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 6. Retrieve all booked hotels in Texas between September and October 2024
+function retrieveTexasHotels() {
+    makeRequest("retrieveTexasHotels", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 7. Retrieve the most expensive booked hotels
+function retrieveExpensiveHotels() {
+    makeRequest("retrieveExpensiveHotels", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 8. Retrieve all booked flights with at least one infant passenger
+function retrieveInfantFlights() {
+    makeRequest("retrieveInfantFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 9. Retrieve all booked flights with at least one infant and five children
+function retrieveInfantAndChildrenFlights() {
+    makeRequest("retrieveInfantAndChildrenFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 10. Retrieve the most expensive booked flights
+function retrieveExpensiveFlights() {
+    makeRequest("retrieveExpensiveFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 11. Retrieve all booked flights departing from Texas without infant passengers
+function retrieveNoInfantFlights() {
+    makeRequest("retrieveNoInfantFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    });
+}
+
+// 12. Count the number of booked flights arriving in California between September and October 2024
+function countCaliforniaFlights() {
+    makeRequest("countCaliforniaFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = `Number of flights: ${data.count}`;
+    });
+}
+
+// 13. Load the flights from XML file to the flights table
+function loadFlights() {
+    makeRequest("loadFlights", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = "Flights loaded successfully!";
+    });
+}
+
+// 14. Load the hotels from JSON file to the hotels table
+function loadHotels() {
+    makeRequest("loadHotels", {}, (data) => {
+        console.log(data);
+        document.getElementById("output").innerText = "Hotels loaded successfully!";
+    });
+}
+
 // DOM Method to load and build the cars.html page
 document.addEventListener('DOMContentLoaded', () => {
 
     getUserSession()
     .then(data => {
+        if(data.loggedIn){
+            const welcome = document.getElementById('welcome');
+            welcome.textContent = `Hello, ${data.firstName} ${data.lastName}!`;
+        } else {
+            const welcome = document.getElementById('welcome');
+            welcome.textContent = `Hello, Guest!`;
+        }
         // Add footer text dynamically
     if(!window.location.pathname.includes('cruises.html') && !window.location.pathname.includes('login.html')){
         // Dynamically create navigation links
         if(!window.location.pathname.includes('index.html') && !window.location.pathname.includes('contact-us.html')){
-            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart", "My Account"];
+            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Contact Us", "Cart", "My Account"];
             const navList = document.getElementById('nav-list');
 
             pages.forEach(page => {
@@ -1612,7 +1810,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 a.textContent = page;
                 li.appendChild(a);
                 navList.appendChild(li);
-            });
+            });                
 
             // Add actions dynamically
             const actions = ["Change Font Size", "Change Background Color"];
@@ -1651,6 +1849,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('my-account.html')) {
         
         // Get user's phone number
+
+        if (!data.loggedIn) {
+            document.getElementById('admin-buttons').style.display = "none";
+            document.getElementById('buttonContainer').style.display = "none";
+            document.getElementById('output').textContent = "Please log in to view your account details";
+            return;
+        } else {
+            document.getElementById('buttonContainer').style.display = "block";
+        }
+
         const phone = data.phone;
         if (phone == "222-222-2222")
         {
@@ -1663,7 +1871,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('cart.html')) {
         const hotelDetailsElement = document.getElementById('selectedHotelsDetails');
         const flightDetailsElement = document.getElementById('selectedFlightDetails');
-    
+        
+        if (!data.loggedIn) {
+            flightDetailsElement.innerHTML = "Please log in to view your cart";
+            return;
+        }
+
         // Read the selected flight details from the flightCart.json file
         fetch('./flightCart.json', {cache: "no-cache"})
             .then(response => {
@@ -2745,7 +2958,7 @@ $(document).ready(function(){
     
             $('#header-title').text("Log In");
     
-            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Cars", "Cruises", "Contact Us", "Cart", "My Account"];
+            const pages = ["Home", "Register", "Login", "Stays", "Flights", "Contact Us", "Cart", "My Account"];
             const actions = ["Change Font Size", "Change Background Color"];
             
             pages.forEach(page => {
@@ -2827,6 +3040,8 @@ $(document).ready(function(){
                 .then(responseText => {
                     console.log(responseText);
                     $('#output').html("Login successful!");
+                    alert("Login successful!");
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -2854,6 +3069,8 @@ $(document).ready(function(){
                     console.log(responseText);
                     $('#output').html("Logged out successfully!");
                     $('#output').css('color', 'green');
+                    alert("Logged out successfully!");
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);

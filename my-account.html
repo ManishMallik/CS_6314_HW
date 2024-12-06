@@ -19,7 +19,8 @@
     <div class="container">
         <div class="sidebar" id="sidebar"></div>
         <div class="main-content">
-            <h2>My Account</h2>
+            <h1 id="welcome"></h1>
+            <h2>My Account Page</h2>
             <div id="buttonContainer">
                 <!-- Buttons for Users -->
                 <p>Retrieve information for all booked flights and hotels using flight-booking-id and hotel-booking-id</p>
@@ -35,6 +36,7 @@
                 <button class="user-button" onclick="retrieveAllForMonth()">Retrieve Booked Flights/Hotels for September 2024</button>
 
                 <p>Retrieve all booked flights for a specific person using SSN</p>
+                <input type="text" id="ssn" placeholder="Enter SSN" required pattern="\d{3}-\d{2}-\d{4}" title="Format: XXX-XX-XXXX (e.g., 123-45-6789)">
                 <button class="user-button" onclick="retrieveBySSN()">Retrieve Booked Flights by SSN</button>
 
                 <!-- Buttons for Admins Only -->
@@ -57,7 +59,7 @@
                     <p>Retrieve all booked flights with at least one infant passenger</p>
                     <button onclick="retrieveInfantFlights()">Retrieve Flights with Infant Passengers</button>
 
-                    <p>Retrieve all flights with at least one infant passenger and five children</p>
+                    <p>Retrieve all flights with at least one infant passenger and two children</p>
                     <button onclick="retrieveInfantAndChildrenFlights()">Retrieve Flights with Infant + Children</button>
 
                     <p>Retrieve all booked flights sorted by the most expensive first</p>

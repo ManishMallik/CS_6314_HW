@@ -2040,7 +2040,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Handle "Book All Hotels" button click
                 document.getElementById('bookAllHotels').addEventListener('click', () => {
-                    const passengerData = [];
+                    const hotelData = [];
                     let invalidInput = false;
 
                     // Validate passenger input fields
@@ -2065,60 +2065,109 @@ document.addEventListener('DOMContentLoaded', () => {
                         const pricePerNight = hotel.getElementsByTagName('pricePerNight')[0].textContent;
                         const totalPrice = hotel.getElementsByTagName('totalPrice')[0].textContent;
 
-                        const passengers = [];
-                        for (let j = 0; j < adultGuests + childGuests + infantGuests; j++) {
-                            const firstName = document.querySelector(`[name="firstName-${hotelId}-${j}"]`).value;
-                            const lastName = document.querySelector(`[name="lastName-${hotelId}-${j}"]`).value;
-                            const dob = document.querySelector(`[name="dob-${hotelId}-${j}"]`).value;
-                            const ssn = document.querySelector(`[name="ssn-${hotelId}-${j}"]`).value;
+                        const guests = [];
+                        const uniqueSSNs = new Set();
 
-                            // Test first if any input is empty
-                            if (firstName === "" || lastName === "" || dob === "" || ssn === "") {
-                                alertMsg += "All fields must be filled.\n";
+                        const collectGuestData = (category, count) => {
+                            for (let j = 0; j < count; j++) {
+                                const firstName = document.querySelector(`[name="firstName-${hotelId}-${category}-${j}"]`).value;
+                                const lastName = document.querySelector(`[name="lastName-${hotelId}-${category}-${j}"]`).value;
+                                const dob = document.querySelector(`[name="dob-${hotelId}-${category}-${j}"]`).value;
+                                const ssn = document.querySelector(`[name="ssn-${hotelId}-${category}-${j}"]`).value;
+
+                                // Test first if any input is empty
+                                if (firstName === "" || lastName === "" || dob === "" || ssn === "") {
+                                    alertMsg += "All fields must be filled.\n";
+                                }
+
+                                // Test if first name and last name are alphabetic
+                                if (!alphabeticRegex.test(firstName) || !alphabeticRegex.test(lastName)) {
+                                    alertMsg += "First name and last name must be alphabetic.\n";
+                                }
+
+                                // Test if first name and last name are capitalized
+                                if (!capitalizedRegex.test(firstName[0]) || !capitalizedRegex.test(lastName[0])) {
+                                    alertMsg += "First name and last name must be capitalized.\n";
+                                }
+
+                                // Test if date of birth is in the correct format
+                                if (!dobRegex.test(dob)) {
+                                    alertMsg += "Format for date of birth must be followed as shown in the input field, and it should be fully filled out.\n";
+                                }
+
+                                // Test if SSN is in the correct format
+                                if (!ssnRegex.test(ssn)) {
+                                    alertMsg += "Format for SSN must be XXX-XX-XXXX, where each X is a digit (any number between 0 and 9).\n";
+                                }
+
+                                // Check if SSN is unique
+                                if (uniqueSSNs.has(ssn)) {
+                                    alertMsg += `SSN ${ssn} must be unique per guest details.\n`;
+                                } else {
+                                    uniqueSSNs.add(ssn);
+                                }
+
+                                if (alertMsg !== "") {
+                                    invalidInput = true;
+                                    break;
+                                }
+
+                                guests.push({
+                                    firstName,
+                                    lastName,
+                                    dob,
+                                    ssn,
+                                    category
+                                });
                             }
-
-                            // Test if first name and last name are alphabetic
-                            if (!alphabeticRegex.test(firstName) || !alphabeticRegex.test(lastName)) {
-                                alertMsg += "First name and last name must be alphabetic.\n";
-                            }
-
-                            // Test if first name and last name are capitalized
-                            if (!capitalizedRegex.test(firstName[0]) || !capitalizedRegex.test(lastName[0])) {
-                                alertMsg += "First name and last name must be capitalized.\n";
-                            }
-
-                            // Test if date of birth is in the correct format
-                            if (!dobRegex.test(dob)) {
-                                alertMsg += "Format for date of birth must be followed as shown in the input field, and it should be fully filled out.\n";
-                            }
-
-                            // Test if SSN is in the correct format
-                            if (!ssnRegex.test(ssn)) {
-                                alertMsg += "Format for SSN must be XXX-XX-XXXX, where each X is a digit (any number between 0 and 9).\n";
-                            }
-
-                            if (alertMsg !== "") {
-                                invalidInput = true;
-                                break;
-                            }
-
-                            passengers.push({
-                                firstName,
-                                lastName,
-                                dob,
-                                ssn
-                            });
-                        }
-
-                        passengerData.push(passengers);
-
+                        };
+                        
+                        collectGuestData("adult", adultGuests);
                         if (invalidInput) break;
+                        collectGuestData("child", childGuests);
+                        if (invalidInput) break;
+                        collectGuestData("infant", infantGuests);
+                        if (invalidInput) break;
+                        
+                        hotelData.push({
+                            hotelId,
+                            name,
+                            city,
+                            checkIn,
+                            checkOut,
+                            rooms,
+                            pricePerNight,
+                            totalPrice,
+                            guests
+                        });
+
                     };
 
                     if (invalidInput) {
                         alert(alertMsg);
                         return;
                     }
+
+                    console.log(hotelData);
+                    fetch('confirm_hotel_booking.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(hotelData)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to book hotels');
+                            }
+                            return response.text();
+                        })
+                        .then(response => {
+                            alert("Hotels booked successfully!");
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert("Error booking hotels.");
+                        });
 
                 });
 

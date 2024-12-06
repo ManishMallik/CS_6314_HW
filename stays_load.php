@@ -39,12 +39,13 @@ if ($conn->query($sql) === TRUE) {
 }
 
 $sql = "CREATE TABLE IF NOT EXISTS Guests(
-    SSN VARCHAR(9) PRIMARY KEY NOT NULL,
+    SSN VARCHAR(15) NOT NULL,
     hotel_booking_id INT NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     dob DATE NOT NULL,
     category ENUM('adult', 'child', 'infant') NOT NULL,
+    PRIMARY KEY (SSN, hotel_booking_id),
     FOREIGN KEY (hotel_booking_id) REFERENCES Hotel_Bookings(hotel_booking_id)
 )";
 if ($conn->query($sql) === TRUE) {
